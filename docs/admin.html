@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="th"><head><base target="_top"><meta charset="utf-8"><script>
+// ===== ตั้งค่า: แก้ 2 บรรทัดนี้เมื่อเปลี่ยน URL =====
+const API_URL = 'PASTE_APPS_SCRIPT_EXEC_URL_HERE'; // Apps Script Web App (/exec)
+const APP_URL = 'https://hitapdatateam-duck.github.io/skillfolio/'; // GitHub Pages (ลงท้ายด้วย /)
+</script>
+<style id="antiClickjack">body{display:none!important}</style>
+<script>
+// กันการถูกฝังในเว็บอื่น (clickjacking): ถ้าอยู่ใน iframe ให้ซ่อนเนื้อหาและแสดงลิงก์เปิดในแท็บใหม่
+if(window.top===window.self){document.getElementById('antiClickjack').remove()}
+else{document.addEventListener('DOMContentLoaded',function(){document.body.innerHTML='';var p=document.createElement('p');p.style.cssText='font:16px sans-serif;padding:24px';var a=document.createElement('a');a.href=location.href;a.target='_blank';a.rel='noopener';a.textContent='เปิดหน้าแอดมิน Skillfolio ในแท็บใหม่';p.appendChild(a);document.body.appendChild(p);document.getElementById('antiClickjack').remove()})}
+</script><meta name="viewport" content="width=device-width,initial-scale=1"><title>Skillfolio | ภาพรวมทักษะทีม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Skillfolio — one stylesheet, one type scale ===== */
+:root{
+  --ink:#2a2925;--ink-2:#4b473f;--muted:#6b665c;--faint:#9a9488;
+  --line:#e6e2d9;--line-2:#d6d0c3;--paper:#f7f6f2;--surface:#fffefa;--sunk:#f2efe8;
+  --accent:#8c7551;--accent-ink:#6b583a;--accent-soft:#efe8da;
+  --danger:#9f3333;--danger-bg:#fbefec;--ok:#3f6e44;--ok-bg:#ebf3ea;
+  --cat-soft:#4f8467;--cat-core:#a3772f;--cat-technical:#4f7396;
+  --profile-accent:#8c7551;--profile-tint:#efe7d8;--profile-soft:#f8f5ef;
+  --r-s:6px;--r:10px;--r-l:16px;
+  --fs-xs:13px;--fs-sm:14px;--fs-base:16px;--fs-md:18px;--fs-lg:22px;--fs-xl:clamp(30px,4.4vw,46px);
+  --font:"Manrope","Noto Sans Thai",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --shadow:0 1px 2px rgba(42,41,37,.04),0 10px 30px rgba(42,41,37,.06);
+}
+.theme-neutral{--profile-accent:#8c7551;--profile-tint:#efe7d8;--profile-soft:#f8f5ef}
+.theme-purple{--profile-accent:#715b8c;--profile-tint:#e9e1f2;--profile-soft:#f7f4fa}
+.theme-green{--profile-accent:#41704f;--profile-tint:#dfede2;--profile-soft:#f3f8f3}
+.theme-blue{--profile-accent:#436b88;--profile-tint:#dfebf3;--profile-soft:#f3f7fa}
+.theme-gold{--profile-accent:#86671f;--profile-tint:#f3e9c9;--profile-soft:#fcf8eb}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:var(--fs-base);line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;line-height:1.35;color:var(--ink)}
+h1{font-size:var(--fs-xl);font-weight:600;letter-spacing:-.02em;line-height:1.3}
+h2{font-size:var(--fs-lg);font-weight:600;letter-spacing:-.01em}
+h3{font-size:var(--fs-md);font-weight:600}
+h4{font-size:var(--fs-base);font-weight:600}
+p{margin:0}
+small,.muted{color:var(--muted);font-size:var(--fs-sm)}
+.hint{color:var(--muted);font-size:var(--fs-sm);line-height:1.65}
+[hidden]{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:var(--r-s);z-index:20}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ----- buttons ----- */
+button{cursor:pointer;border:1px solid var(--line-2);background:var(--surface);padding:10px 18px;min-height:44px;border-radius:var(--r-s);font-size:15px;font-weight:500;line-height:1.3;transition:background .15s,border-color .15s,color .15s}
+button:hover{background:var(--sunk);border-color:var(--faint)}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.primary{background:var(--ink);border-color:var(--ink);color:#fffefa}
+.primary:hover{background:#151513;border-color:#151513}
+.ghost{background:transparent;border-color:transparent;color:var(--ink-2)}
+.ghost:hover{background:var(--sunk);border-color:transparent}
+.danger{color:var(--danger);border-color:#e4c9c3;background:transparent}
+.danger:hover{background:var(--danger-bg);border-color:var(--danger)}
+.btn-sm{min-height:36px;padding:6px 13px;font-size:var(--fs-sm)}
+.icon-btn{min-height:36px;width:36px;padding:0;display:inline-grid;place-items:center;border-color:transparent;background:transparent;color:var(--muted);font-size:20px}
+.icon-btn:hover{color:var(--danger);background:var(--danger-bg);border-color:transparent}
+
+/* ----- form fields ----- */
+label{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink-2)}
+label .opt{font-weight:400;color:var(--muted)}
+input,select,textarea{width:100%;min-height:46px;margin-top:7px;border:1px solid var(--line-2);border-radius:var(--r-s);background:#fff;padding:11px 14px;font-size:var(--fs-base);font-weight:400;line-height:1.5;color:var(--ink)}
+textarea{min-height:120px;resize:vertical;line-height:1.7}
+select{appearance:none;-webkit-appearance:none;padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%236b665c' stroke-width='1.6'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center}
+input::placeholder,textarea::placeholder{color:#a19b90}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(140,117,81,.18)}
+input[type=checkbox]{width:18px;height:18px;min-height:0;margin:0;accent-color:var(--accent-ink)}
+.field-help{display:block;margin-top:6px;font-weight:400;font-size:var(--fs-xs);color:var(--muted)}
+
+/* ----- header ----- */
+.topbar{position:sticky;top:0;z-index:5;background:rgba(251,250,247,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
+.brand{border:0;background:none;padding:0;min-height:0;font-size:24px;font-weight:600;letter-spacing:-.04em;color:var(--ink)}
+.brand:hover{background:none}
+.brand span{color:var(--accent)}
+.mainnav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+.mainnav button{border:0;background:transparent;color:var(--muted);font-size:15px;padding:8px 14px;min-height:40px;border-radius:var(--r-s)}
+.mainnav button:hover{background:var(--sunk);color:var(--ink)}
+.mainnav button.active{color:var(--ink);background:var(--accent-soft)}
+.lang-toggle{min-height:36px;padding:5px 12px;font-size:var(--fs-sm);font-weight:600;border-radius:999px;color:var(--ink-2)}
+.home-link{min-height:36px;padding:5px 12px;font-size:var(--fs-sm)}
+
+/* ----- layout ----- */
+main{max-width:1200px;margin:0 auto;padding:44px 24px 96px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:28px}
+.panel+.panel{margin-top:20px}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin:44px 0 16px}
+.eyebrow{font-size:var(--fs-xs);font-weight:600;letter-spacing:.06em;color:var(--accent-ink)}
+.lead{font-size:var(--fs-md);color:var(--muted);line-height:1.75;max-width:40em}
+.alert{padding:14px 18px;border-radius:var(--r);background:var(--danger-bg);border:1px solid #ecd1ca;color:var(--danger);margin-bottom:20px;font-size:var(--fs-sm)}
+.callout{padding:16px 18px;border-radius:var(--r);background:var(--sunk);border:1px solid var(--line);font-size:var(--fs-sm);color:var(--ink-2)}
+
+/* ----- hero ----- */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:48px;padding:8px 0 40px}
+.hero h1{margin:12px 0 16px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero-actions .primary{padding:12px 22px}
+.hero-art{position:relative;flex-shrink:0;width:220px;height:220px;border:1px solid var(--line-2);border-radius:50%;display:grid;place-items:center;margin-right:24px}
+.hero-art:before{content:"";position:absolute;inset:24px;border:1px solid var(--line-2);border-radius:50%}
+.hero-art svg{width:150px;height:150px;position:relative}
+
+/* ----- stats ----- */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden}
+.stat{padding:20px 24px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat strong{display:block;font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.3;font-variant-numeric:tabular-nums}
+.stat span{font-size:var(--fs-sm);color:var(--muted)}
+
+/* ----- toolbar / chips ----- */
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.search{position:relative;flex:1;min-width:240px}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--faint);pointer-events:none}
+.search input{margin:0;padding-left:42px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{min-height:40px;padding:7px 15px;border-radius:999px;font-size:var(--fs-sm);background:var(--surface);color:var(--ink-2)}
+.chip.active{background:var(--ink);border-color:var(--ink);color:#fffefa}
+.chip .dot{width:8px;height:8px;margin-right:7px;vertical-align:1px}
+.count{font-size:var(--fs-sm);color:var(--muted);margin:4px 0 16px}
+.sync{display:flex;align-items:center;gap:10px}
+
+/* ----- category dots ----- */
+.dot{display:inline-block;flex-shrink:0;width:10px;height:10px;border-radius:50%}
+.dot.soft,.cat-soft{background:var(--cat-soft)}.dot.core,.cat-core{background:var(--cat-core)}.dot.technical,.cat-technical{background:var(--cat-technical)}
+
+/* ----- cards ----- */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{position:relative;display:flex;flex-direction:column;gap:14px;min-width:0;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--profile-accent);border-radius:var(--r-l);padding:24px;transition:border-color .15s,box-shadow .15s}
+.card:hover{box-shadow:var(--shadow);border-color:var(--line-2);border-top-color:var(--profile-accent)}
+.person{display:flex;align-items:center;gap:14px;min-width:0}
+.person>div{min-width:0}
+.person h3{font-size:var(--fs-md);overflow-wrap:anywhere}
+.person small{display:block;overflow-wrap:anywhere}
+.avatar{flex-shrink:0;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--profile-tint);color:var(--profile-accent);font-size:20px;font-weight:600}
+.badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mbti-badge{display:inline-block;border-radius:999px;background:var(--profile-tint);color:var(--profile-accent);padding:3px 11px;font-size:var(--fs-xs);font-weight:600}
+.status-badge{display:inline-block;border-radius:999px;padding:3px 11px;font-size:var(--fs-xs);font-weight:600;background:var(--sunk);color:var(--muted)}
+.status-badge.public{background:var(--ok-bg);color:var(--ok)}
+.card .dept{font-size:var(--fs-sm);color:var(--muted);overflow-wrap:anywhere}
+.card-skill-summary{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center}
+.card-skill-summary.no-radar{grid-template-columns:1fr}
+.compact-radar{width:96px;height:96px;display:block}
+.mini-skill{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:var(--fs-sm);padding:4px 0}
+.mini-skill>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font-size:var(--fs-sm);color:var(--muted)}
+.card-open{border:0;background:none;padding:0;min-height:0;color:var(--accent-ink);font-weight:600;font-size:var(--fs-sm)}
+.card-open:hover{background:none;color:var(--ink)}
+.card-open:after{content:"";position:absolute;inset:0;border-radius:var(--r-l)}
+.growing{color:var(--ok);font-weight:600}
+.empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--surface);border:1px dashed var(--line-2);border-radius:var(--r-l)}
+.empty h3{margin-bottom:6px}
+.empty button{margin-top:18px}
+#moreButton{display:block;margin:28px auto 0}
+
+/* ----- segments (level 1–5) ----- */
+.segments{display:inline-flex;gap:3px;align-items:center;flex-shrink:0}
+.segments i{display:block;width:12px;height:6px;border-radius:2px;background:#e3e0d8}
+.segments i.filled{background:var(--profile-accent)}
+
+/* ----- editor ----- */
+.editor-head{margin-bottom:28px}
+.editor-head h1{margin-bottom:8px}
+.stepper li{display:flex}
+.stepper{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0;margin:0 0 24px}
+.stepper button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;border:0;border-bottom:2px solid var(--line);border-radius:0;padding:12px 4px;color:var(--muted)}
+.stepper button:hover{background:transparent;color:var(--ink)}
+.stepper .num{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);font-size:var(--fs-sm);font-weight:600;background:var(--surface)}
+.stepper button.done .num{background:var(--accent-soft);border-color:var(--accent-soft);color:var(--accent-ink)}
+.stepper button.active{color:var(--ink);border-bottom-color:var(--accent)}
+.stepper button.active .num{background:var(--ink);border-color:var(--ink);color:#fff}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px 24px}
+.full{grid-column:1/-1}
+.mbti-preview{display:block;margin-top:10px;padding:10px 14px;border-radius:var(--r-s);background:var(--profile-soft);color:var(--profile-accent);font-size:var(--fs-sm);font-weight:500}
+.form-actions{position:sticky;bottom:0;z-index:3;display:flex;gap:10px;align-items:center;margin-top:24px;padding:14px 0;background:linear-gradient(to bottom,rgba(247,246,242,0),var(--paper) 30%)}
+.form-actions .spacer{flex:1}
+.save-state{font-size:var(--fs-sm);color:var(--muted)}
+
+/* skill picker */
+.cat-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 16px}
+.cat-tab{text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 16px;border-radius:var(--r)}
+.cat-tab strong{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+.cat-tab small{font-size:var(--fs-xs)}
+.cat-tab.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);background:var(--surface)}
+.picker-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.picker-filters select,.picker-filters input{margin-top:0}
+.suggestions{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px;max-height:236px;overflow:auto;padding:2px}
+.suggestions button{min-height:38px;padding:6px 13px;font-size:var(--fs-sm);border-radius:999px;background:var(--surface);color:var(--ink-2)}
+.suggestions button.picked{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.add-row{display:flex;gap:10px}
+.add-row input{margin:0}
+.add-row button{flex-shrink:0}
+.selected-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:30px 0 12px;padding-top:24px;border-top:1px solid var(--line)}
+.skill-cat-label{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);font-weight:600;color:var(--ink-2);margin:18px 0 8px}
+.skill-item{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto auto auto;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:#fff;margin-bottom:8px}
+.skill-item .name strong{display:block;font-weight:600;overflow-wrap:anywhere;line-height:1.45}
+.skill-item select{margin:0;min-height:40px;font-size:var(--fs-sm);padding-top:7px;padding-bottom:7px}
+.level-picker{display:flex;align-items:center;gap:4px}
+.level-picker button{width:34px;min-height:34px;padding:0;border-radius:var(--r-s);font-size:var(--fs-sm);font-weight:600;background:var(--sunk);border-color:transparent;color:var(--muted)}
+.level-picker button.on{background:var(--profile-accent);color:#fff}
+.level-picker .level-name{min-width:6.5em;margin-left:6px;font-size:var(--fs-sm);color:var(--ink-2)}
+.growth-check{display:flex;align-items:center;gap:8px;font-weight:500;color:var(--ink-2);white-space:nowrap;cursor:pointer}
+
+/* visibility switch */
+.visibility-control{display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;font-size:15px;font-weight:600;color:var(--ink)}
+.visibility-control input{position:absolute;opacity:0;width:44px;height:26px;margin:0}
+.switch-track{width:44px;height:26px;flex-shrink:0;border-radius:20px;background:#bdb9b0;position:relative;transition:background .15s}
+.switch-track:after{content:"";position:absolute;width:20px;height:20px;top:3px;left:3px;border-radius:50%;background:#fff;transition:transform .15s}
+.visibility-control input:checked+.switch-track{background:var(--ok)}
+.visibility-control input:checked+.switch-track:after{transform:translateX(18px)}
+.visibility-control input:focus-visible+.switch-track{outline:2px solid var(--accent);outline-offset:3px}
+.visibility-control input:disabled+.switch-track{opacity:.5}
+.callout .visibility-control{margin-bottom:8px}
+
+/* ----- profile ----- */
+.profile-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.profile-actions .spacer{flex:1}
+.privacy-panel{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px;padding:14px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l)}
+.privacy-panel p{font-size:var(--fs-sm);color:var(--muted);max-width:480px}
+.profilehead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start;padding:36px;margin-bottom:20px;background:var(--profile-soft);border:1px solid var(--profile-tint);border-top:3px solid var(--profile-accent);border-radius:var(--r-l)}
+.profilehead .avatar{width:76px;height:76px;font-size:32px}
+.profilehead h1{font-size:clamp(28px,3.6vw,40px);margin:4px 0 10px;overflow-wrap:anywhere}
+.profilehead .meta{margin:10px 0 0;color:var(--ink-2);font-size:15px}
+.profilehead .prose{margin-top:16px;max-width:46em;color:var(--ink-2)}
+.prose{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}
+.prose.empty-text{color:var(--faint)}
+.about-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px}
+.about-grid .panel{margin:0}
+.about-grid h2,.panel h2.sm{font-size:var(--fs-md)}
+.profile-meta{margin-top:20px;font-size:var(--fs-sm);color:var(--muted)}
+
+/* skill groups on profile */
+.skill-category{margin-top:26px}
+.skill-category>h3{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink-2);margin-bottom:12px}
+.skill-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.skill-box{border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;background:#fff;break-inside:avoid;min-width:0}
+.skill-box h4{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px;font-size:15px}
+.skill-box h4 small{font-weight:500}
+.skill-detail{display:grid;grid-template-columns:minmax(0,1fr) auto 7.2em;gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:15px}
+.skill-detail>span:first-child{overflow-wrap:anywhere}
+.skill-detail small{text-align:right;font-size:var(--fs-xs)}
+
+/* ----- radar (single, combined) ----- */
+.radar-panel .radar-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:start;container-type:inline-size}
+.radar-panel .radar-figure{position:sticky;top:84px}
+.radar-figure{min-width:0;container-type:inline-size}
+.radar{display:block;width:100%;height:auto;overflow:visible}
+.radar-narrow{max-width:460px;margin:0 auto}
+.radar-figure.has-wide .radar-narrow{display:none}
+@container (max-width:520px){.radar-figure.has-wide .radar-wide{display:none}.radar-figure.has-wide .radar-narrow{display:block}}
+.radar text{font-family:var(--font)}
+.radar-keys{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:6px;font-size:var(--fs-sm);color:var(--ink-2)}
+.radar-keys span{display:inline-flex;align-items:center;gap:7px}
+
+.radar-legend{min-width:0}
+.legend-cat+.legend-cat{margin-top:18px}
+.legend-cat h4{display:flex;align-items:center;gap:8px;font-size:15px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.legend-cat h4 small{margin-left:auto;font-weight:500}
+.legend-cat ol{list-style:none;margin:0;padding:0}
+.legend-cat li{display:grid;grid-template-columns:auto minmax(0,1fr) 72px 2.6em;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.legend-cat li .name{min-width:0;overflow-wrap:anywhere;line-height:1.45}
+.legend-cat li .name small{display:block;font-size:var(--fs-xs)}
+.legend-cat li strong{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.lg-num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:700;color:#fff}
+.radar-legend.text-mode .lg-num{display:none}
+.radar-legend.text-mode li{grid-template-columns:minmax(0,1fr) 72px 2.6em}
+@container (max-width:520px){
+  .radar-legend.text-mode .lg-num{display:inline-grid}
+  .legend-cat li,.radar-legend.text-mode li{grid-template-columns:auto minmax(0,1fr) 44px 2.4em;gap:10px}
+}
+.mini-bar{height:6px;border-radius:3px;background:#ebe8e1;overflow:hidden}
+.mini-bar i{display:block;height:100%;border-radius:3px;background:var(--profile-accent)}
+.radar-empty{padding:28px 20px;text-align:center;color:var(--muted);font-size:15px;background:var(--sunk);border-radius:var(--r);margin-bottom:16px}
+.radar-note{margin-top:18px}
+
+/* ----- admin ----- */
+body[data-admin=true] #stats,body[data-admin=true] .hero-actions button:not(.primary){display:none}
+.admin-login{max-width:440px;margin:40px auto 80px}
+.admin-login h1{font-size:34px;margin:10px 0 8px}
+.admin-login form{margin-top:24px}
+.admin-login .primary{width:100%;margin-top:18px}
+.login-error{margin-top:12px;color:var(--danger);font-size:var(--fs-sm);min-height:1.4em}
+.team-filter{max-width:420px;margin:24px 0}
+.dashboard-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.dashboard-stats{margin-bottom:20px}
+.dashboard-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.dashboard-box{border:1px solid var(--line);border-radius:var(--r);padding:22px;min-width:0;background:#fff}
+.dashboard-box h3{font-size:var(--fs-md)}
+.dashboard-box .hint{margin:2px 0 12px}
+.dashboard-wide{grid-column:1/-1}
+.metric-row{display:grid;grid-template-columns:1fr auto;gap:4px 8px;margin:12px 0;font-size:15px}
+.metric-row .mini-bar{grid-column:1/-1;height:8px}
+.metric-row .mini-bar i{background:var(--accent)}
+.metric-row small{grid-column:1/-1;font-size:var(--fs-xs)}
+.insight-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.insight-row small{display:block;font-size:var(--fs-xs)}
+.insight-row strong{white-space:nowrap;font-weight:600}
+.table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:#fff;margin-top:12px}
+.team-table{width:100%;border-collapse:collapse;font-size:15px}
+.team-table th,.team-table td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left}
+.team-table th{font-size:var(--fs-sm);font-weight:600;color:var(--muted);background:var(--sunk);white-space:nowrap}
+.team-table td:not(:first-child),.team-table th:not(:first-child){text-align:center;font-variant-numeric:tabular-nums}
+.team-table td:first-child{min-width:200px;overflow-wrap:anywhere}
+.team-table small{display:block;font-size:var(--fs-xs)}
+.team-table tbody tr:last-child td{border-bottom:0}
+
+/* ----- account ----- */
+.account{display:flex;align-items:center}
+.mainnav+.account{margin-left:4px}
+.account-menu{position:relative}
+.account-menu summary{list-style:none;display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px 4px 4px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);font-size:var(--fs-sm);font-weight:600;max-width:200px}
+.account-menu summary::-webkit-details-marker{display:none}
+.account-menu summary:hover{background:var(--sunk)}
+.acc-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avatar.sm{width:28px;height:28px;font-size:13px;background:var(--accent-soft);color:var(--accent-ink)}
+.account-menu .menu{position:absolute;right:0;top:calc(100% + 8px);z-index:10;min-width:230px;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.menu-head{padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px;min-width:0}
+.menu-head strong,.menu-head small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.menu-head small{font-size:var(--fs-xs)}
+.account-menu .menu button{display:block;width:100%;text-align:left;border:0;background:none;min-height:40px;padding:8px 10px;font-size:15px}
+.account-menu .menu button:hover{background:var(--sunk)}
+.danger-text{color:var(--danger)!important}
+.auth-dialog{max-width:440px;padding:30px 30px 22px;position:relative}
+.dialog-close{position:absolute;right:12px;top:12px}
+.dialog-close:hover{color:var(--ink);background:var(--sunk)}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:4px 34px 22px 0;background:var(--sunk);border-radius:var(--r)}
+.auth-tabs button{border:0;background:transparent;min-height:40px;font-size:15px;color:var(--muted)}
+.auth-tabs button.active{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(42,41,37,.1)}
+.auth-dialog h2{margin:0 0 6px;padding-right:34px}
+.auth-dialog #authNote{margin-bottom:6px}
+#authForm{display:grid;gap:16px;margin-top:16px}
+#authForm label.check{display:flex;align-items:center;gap:8px;font-weight:500}
+#authForm .field-help{margin-top:6px}
+#authForm .login-error{margin:0;min-height:0}
+#authForm .login-error:empty{display:none}
+.auth-submit{width:100%;min-height:48px}
+.auth-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+.link{border:0;background:none;min-height:36px;padding:4px 0;color:var(--accent-ink);font-size:var(--fs-sm);font-weight:600}
+.link:hover{background:none;color:var(--ink);text-decoration:underline}
+
+/* ----- admin: users & log ----- */
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.page-head h1{margin:10px 0 8px}
+.status-badge.locked{background:var(--danger-bg);color:var(--danger)}
+.status-badge.warn{background:#fbf1dd;color:#8a5a12}
+.user-table td{vertical-align:middle}
+.user-table td:not(:first-child),.user-table th:not(:first-child),.log-table td,.log-table th{text-align:left!important}
+.user-table td:last-child,.user-table th:last-child{text-align:center!important}
+.user-table .person{gap:10px}
+.user-table strong{font-weight:600;display:block}
+.clickable{cursor:pointer}
+.clickable:hover td,.clickable:focus-visible td{background:var(--profile-soft)}
+.clickable:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.event-badge{display:inline-block;white-space:nowrap;border-radius:999px;padding:3px 11px;font-size:var(--fs-xs);font-weight:600;background:var(--sunk);color:var(--ink-2)}
+.event-badge.ok{background:var(--ok-bg);color:var(--ok)}
+.event-badge.bad{background:var(--danger-bg);color:var(--danger)}
+.event-badge.warn{background:#fbf1dd;color:#8a5a12}
+.event-badge.admin{background:#ebe6f3;color:#5b4a7a}
+.log-table td:first-child{white-space:nowrap}
+.log-table td small,.user-table td small{display:block}
+.log-table .detail{color:var(--ink-2);min-width:180px;overflow-wrap:anywhere}
+.log-table .link,.mini-log .link{min-height:0;padding:0;text-align:left}
+.filter-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;border-radius:999px;background:var(--accent-soft);font-size:var(--fs-sm);margin:0 0 8px}
+.filter-pill .link{min-height:28px}
+.user-dialog{max-width:680px;padding:0;max-height:92vh}
+.user-dialog #userBody{padding:28px 30px 26px}
+.ud-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding-right:30px}
+.ud-head .avatar{width:56px;height:56px;font-size:24px;background:var(--accent-soft);color:var(--accent-ink)}
+.ud-head h2{margin:0;overflow-wrap:anywhere}
+.ud-head p{margin:0 0 6px;overflow-wrap:anywhere}
+.ud-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px 16px;margin:20px 0 4px;padding:14px 16px;background:var(--sunk);border-radius:var(--r)}
+.ud-meta div{padding:4px 0}
+.ud-meta dt{font-size:var(--fs-xs);color:var(--muted)}
+.ud-meta dd{margin:0;font-size:15px;font-weight:500}
+.ud-section{padding:20px 0 4px;border-top:1px solid var(--line);margin-top:18px}
+.ud-section>h3{font-size:16px;margin-bottom:12px}
+.ud-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.ud-form button{min-height:46px}
+.ud-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0}
+.ud-row+.ud-row{border-top:1px dashed var(--line)}
+.ud-row>div{min-width:0}
+.ud-row strong{display:block;font-weight:600;font-size:15px}
+.ud-row small{display:block;font-size:var(--fs-xs);line-height:1.55}
+.ud-row .grow{flex:1}
+.ud-row input{margin-top:8px}
+.ud-row button{flex-shrink:0}
+form.ud-row{align-items:flex-end}
+.ud-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mini-log{list-style:none;margin:0;padding:0}
+.mini-log li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:var(--fs-sm)}
+.mini-log .detail{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.danger-zone{margin-top:22px}
+.danger-zone h3{color:var(--danger)}
+.danger-zone .check{display:flex;gap:8px;align-items:flex-start;font-weight:500;margin:10px 0 14px}
+.danger-zone .check input{margin-top:3px}
+
+/* ----- feedback ----- */
+#notice{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:30;max-width:min(560px,92vw);padding:12px 20px;border-radius:var(--r);background:var(--ink);color:#fffefa;font-size:15px;box-shadow:0 10px 32px rgba(42,41,37,.22)}
+.loading-panel{display:flex;align-items:center;gap:12px;min-height:160px;justify-content:center;color:var(--muted)}
+.spinner{width:22px;height:22px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skeleton{height:280px;border-radius:var(--r-l);background:linear-gradient(90deg,var(--sunk),#f8f6f1,var(--sunk));background-size:200% 100%;animation:shimmer 1.4s ease infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+dialog{max-width:620px;width:94%;padding:30px;border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(42,41,37,.45)}
+dialog h2{margin-bottom:10px}
+dialog p{color:var(--ink-2);font-size:15px;margin-bottom:14px}
+.dialog-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+footer{border-top:1px solid var(--line);padding:26px 24px;text-align:center;font-size:var(--fs-sm);color:var(--muted);line-height:1.8}
+footer .powered{font-weight:600;color:var(--accent-ink);letter-spacing:.01em}
+
+/* ----- responsive ----- */
+@media (max-width:1000px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .radar-panel .radar-layout{grid-template-columns:1fr}
+  .radar-panel .radar-figure{position:static;max-width:640px;margin:0 auto;width:100%}
+  .about-grid{grid-template-columns:1fr}
+  .skill-item{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;grid-template-areas:none}
+  .skill-item .growth-check{grid-column:1/3}
+  .skill-item .icon-btn{grid-row:1;grid-column:3}
+}
+@media (max-width:850px){
+  .hero-art{display:none}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .skill-groups,.dashboard-grid{grid-template-columns:1fr}
+  .dashboard-wide{grid-column:auto}
+  .privacy-panel{flex-direction:column;align-items:flex-start;gap:8px}
+}
+@media (max-width:640px){
+  .topbar-inner{flex-wrap:wrap;padding:10px 16px;gap:8px 12px}
+  .mainnav{order:3;width:100%;margin:0;flex-wrap:nowrap;justify-content:space-between;overflow-x:auto;scrollbar-width:none}
+  .mainnav::-webkit-scrollbar{display:none}
+  .mainnav button{white-space:nowrap;padding:6px 8px;font-size:14px;min-height:38px}
+  .account,.mainnav+.account{margin-left:auto}
+  .home-link{margin-left:auto}
+  .acc-name{display:none}
+  .account-menu summary{padding:3px}
+  .auth-dialog{padding:24px 20px 18px}
+  main{padding:28px 16px 72px}
+  .hero{padding-bottom:28px}
+  .lead{font-size:var(--fs-base)}
+  .hero-actions button{flex:1}
+  .grid,.formgrid,.picker-filters,.cat-tabs{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .panel{padding:20px}
+  .card{padding:20px}
+  .stat{padding:16px 18px}
+  .stat strong{font-size:26px}
+  .stepper{gap:4px}
+  .stepper button{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:8px 2px;font-size:13px;line-height:1.35}
+  .cat-tabs{gap:6px}
+  .cat-tab{flex-direction:row;align-items:center;justify-content:space-between;padding:10px 14px}
+  .skill-item{grid-template-columns:1fr auto;gap:10px}
+  .skill-item .name{grid-column:1}
+  .skill-item .icon-btn{grid-column:2;grid-row:1}
+  .skill-item select,.skill-item .level-picker,.skill-item .growth-check{grid-column:1/-1}
+  .level-picker button{flex:1;width:auto}
+  .add-row{flex-direction:column}
+  .profilehead{grid-template-columns:1fr;padding:24px;gap:14px}
+  .profilehead .avatar{width:60px;height:60px;font-size:26px}
+  .profile-actions .spacer{display:none}
+  .profile-actions button{flex:1 1 auto}
+  .skill-detail{grid-template-columns:minmax(0,1fr) auto;font-size:15px}
+  .skill-detail small{grid-column:1/-1;text-align:left;margin-top:-6px}
+  .form-actions{gap:8px}
+  .form-actions .spacer{display:none}
+  .form-actions .cancel{padding:10px 8px}
+  .form-actions .primary,.form-actions #prev{flex:1;padding:10px 12px}
+  .radar-panel{padding:18px 14px}
+  .section-head{margin-top:32px}
+  dialog{padding:22px}
+  .user-dialog #userBody{padding:22px 18px}
+  .ud-form{grid-template-columns:1fr}
+  .ud-meta{grid-template-columns:1fr 1fr}
+  .ud-row,form.ud-row{flex-direction:column;align-items:stretch}
+  .mini-log li{grid-template-columns:auto 1fr}
+  .mini-log .detail{display:none}
+  .page-head h1{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ----- print (A4) ----- */
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff;font-size:12px}
+  .topbar,footer,.no-print,#notice,dialog,.form-actions{display:none!important}
+  main{padding:0;max-width:none}
+  body.printing main>section:not(#profile),body.printing main>.alert{display:none!important}
+  .panel,.profilehead,.skill-box{break-inside:avoid;padding:14px}
+  .profilehead{grid-template-columns:auto 1fr}
+  .profilehead h1{font-size:26px}
+  .radar-panel .radar-layout{grid-template-columns:1.1fr 1fr;gap:16px}
+  .radar-figure.has-wide .radar-wide{display:block!important}
+  .radar-figure.has-wide .radar-narrow{display:none!important}
+  .about-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .skill-groups{grid-template-columns:1fr 1fr;gap:10px}
+  .skill-detail,.legend-cat li{font-size:11px;padding:4px 0}
+  .radar-panel .radar-figure{position:static}
+  .profilehead,.segments,.mini-bar,.mbti-badge,.lg-num,.dot,.stepper,.radar{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+</style></head>
+<body data-admin="true">
+<a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
+<header class="topbar"><div class="topbar-inner">
+<button class="brand" type="button" onclick="showDirectory()" aria-label="Skillfolio">skill<span>folio</span></button>
+<nav id="mainNav" class="mainnav" aria-label="เมนูหลัก" hidden><button type="button" data-nav="directory" onclick="showDirectory()">ภาพรวมทีม</button><button type="button" data-nav="users" onclick="showUsers()">ผู้ใช้</button><button type="button" data-nav="logs" onclick="showLogs('')">บันทึกการใช้งาน</button><button type="button" data-nav="editor" onclick="newProfile()">สร้างโปรไฟล์</button><button type="button" onclick="signOutAdmin()">ออกจากระบบ</button></nav>
+<button type="button" class="ghost home-link" onclick="goHome()">⌂ หน้าผู้ใช้</button>
+<button id="languageButton" class="lang-toggle" type="button" onclick="switchLanguage()" aria-label="Switch language">EN</button>
+</div></header>
+<main id="main">
+<div id="loadError" class="alert" hidden role="alert"></div>
+<section id="adminLogin" class="admin-login">
+<p class="eyebrow">Skillfolio · Admin</p><h1>เข้าสู่หน้าแอดมิน</h1><p class="lead">กรอกรหัสผ่านเพื่อจัดการโปรไฟล์และดูภาพรวมทักษะ</p>
+<form class="panel" onsubmit="event.preventDefault();signInAdmin()"><label for="adminPassword">รหัสผ่าน</label><input id="adminPassword" type="password" autocomplete="current-password" required><p id="loginError" class="login-error" role="alert"></p><button id="loginButton" class="primary" type="submit">เข้าสู่ระบบ</button></form>
+</section>
+<section id="directory" hidden>
+<div class="hero">
+<div>
+<p class="eyebrow">ภาพรวมทักษะทีม · Skillfolio</p>
+<h1 id="pageTitle">ภาพรวมผู้คน<br>และศักยภาพของทีม</h1>
+<p class="lead">จัดการโปรไฟล์ ดูภาพรวมทักษะของทีม และวางแผนการแบ่งปันความรู้</p>
+<div class="hero-actions"><button class="primary" type="button" onclick="newProfile()">สร้างโปรไฟล์ของคุณ</button><button type="button" onclick="openMine()">เปิดโปรไฟล์ของฉัน</button></div>
+</div>
+<div class="hero-art" aria-hidden="true"><svg viewBox="0 0 160 160" fill="none"><path d="M80 18 134 111H26Z" stroke="#c9bb9f"/><path d="M80 18v124M26 111l108-62M134 111 26 49" stroke="#ddd5c6"/><path d="m80 42 36 61H44Z" fill="#a18a631f" stroke="#a18a63"/><circle cx="80" cy="42" r="4" fill="#4f8467"/><circle cx="116" cy="103" r="4" fill="#4f7396"/><circle cx="44" cy="103" r="4" fill="#a3772f"/></svg></div>
+</div>
+<div class="stats" id="stats"></div>
+<label class="team-filter">หน่วยงานที่วิเคราะห์<select id="teamFilter" onchange="visibleCount=18;renderDirectory();renderTeamDashboard()"><option value="">ทุกหน่วยงาน</option></select></label>
+<section id="adminInsights" class="panel" hidden></section>
+<div class="section-head"><h2>ค้นพบผู้คนและทักษะ</h2><div class="sync"><small id="syncState" role="status"></small><button id="refreshButton" class="ghost btn-sm" type="button" onclick="load(true)">↻ อัปเดตข้อมูล</button></div></div>
+<div class="toolbar">
+<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="search" type="search" aria-label="ค้นหาโปรไฟล์" placeholder="ค้นหาชื่อ ทักษะ ความสนใจ หรือหน่วยงาน…" oninput="queueDirectory()"></div>
+<div class="chips" id="filterChips" role="group" aria-label="กรองหมวดทักษะ">
+<button type="button" class="chip active" data-cat="" aria-pressed="true">ทั้งหมด</button>
+<button type="button" class="chip" data-cat="soft" aria-pressed="false"><span class="dot soft"></span>Soft skills</button>
+<button type="button" class="chip" data-cat="core" aria-pressed="false"><span class="dot core"></span>Core skills</button>
+<button type="button" class="chip" data-cat="technical" aria-pressed="false"><span class="dot technical"></span>Technical skills</button>
+</div>
+</div>
+<p id="count" class="count" aria-live="polite"></p>
+<div id="cards" class="grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+<button id="moreButton" type="button" onclick="showMore()" hidden>แสดงเพิ่ม</button>
+</section>
+
+<section id="editor" hidden>
+<div class="editor-head"><h1 id="editorTitle">เริ่มต้นจากเรื่องราวของคุณ</h1><p class="lead">เลือกทักษะที่ใช่ พร้อมบอกสิ่งที่อยากเรียนรู้เพิ่มเติม</p></div>
+<ol class="stepper">
+<li><button type="button" onclick="stepTo(0)"><span class="num">1</span><span class="label">ข้อมูลส่วนตัว</span></button></li>
+<li><button type="button" onclick="stepTo(1)"><span class="num">2</span><span class="label">ทักษะของคุณ</span></button></li>
+<li><button type="button" onclick="stepTo(2)"><span class="num">3</span><span class="label">เส้นทางและความสนใจ</span></button></li>
+</ol>
+<form id="profileForm" onsubmit="event.preventDefault();if(step&lt;2){stepTo(step+1)}else{save()}">
+<div class="panel step" data-step="0">
+<div class="panel-head"><h2>ยินดีที่ได้รู้จัก</h2></div>
+<div class="formgrid">
+<label>ชื่อ–นามสกุล <span aria-hidden="true">*</span><input id="f-name" required maxlength="100" placeholder="ชื่อที่อยากให้ทุกคนรู้จัก" autocomplete="name"></label>
+<label>ตำแหน่ง / บทบาท<input id="f-role" maxlength="300" placeholder="เช่น นักศึกษา / Project Manager"></label>
+<label>หน่วยงาน / องค์กร<input id="f-department" maxlength="300" placeholder="เช่น ทีมผลิตภัณฑ์"></label>
+<label>จังหวัด / ประเทศ<input id="f-location" maxlength="300" placeholder="เช่น กรุงเทพมหานคร"></label>
+<label class="full">MBTI <span class="opt">(ไม่บังคับ)</span><select id="f-mbti" onchange="previewMbti()"></select><span id="mbtiPreview" class="mbti-preview"></span><span class="field-help">สีที่ใช้ในแพลตฟอร์ม: NT ม่วง · NF เขียว · SJ น้ำเงิน · SP ทอง</span></label>
+<label class="full">แนะนำตัวและพื้นฐานของคุณ<textarea id="f-bio" maxlength="4000" placeholder="เล่าให้ฟังว่าคุณเป็นใคร ถนัดอะไร และอะไรที่ทำให้คุณสนุกกับงาน"></textarea></label>
+</div>
+</div>
+
+<div class="panel step" data-step="1" hidden>
+<div class="panel-head"><h2>สร้างแผนที่ทักษะของคุณ</h2></div>
+<p class="hint">ประเมินตนเอง: 1 เริ่มต้น · 2 พื้นฐาน · 3 ทำได้ด้วยตนเอง · 4 ชำนาญ · 5 ถ่ายทอดให้ผู้อื่นได้</p>
+<div class="cat-tabs" id="catTabs" role="tablist" aria-label="หมวดทักษะ">
+<button type="button" class="cat-tab" role="tab" data-cat="soft"><strong><span class="dot soft"></span>Soft skills</strong><small>ทักษะการทำงานร่วมกับคน</small></button>
+<button type="button" class="cat-tab" role="tab" data-cat="core"><strong><span class="dot core"></span>Core skills</strong><small>ทักษะหลักในการทำงาน</small></button>
+<button type="button" class="cat-tab" role="tab" data-cat="technical"><strong><span class="dot technical"></span>Technical skills</strong><small>ทักษะเฉพาะทาง</small></button>
+</div>
+<div class="picker-filters">
+<select id="skillGroup" aria-label="หมวดย่อยทักษะ" onchange="renderSuggestions()"></select>
+<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="skillSearch" type="search" placeholder="ค้นหาตัวอย่างทักษะ…" aria-label="ค้นหาทักษะแนะนำ" oninput="renderSuggestions()" onkeydown="if(event.key==='Enter')event.preventDefault()"></div>
+</div>
+<div id="suggestions" class="suggestions" aria-label="ทักษะแนะนำ (กดเพื่อเลือกหรือยกเลิก)"></div>
+<div class="add-row"><input id="customSkill" maxlength="80" aria-label="ทักษะเพิ่มเติม" placeholder="ไม่พบสิ่งที่ถนัด? พิมพ์ทักษะของคุณแล้วกด Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustom()}"><button type="button" onclick="addCustom()">＋ เพิ่มทักษะ</button></div>
+<div class="selected-head"><h3>ทักษะที่เลือก</h3><small id="skillCount"></small></div>
+<div id="selectedSkills"></div>
+</div>
+
+<div class="panel step" data-step="2" hidden>
+<div class="panel-head"><h2>เส้นทางที่ทำให้คุณเป็นคุณ</h2></div>
+<div class="formgrid">
+<label class="full">ประวัติการศึกษา<textarea id="f-education" maxlength="4000" placeholder="วุฒิ / สาขา · สถาบัน · ปีที่จบ&#10;เพิ่มได้หลายรายการ แยกแต่ละรายการด้วยบรรทัดใหม่"></textarea></label>
+<label class="full">ประสบการณ์ / โครงการ / งานอาสา / ประกาศนียบัตร<textarea id="f-experience" maxlength="4000" placeholder="บทบาท · องค์กร · ช่วงเวลา&#10;สิ่งที่ทำ ผลลัพธ์ และทักษะที่ได้ใช้"></textarea></label>
+<label>ความสนใจ<textarea id="f-interests" maxlength="4000" placeholder="เช่น สิ่งแวดล้อม ดนตรี AI การศึกษา"></textarea></label>
+<label>เป้าหมายการพัฒนา<textarea id="f-goals" maxlength="4000" placeholder="ทักษะที่อยากพัฒนา และสิ่งที่อยากลองทำ"></textarea></label>
+<div class="callout full"><label class="visibility-control"><input type="checkbox" role="switch" id="f-isPublic"><span class="switch-track" aria-hidden="true"></span><span>เปิดเผยโปรไฟล์ในหน้าสำรวจ</span></label><span>เมื่อเปิด ทุกคนที่เข้าถึงเว็บแอปจะอ่านข้อมูลทั้งหมดในโปรไฟล์นี้ได้ หากไม่เปิด จะดูได้เฉพาะผู้มีลิงก์แก้ไขและผู้ดูแล</span></div>
+</div>
+</div>
+
+<div class="form-actions">
+<button type="button" class="ghost cancel" onclick="cancelEdit()">ยกเลิก</button>
+<span class="spacer"></span>
+<button type="button" id="prev" onclick="stepTo(step-1)">← ย้อนกลับ</button>
+<button type="button" class="primary" id="next" onclick="stepTo(step+1)">ถัดไป →</button>
+<button type="submit" class="primary" id="saveBtn" hidden>บันทึกโปรไฟล์</button>
+</div>
+</form>
+</section>
+
+<section id="profile" hidden></section>
+<section id="users" hidden>
+<div class="page-head"><div><p class="eyebrow">ผู้ดูแลระบบ</p><h1>จัดการผู้ใช้</h1><p class="lead">ตรวจสถานะบัญชี ล็อกหรือปลดล็อก แก้ไขข้อมูล และดูประวัติการเข้าใช้งาน</p></div><button type="button" class="ghost btn-sm" onclick="loadUsers(true)">↻ อัปเดตข้อมูล</button></div>
+<div class="stats" id="userStats"></div>
+<div class="toolbar" style="margin-top:28px"><div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="userSearch" type="search" aria-label="ค้นหาผู้ใช้" placeholder="ค้นหาชื่อหรืออีเมล…" oninput="renderUsers()"></div>
+<div class="chips" id="userChips" role="group" aria-label="กรองสถานะ"><button type="button" class="chip active" data-f="" aria-pressed="true">ทั้งหมด</button><button type="button" class="chip" data-f="active" aria-pressed="false">ใช้งานอยู่</button><button type="button" class="chip" data-f="locked" aria-pressed="false">ถูกล็อก</button><button type="button" class="chip" data-f="noprofile" aria-pressed="false">ยังไม่มีโปรไฟล์</button></div></div>
+<p id="userCount" class="count" aria-live="polite"></p>
+<div class="table-scroll"><table class="team-table user-table"><thead><tr><th scope="col">ผู้ใช้</th><th scope="col">สถานะ</th><th scope="col">โปรไฟล์</th><th scope="col">ใช้งานล่าสุด</th><th scope="col">สมัครเมื่อ</th><th scope="col">อุปกรณ์</th></tr></thead><tbody id="userRows"></tbody></table></div>
+</section>
+<section id="logs" hidden>
+<div class="page-head"><div><p class="eyebrow">ผู้ดูแลระบบ</p><h1>บันทึกการใช้งาน</h1><p class="lead">ประวัติการเข้าสู่ระบบ การใช้งาน และการดำเนินการของผู้ดูแล</p></div><button type="button" class="ghost btn-sm" onclick="loadLogs(true)">↻ อัปเดตข้อมูล</button></div>
+<div class="toolbar" style="margin-top:8px"><div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="logSearch" type="search" aria-label="ค้นหาบันทึก" placeholder="ค้นหาชื่อ อีเมล หรือรายละเอียด…" oninput="queueLogs()"></div>
+<select id="logEvent" aria-label="ประเภทเหตุการณ์" style="width:auto;margin:0" onchange="loadLogs(true)"><option value="">ทุกเหตุการณ์</option><option value="fail">เฉพาะที่ไม่สำเร็จ</option><option value="login">เข้าสู่ระบบ</option><option value="visit">เปิดใช้งานแอป</option><option value="register">สมัครสมาชิกใหม่</option><option value="admin">การดำเนินการของผู้ดูแล</option></select></div>
+<p class="filter-pill" id="logUserFilter" hidden>เฉพาะผู้ใช้: <strong id="logUserName" data-user></strong> <button type="button" class="link" onclick="clearLogUser()">ล้าง</button></p>
+<p id="logCount" class="count" aria-live="polite"></p>
+<div class="table-scroll"><table class="team-table log-table"><thead><tr><th scope="col">เวลา</th><th scope="col">เหตุการณ์</th><th scope="col">ผู้ใช้</th><th scope="col">รายละเอียด</th></tr></thead><tbody id="logRows"></tbody></table></div>
+<button id="moreLogs" type="button" onclick="loadLogs(false)" hidden style="display:block;margin:20px auto 0">โหลดเพิ่ม</button>
+</section>
+<dialog id="userDialog" class="user-dialog" aria-label="ผู้ใช้"><button type="button" class="icon-btn dialog-close" onclick="$('userDialog').close()" aria-label="ปิด">×</button><div id="userBody"></div></dialog>
+
+</main>
+<footer>Skillfolio · พื้นที่สำหรับทุกทักษะและทุกความเป็นไปได้<br><span class="powered">Powered by HITAP Data Team</span><br>ระดับทักษะเป็นการประเมินตนเอง ไม่ใช่ผลการรับรองความสามารถ</footer>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<dialog id="linkDialog" aria-labelledby="linkDialogTitle">
+<h2 id="linkDialogTitle">เก็บลิงก์แก้ไขโปรไฟล์ของคุณ</h2>
+<p>ลิงก์นี้ให้สิทธิ์แก้ไขและลบโปรไฟล์ อย่าแชร์ให้ผู้อื่น สำหรับแชร์ทั่วไป ให้ใช้ปุ่ม “ลิงก์โปรไฟล์”</p>
+<input id="privateLink" readonly aria-label="ลิงก์แก้ไขส่วนตัว" onfocus="this.select()">
+<div class="dialog-actions"><button type="button" onclick="copyText($('privateLink').value)">คัดลอก</button><button type="button" class="primary" onclick="$('linkDialog').close()">เก็บแล้ว</button></div>
+</dialog>
+<script>
+const INITIAL_ID = String(new URLSearchParams(location.search).get('id')||'').replace(/[^a-zA-Z0-9-]/g,'');
+let EMAIL_DOMAINS = []; // loaded from getConfig when the page opens
+let DOMAIN_MSG = EMAIL_DOMAINS.length ? 'ใช้ได้เฉพาะอีเมล '+EMAIL_DOMAINS.map(d=>'@'+d).join(', ')+' เท่านั้น' : '';
+function domainAllowed(email){return !EMAIL_DOMAINS.length||EMAIL_DOMAINS.includes(String(email).toLowerCase().split('@').pop())}
+const ADMIN = document.body.dataset.admin === 'true';
+
+/* ===================== helpers ===================== */
+const $ = id => document.getElementById(id);
+const esc = x => String(x ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function storageGet(k){try{return localStorage.getItem(k)||''}catch(e){return ''}}
+function storageSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function firstGrapheme(s){s=String(s||'').trim();if(!s)return '?';try{if(typeof Intl.Segmenter==='function'){for(const g of new Intl.Segmenter('th',{granularity:'grapheme'}).segment(s)){if(/[\u0E40-\u0E44]/.test(g.segment))continue;return g.segment.toUpperCase()}}}catch(e){}return s.charAt(0).toUpperCase()}
+let noticeTimer;
+function toast(s){const n=$('notice');n.textContent=T(s);n.hidden=false;clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>n.hidden=true,5000)}
+function error(e){const msg=String(e&&e.message||e||'').replace(/^(Exception|Error):\s*/,'');toast(msg)}
+
+/* ===================== i18n ===================== */
+let lang = storageGet('skillfolio-language')==='en'?'en':'th';
+const TRANSLATIONS={
+'สำรวจโปรไฟล์':'Explore profiles','＋ สร้างโปรไฟล์':'＋ Create profile','โปรไฟล์ของฉัน':'My profile','ผู้ดูแล':'Admin','ออกจากระบบ':'Sign out','⌂ โฮม':'⌂ Home','ทุกคนมีทักษะที่โดดเด่น':'Everyone has a strength','ค้นพบความเป็นคุณ':'Discover yours','รวมทักษะ ประสบการณ์ และความสนใจไว้ในโปรไฟล์เดียว':'Your skills, experience and interests in one place','มองเห็นจุดแข็ง และก้าวต่อไปที่อยากเติบโต':'See your strengths and your next step forward','สร้าง Skill Profile ของคุณ ↗':'Create your skill profile ↗','ค้นพบผู้คนและทักษะ':'Discover people and skills','ทุกหมวดทักษะ':'All skill categories','ค้นหาชื่อ ทักษะ ความสนใจ หรือหน่วยงาน…':'Search names, skills, interests or departments…','ดู Skill Profile ↗':'View skill profile ↗','โปรไฟล์ที่เปิดเผย':'Public profiles','โปรไฟล์ทั้งหมด':'All profiles','ทักษะที่หลากหลาย':'Distinct skills','คนที่เพิ่มทักษะแล้ว':'People with skills','หมวดทักษะหลัก':'Skill categories','ยังไม่ระบุบทบาท':'Role not specified','ยังไม่พบโปรไฟล์':'No profiles found','ลองเปลี่ยนคำค้น หรือเริ่มสร้างโปรไฟล์ของคุณ':'Try another search or create your profile','กำลังโหลดข้อมูล…':'Loading…','กำลังเปิดโปรไฟล์…':'Opening profile…','กำลังอัปเดต…':'Refreshing…','อัปเดตข้อมูล':'Refresh data','แสดงเพิ่ม':'Show more','ลองอีกครั้ง':'Try again','ไม่สามารถโหลดข้อมูลได้':'Could not load data','เริ่มต้นจากเรื่องราวของคุณ':'Start with your story','เติมเต็มเรื่องราวของคุณ':'Complete your story','เลือกทักษะที่ใช่ พร้อมบอกสิ่งที่อยากเรียนรู้เพิ่มเติม':'Choose your skills and what you want to learn next','01 ข้อมูลส่วนตัว':'01 About you','02 ทักษะของคุณ':'02 Your skills','03 เส้นทางและความสนใจ':'03 Background & interests','ยินดีที่ได้รู้จัก':'Nice to meet you','ชื่อ–นามสกุล *':'Full name *','ชื่อที่อยากให้ทุกคนรู้จัก':'The name you go by','ตำแหน่ง / บทบาท':'Position / role','เช่น นักศึกษา / Project Manager':'e.g. Student / Project Manager','หน่วยงาน / องค์กร':'Department / organization','เช่น ทีมผลิตภัณฑ์':'e.g. Product team','จังหวัด / ประเทศ':'City / country','เช่น กรุงเทพมหานคร':'e.g. Bangkok','เลือกได้ตามผลที่คุณทราบ':'Choose your known result','ยังไม่ทราบ / ไม่ระบุ':'Unknown / not specified','ไม่ระบุได้ · ใช้สีพื้นฐานของแพลตฟอร์ม':'Optional · Uses the default profile color','สีที่ใช้ในแพลตฟอร์ม: NT ม่วง · NF เขียว · SJ น้ำเงิน · SP ทอง':'Profile colors: NT purple · NF green · SJ blue · SP gold','แนะนำตัวและพื้นฐานของคุณ':'About you and your background','เล่าให้ฟังว่าคุณเป็นใคร ถนัดอะไร และอะไรที่ทำให้คุณสนุกกับงาน':'Tell us about yourself, your strengths and what you enjoy','สร้างแผนที่ทักษะของคุณ':'Build your skill map','ประเมินตนเอง: 1 เริ่มต้น · 2 พื้นฐาน · 3 ทำได้ด้วยตนเอง · 4 ชำนาญ · 5 ถ่ายทอดให้ผู้อื่นได้':'Self-assessment: 1 Beginner · 2 Basic · 3 Independent · 4 Advanced · 5 Able to teach','Soft skills · ทักษะการทำงานร่วมกับคน':'Soft skills · Working with people','Core skills · ทักษะหลักในการทำงาน':'Core skills · Professional foundations','Technical skills · ทักษะเฉพาะทาง':'Technical skills · Specialist expertise','ทุกหมวดย่อย · จัดหมวดอัตโนมัติ':'All subcategories · Auto-group','ค้นหาตัวอย่างทักษะ…':'Search suggested skills…','ไม่พบสิ่งที่ถนัด? เพิ่มทักษะของคุณเอง':'Missing a skill? Add your own','＋ เพิ่มทักษะ':'＋ Add skill','เลือกทักษะจากตัวอย่างด้านบน แล้วปรับระดับให้ตรงกับตัวคุณ':'Choose skills above and set your own level','เพิ่มทักษะที่ต้องการในช่องด้านล่างได้เลย':'Add your skill in the field below','เส้นทางที่ทำให้คุณเป็นคุณ':'Your journey so far','ประวัติการศึกษา':'Education','ประสบการณ์ / โครงการ / งานอาสา / ประกาศนียบัตร':'Experience / projects / volunteering / certificates','ความสนใจ':'Interests','เป้าหมายการพัฒนา':'Development goals','เปิดเผยโปรไฟล์ในหน้าสำรวจ':'Publish profile in the directory','เมื่อเปิด ทุกคนที่เข้าถึงเว็บแอปจะอ่านข้อมูลทั้งหมดในโปรไฟล์นี้ได้ หากไม่เปิด จะดูได้เฉพาะผู้มีลิงก์แก้ไขและผู้ดูแล':'When enabled, everyone with access to this app can read your full profile. Otherwise, only edit-link holders and admins can view it.','ยกเลิก':'Cancel','← ย้อนกลับ':'← Back','ถัดไป →':'Next →','บันทึกโปรไฟล์':'Save profile','← หน้าสำรวจ':'← Directory','แก้ไขข้อมูล':'Edit profile','ลิงก์แก้ไขส่วนตัว':'Private edit link','ลบโปรไฟล์':'Delete profile','ลิงก์โปรไฟล์':'Profile link','↓ บันทึกเป็น PDF':'↓ Save as PDF','โปรไฟล์สาธารณะ':'Public profile','เปิด':'On','ปิด':'Off','เปิด: ทุกคนที่เข้าถึงเว็บแอปเห็นข้อมูลทั้งหมด · ปิด: เฉพาะผู้มีลิงก์แก้ไขและแอดมิน':'On: Everyone with app access sees the full profile. Off: Edit-link holders and admins only.','ยังไม่ได้เพิ่มคำแนะนำตัว':'No introduction yet','แผนที่ทักษะรายหมวดย่อย':'Skill map by subcategory','สิ่งที่สนใจ':'Interests','ก้าวต่อไปของฉัน':'My next steps','ทักษะทั้งหมด':'All skills','ประสบการณ์':'Experience','ยังไม่ได้ระบุ':'Not specified','อยากพัฒนา':'Want to develop','กลุ่มที่':'Group','เพิ่มทักษะอย่างน้อย 3 หมวดย่อยเพื่อแสดงกราฟเรดาร์':'Add skills in at least 3 subcategories to show a radar chart','แต่ละแกนคือค่าเฉลี่ยทักษะในหมวดย่อยนั้น (1–5) แสดงเฉพาะหมวดที่มีข้อมูล แบ่งกราฟละไม่เกิน 6 แกนเมื่อมีหลายหมวด · ใช้สำรวจตนเอง ไม่ใช้จัดอันดับบุคคล':'Each axis averages skills within one subcategory (1–5). Only populated categories appear, with up to 6 axes per chart. For self-reflection, not ranking people.','เริ่มต้น':'Beginner','พื้นฐาน':'Basic','ทำได้เอง':'Independent','ชำนาญ':'Advanced','ถ่ายทอดได้':'Able to teach','นักวิเคราะห์':'Analyst','นักการทูต':'Diplomat','ผู้พิทักษ์':'Sentinel','นักสำรวจ':'Explorer','การทำงานร่วมกับผู้อื่น':'Collaboration','การคิดและการปรับตัว':'Thinking & adaptability','ภาวะผู้นำ':'Leadership','การจัดการตนเอง':'Self-management','ทักษะด้านบุคคลอื่น ๆ':'Other soft skills','กลยุทธ์และการจัดการ':'Strategy & management','การวิจัย':'Research','ธุรกิจและลูกค้า':'Business & customers','กระบวนการและคุณภาพ':'Process & quality','สุขภาพและสาธารณสุข':'Public health','ความเชี่ยวชาญหลักอื่น ๆ':'Other core skills','การเขียนโปรแกรม':'Programming','ข้อมูลและฐานข้อมูล':'Data & databases','AI และ Machine Learning':'AI & machine learning','ชีวสารสนเทศ':'Bioinformatics','ออกแบบและสื่อ':'Design & media','ระบบและวิศวกรรม':'Systems & engineering','การเงินและปฏิบัติการ':'Finance & operations','ภาษาและการศึกษา':'Languages & education','สุขภาพและงานวิชาชีพ':'Health & vocational skills','ทักษะเฉพาะทางอื่น ๆ':'Other technical skills','เข้าสู่หน้าแอดมิน':'Admin sign-in','กรอกรหัสผ่านเพื่อจัดการโปรไฟล์และดูภาพรวมทักษะ':'Enter the password to manage profiles and explore team skills','รหัสผ่าน':'Password','เข้าสู่ระบบ →':'Sign in →','รหัสผ่านไม่ถูกต้อง':'Incorrect password','ภาพรวมผู้คน':'Your people','และศักยภาพของทีม':'and team capabilities','ภาพรวมศักยภาพของทีม':'Team capability dashboard','ทุกหน่วยงาน':'All departments','หน่วยงานที่วิเคราะห์':'Analyze department','คนในกลุ่มที่เลือก':'people in this group','สมาชิก':'Members','มีข้อมูลทักษะ':'Have skill data','ทักษะเฉลี่ยต่อคน':'Average skills per person','สาธารณะ / ส่วนตัว':'Public / private','ระดับทักษะตามหมวดหลัก':'Skill levels by category','ค่าเฉลี่ยรายคน เฉพาะผู้ที่ระบุทักษะในหมวดนั้น':'Average of individual averages, among people with data in that category','คนที่ให้ข้อมูล':'people assessed','การกระจายระดับทักษะ':'Skill level distribution','นับรายการทักษะที่ประเมิน ไม่ใช่จำนวนคน':'Counts skill assessments, not people','ระดับ':'Level','จุดแข็งร่วมของทีม':'Shared team strengths','จำนวนผู้ประเมินระดับ 4–5':'People self-assessing at levels 4–5','ความต้องการพัฒนา':'Learning demand','จำนวนผู้เลือกอยากพัฒนาในแต่ละทักษะ':'People who want to develop each skill','ทักษะที่มีผู้ชำนาญเพียง 1–2 คน':'Skills with only 1–2 advanced people','ใช้วางแผนถ่ายทอดความรู้ ไม่ใช่ข้อสรุปว่าทีมขาดทักษะ':'Plan knowledge sharing; this does not establish a team skill gap','ความครอบคลุมทักษะของทีม':'Team skill coverage','แสดงทุกทักษะในกลุ่มที่เลือก ไม่มีคะแนนหมายถึงยังไม่มีข้อมูล':'All skills in the selected group. Missing scores mean no data','ทักษะ':'Skill','คนที่ระบุ':'People assessed','สัดส่วนทีม':'Team coverage','ระดับเฉลี่ย':'Average level','ชำนาญ 4–5':'Advanced 4–5','ข้อมูลประเมินตนเอง ใช้สนทนาเรื่องการพัฒนาและการแบ่งปันความรู้ ไม่ใช้จัดอันดับบุคคล':'Self-reported data for development and knowledge sharing, not ranking people','คน':'people','ยังไม่มีข้อมูล':'No data yet','เก็บลิงก์แก้ไขโปรไฟล์ของคุณ':'Keep your private edit link','ลิงก์นี้ให้สิทธิ์แก้ไขและลบโปรไฟล์ อย่าแชร์ให้ผู้อื่น สำหรับแชร์ทั่วไป ให้ใช้ปุ่ม “ลิงก์โปรไฟล์”':'This link allows editing and deletion. Keep it private. Use “Profile link” for public sharing.','คัดลอก':'Copy','เก็บแล้ว':'Done','คัดลอกลิงก์แล้ว':'Link copied','บันทึกโปรไฟล์เรียบร้อยแล้ว':'Profile saved','เปิดโปรไฟล์สาธารณะแล้ว':'Profile is now public','ปิดโปรไฟล์สาธารณะแล้ว':'Profile is now private','ลบโปรไฟล์แล้ว':'Profile deleted','กรุณากรอกชื่อก่อนดำเนินการต่อ':'Please enter your name first','มีทักษะนี้แล้ว':'This skill is already selected','เพิ่มได้สูงสุด 90 ทักษะ':'You can add up to 90 skills','ลบโปรไฟล์นี้ถาวร? ไม่สามารถกู้คืนผ่านแอปได้':'Permanently delete this profile? This cannot be undone in the app.','ระดับทักษะเป็นการประเมินตนเอง ไม่ใช่ผลการรับรองความสามารถ':'Skill levels are self-assessed, not certified','Skillfolio · พื้นที่สำหรับทุกทักษะและทุกความเป็นไปได้':'Skillfolio · A space for every skill and possibility','โปรไฟล์นี้ยังไม่เปิดเผย หรือคุณไม่มีสิทธิ์เข้าถึง':'This profile is private or you do not have access','ไม่พบโปรไฟล์':'Profile not found','ไม่มีสิทธิ์เปลี่ยนสถานะโปรไฟล์':'You cannot change this profile’s visibility','ADMIN_SESSION_EXPIRED: กรุณาใส่รหัสผ่านอีกครั้ง':'ADMIN_SESSION_EXPIRED: Please sign in again','ยังไม่มีโปรไฟล์ในอุปกรณ์นี้ กรุณาสร้างโปรไฟล์ หรือเปิดลิงก์แก้ไขที่เก็บไว้':'No profile saved on this device. Create one or open your private edit link.',
+'วุฒิ / สาขา · สถาบัน · ปีที่จบ\nเพิ่มได้หลายรายการ แยกแต่ละรายการด้วยบรรทัดใหม่':'Degree / major · Institution · Year\nUse a new line for each entry','บทบาท · องค์กร · ช่วงเวลา\nสิ่งที่ทำ ผลลัพธ์ และทักษะที่ได้ใช้':'Role · Organization · Dates\nResponsibilities, outcomes and skills used','เช่น สิ่งแวดล้อม ดนตรี AI การศึกษา':'e.g. Environment, music, AI, education','ทักษะที่อยากพัฒนา และสิ่งที่อยากลองทำ':'Skills to develop and things you want to try'
+};
+Object.assign(TRANSLATIONS,{"การสื่อสาร": "Communication", "การฟังอย่างตั้งใจ": "Active listening", "การทำงานเป็นทีม": "Teamwork", "ความเข้าอกเข้าใจ": "Empathy", "การเจรจาต่อรอง": "Negotiation", "การนำเสนอ": "Presentation", "การให้และรับ Feedback": "Giving and receiving feedback", "การแก้ไขความขัดแย้ง": "Conflict resolution", "การปรับตัว": "Adaptability", "ความคิดสร้างสรรค์": "Creativity", "การคิดเชิงวิพากษ์": "Critical thinking", "การจัดการอารมณ์": "Emotional regulation", "ความยืดหยุ่นทางใจ": "Resilience", "การทำงานข้ามวัฒนธรรม": "Cross-cultural collaboration", "การสร้างเครือข่าย": "Networking", "การสอนและโค้ช": "Teaching and coaching", "การบริหารเวลา": "Time management", "การแก้ปัญหา": "Problem solving", "การแก้ปัญหา (Problem solving)": "Problem solving", "การวางแผนกลยุทธ์": "Strategic planning", "การบริหารโครงการ": "Project management", "การตัดสินใจ": "Decision making", "การวิเคราะห์ข้อมูล": "Data analysis", "การคิดเชิงระบบ": "Systems thinking", "การจัดการความรู้": "Knowledge management", "การบริหารความเสี่ยง": "Risk management", "การจัดการงบประมาณ": "Budget management", "การบริการลูกค้า": "Customer service", "การขาย": "Sales", "การตลาด": "Marketing", "การบริหารบุคลากร": "People management", "การปรับปรุงกระบวนการ": "Process improvement", "การเป็นผู้ประกอบการ": "Entrepreneurship", "จริยธรรมในการทำงาน": "Work ethics", "ความยั่งยืน": "Sustainability", "การจัดซื้อ": "Procurement", "การควบคุมคุณภาพ": "Quality control", "การพัฒนาเว็บไซต์": "Web development", "การตัดต่อวิดีโอ": "Video editing", "การถ่ายภาพ": "Photography", "วิศวกรรมเครื่องกล": "Mechanical engineering", "งานไฟฟ้า": "Electrical work", "บัญชีและภาษี": "Accounting and tax", "การวิเคราะห์การเงิน": "Financial analysis", "การเขียนเชิงวิชาการ": "Academic writing", "ภาษาอังกฤษ": "English", "ภาษาจีน": "Chinese", "การแปลภาษา": "Translation", "การสอนและออกแบบหลักสูตร": "Teaching and curriculum design", "การดูแลผู้ป่วย": "Patient care", "เทคนิคห้องปฏิบัติการ": "Laboratory techniques", "การเกษตร": "Agriculture", "การประกอบอาหาร": "Culinary skills", "การจัดการโลจิสติกส์": "Logistics management", "การผลิตและซ่อมบำรุง": "Production and maintenance", "เปิดเผย": "Public", "ส่วนตัว": "Private", "เช่น สิ่งแวดล้อม ดนตรี AI การศึกษา": "e.g. Environment, music, AI, education", "ยังไม่ได้ระบุทักษะ": "No skills specified", "กรุณากรอกชื่อ": "Please enter your name", "ข้อมูลไม่ถูกต้อง": "Invalid data", "กรุณาเลือก MBTI ที่ถูกต้อง": "Please select a valid MBTI type", "กรุณาตรวจสอบชื่อ หมวด และระดับทักษะ 1–5": "Check skill names, categories and levels (1–5)", "คุณไม่มีสิทธิ์แก้ไขโปรไฟล์นี้": "You cannot edit this profile", "ไม่มีสิทธิ์ลบ": "You cannot delete this profile", "คัดลอกลิงก์นี้": "Copy this link", "กรุณาเข้าสู่หน้าแอดมินด้วยรหัสผ่าน": "Please sign in with the admin password", "ไม่พบโปรไฟล์ที่ต้องการแก้ไข": "The profile to edit was not found", "เซสชันเปลี่ยนแล้ว กรุณาเข้าสู่ระบบอีกครั้ง": "Session changed. Please sign in again.", "ค้นหาโปรไฟล์": "Search profiles", "กรองหมวดทักษะ": "Filter skills", "หมวดย่อยทักษะ": "Skill subcategory", "ทักษะเพิ่มเติม": "Custom skill", "ค้นหาทักษะแนะนำ": "Search suggested skills", "ข้อมูลล่าสุดอาจใช้เวลาจาก Google Sheets": "Google Sheets may take a moment to return the latest data"});
+Object.assign(TRANSLATIONS,{
+'ข้ามไปยังเนื้อหา':'Skip to content','สร้างโปรไฟล์':'Create profile','สร้างโปรไฟล์ของคุณ':'Create your profile','เปิดโปรไฟล์ของฉัน':'Open my profile','หน้าผู้ใช้':'User site','↻ อัปเดตข้อมูล':'↻ Refresh','ทั้งหมด':'All',
+'รวมทักษะ ประสบการณ์ และความสนใจไว้ในโปรไฟล์เดียว มองเห็นจุดแข็ง และก้าวต่อไปที่อยากเติบโต':'Your skills, experience and interests in one place — see your strengths and your next step forward.',
+'จัดการโปรไฟล์ ดูภาพรวมทักษะของทีม และวางแผนการแบ่งปันความรู้':'Manage profiles, see your team’s skills at a glance and plan knowledge sharing.',
+'ทักษะที่อยากพัฒนา':'Skills to develop','ข้อมูลส่วนตัว':'About you','ทักษะของคุณ':'Your skills','เส้นทางและความสนใจ':'Background & interests','(ไม่บังคับ)':'(optional)',
+'หมวดทักษะ':'Skill category','ทักษะการทำงานร่วมกับคน':'Working with people','ทักษะหลักในการทำงาน':'Professional foundations','ทักษะเฉพาะทาง':'Specialist expertise',
+'ทักษะแนะนำ (กดเพื่อเลือกหรือยกเลิก)':'Suggested skills (tap to add or remove)','ไม่พบสิ่งที่ถนัด? พิมพ์ทักษะของคุณแล้วกด Enter':'Missing a skill? Type it and press Enter',
+'ทักษะที่เลือก':'Selected skills','ยังไม่ได้เลือกทักษะ':'No skills selected yet','หมวดย่อย':'Subcategory','ลบทักษะ':'Remove skill','ระดับทักษะ':'Skill level',
+'ทุกหมวดย่อย':'All subcategories','ทำได้ด้วยตนเอง':'Independent',
+'ออกจากหน้านี้โดยไม่บันทึก? การแก้ไขที่ยังไม่บันทึกจะหายไป':'Leave without saving? Your unsaved changes will be lost.',
+'กำลังบันทึก…':'Saving…','แผนที่ทักษะ':'Skill map','หมวดย่อย ':'subcategories ',
+'แต่ละแกนคือค่าเฉลี่ยของทักษะในหมวดย่อยนั้น (1–5) จัดเรียงตามหมวดหลักและแยกสีตามหมวด · ใช้สำรวจตนเอง ไม่ใช้จัดอันดับบุคคล':'Each axis is the average level of skills in one subcategory (1–5), ordered and colored by main category. For self-reflection, not ranking people.',
+'เพิ่มทักษะอย่างน้อย 3 หมวดย่อยเพื่อแสดงกราฟเรดาร์':'Add skills in at least 3 subcategories to show the radar chart',
+'ยังไม่ได้ระบุทักษะ':'No skills specified','เฉลี่ย':'avg','ดูโปรไฟล์':'View profile','ส่วนตัว':'Private','เปิดเผย':'Public',
+'โปรไฟล์สาธารณะ':'Public profile','ยังไม่ได้ตั้งรหัสผ่านแอดมิน: เพิ่ม Script Property ชื่อ ADMIN_PASSWORD ใน Project Settings':'Admin password not set: add a Script Property named ADMIN_PASSWORD in Project Settings',
+'ล้างตัวกรอง':'Clear filters','เข้าสู่ระบบไม่สำเร็จ':'Sign-in failed','ออกจากหน้านี้แล้ว แต่ไม่สามารถยกเลิกเซสชันบนเซิร์ฟเวอร์ได้':'Signed out here, but the server session could not be cleared',
+'หน้านี้ต้องเปิดผ่าน Google Apps Script Web App':'Open this page through the Google Apps Script web app','ยกเลิกการเลือก':'Remove','เลือกแล้ว':'Selected',
+'ลิงก์แก้ไขส่วนตัว':'Private edit link','ผู้ใช้':'Users','อีเมลนอกโดเมน':'Outside allowed domain','บันทึกการใช้งาน':'Access log','จัดการผู้ใช้':'Manage users','ตรวจสถานะบัญชี ล็อกหรือปลดล็อก แก้ไขข้อมูล และดูประวัติการเข้าใช้งาน':'Check account status, lock or unlock, edit details and review sign-in history.',
+'ผู้ใช้ทั้งหมด':'All users','ใช้งานใน 7 วัน':'Active in 7 days','ถูกล็อก':'Locked','ยังไม่มีโปรไฟล์':'No profile yet','ใช้งานได้':'Active','ล็อกชั่วคราว (รหัสผิด)':'Temporarily locked (wrong password)','ใช้งานอยู่':'Active',
+'ค้นหาชื่อหรืออีเมล…':'Search name or email…','สถานะ':'Status','โปรไฟล์':'Profile','ใช้งานล่าสุด':'Last active','สมัครเมื่อ':'Joined','อุปกรณ์':'Devices','เข้าสู่ระบบล่าสุด':'Last sign-in','อุปกรณ์ที่เข้าสู่ระบบอยู่':'Signed-in devices','ใส่รหัสผิดติดกัน':'Failed attempts',
+'ข้อมูลบัญชี':'Account details','บันทึกข้อมูลบัญชี':'Save account details','ความปลอดภัย':'Security','ล็อกบัญชี':'Lock account','ปลดล็อกบัญชี':'Unlock account','ปลดล็อก':'Unlock','ผู้ใช้จะกลับมาเข้าสู่ระบบได้ตามปกติ':'The user can sign in again.',
+'ผู้ใช้จะเข้าสู่ระบบไม่ได้ และถูกออกจากระบบทุกอุปกรณ์ทันที โปรไฟล์ยังอยู่':'The user can’t sign in and is signed out everywhere. Their profile stays.','ล้างการล็อกชั่วคราว':'Clear temporary lock','ใส่รหัสผิด 5 ครั้ง ระบบล็อกไว้ 10 นาที':'5 wrong passwords — locked for 10 minutes','ล้างการล็อก':'Clear lock',
+'บังคับออกจากระบบทุกอุปกรณ์':'Sign out of all devices','ออกจากระบบทั้งหมด':'Sign out everywhere','ตั้งรหัสผ่านใหม่ให้ผู้ใช้':'Set a new password','แจ้งรหัสใหม่ให้ผู้ใช้เอง ระบบไม่ส่งอีเมล · ผู้ใช้จะถูกออกจากระบบทุกอุปกรณ์':'Tell the user the new password yourself — no email is sent. They’ll be signed out everywhere.','ตั้งรหัสผ่าน':'Set password',
+'กิจกรรมล่าสุด':'Recent activity','ดูทั้งหมด →':'View all →','ยังไม่มีกิจกรรม':'No activity yet','ลบบัญชี':'Delete account','ลบบัญชีถาวร ผู้ใช้จะเข้าสู่ระบบไม่ได้อีก':'Permanently delete this account. The user won’t be able to sign in.','ลบโปรไฟล์ของผู้ใช้นี้ด้วย':'Also delete this user’s profile',
+'(ถ้าไม่เลือก โปรไฟล์จะยังอยู่ แต่ไม่ผูกกับบัญชีใด)':'(otherwise the profile stays, unlinked)','ลบบัญชีนี้':'Delete this account','ดูโปรไฟล์':'View profile','แก้ไขโปรไฟล์':'Edit profile','บันทึกข้อมูลบัญชีแล้ว':'Account details saved','ล็อกบัญชีแล้ว':'Account locked','ปลดล็อกบัญชีแล้ว':'Account unlocked',
+'ล้างการล็อกชั่วคราวแล้ว':'Temporary lock cleared','บังคับออกจากระบบแล้ว':'Signed out everywhere','ตั้งรหัสผ่านใหม่แล้ว แจ้งรหัสให้ผู้ใช้ทราบ':'Password set. Let the user know.','ลบบัญชีแล้ว':'Account deleted','ไม่พบผู้ใช้ที่ตรงกับตัวกรอง':'No users match the filters','ยังไม่มีผู้ใช้สมัครสมาชิก':'No one has signed up yet',
+'ประวัติการเข้าสู่ระบบ การใช้งาน และการดำเนินการของผู้ดูแล':'Sign-ins, app usage and admin actions','ทุกเหตุการณ์':'All events','เฉพาะที่ไม่สำเร็จ':'Failures only','การดำเนินการของผู้ดูแล':'Admin actions','ค้นหาชื่อ อีเมล หรือรายละเอียด…':'Search name, email or details…','เวลา':'Time','เหตุการณ์':'Event','รายละเอียด':'Details',
+'เฉพาะผู้ใช้:':'User:','ล้าง':'Clear','โหลดเพิ่ม':'Load more','ยังไม่มีบันทึกที่ตรงกับตัวกรอง':'No log entries match the filters','เมื่อสักครู่':'just now','ยังไม่เคย':'never',
+'สมัครสมาชิกใหม่':'New sign-up','เปิดใช้งานแอป':'Opened the app','เข้าสู่ระบบไม่สำเร็จ':'Sign-in failed','บัญชีถูกล็อก พยายามเข้าสู่ระบบ':'Sign-in blocked (locked)','ขอรหัสตั้งรหัสผ่านใหม่':'Requested reset code','ตั้งรหัสผ่านใหม่ทางอีเมล':'Reset password by email','สร้างโปรไฟล์ใหม่':'Created profile',
+'ผู้ดูแลเข้าสู่ระบบ':'Admin signed in','ผู้ดูแลใส่รหัสผิด':'Admin wrong password','ผู้ดูแลแก้ไขข้อมูลบัญชี':'Admin edited account','ผู้ดูแลล็อกบัญชี':'Admin locked account','ผู้ดูแลปลดล็อกบัญชี':'Admin unlocked account','ผู้ดูแลตั้งรหัสผ่านใหม่':'Admin set password','ผู้ดูแลบังคับออกจากระบบ':'Admin signed user out','ผู้ดูแลลบบัญชี':'Admin deleted account',
+'ล็อกบัญชีนี้? ผู้ใช้จะถูกออกจากระบบทุกอุปกรณ์ทันที':'Lock this account? The user will be signed out everywhere.','ตั้งรหัสผ่านใหม่ให้ผู้ใช้นี้?':'Set a new password for this user?','ลบบัญชีนี้ถาวร? ไม่สามารถกู้คืนได้':'Permanently delete this account? This cannot be undone.','โปรไฟล์จะถูกลบด้วย':'The profile will be deleted too.',
+'บัญชีนี้ถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ':'This account is suspended. Please contact an administrator.','ไม่พบผู้ใช้':'User not found','เข้าสู่ระบบ':'Sign in','สมัครสมาชิก':'Create account','บัญชีของฉัน':'My account','เปลี่ยนรหัสผ่าน':'Change password',
+'ยินดีต้อนรับกลับ':'Welcome back','สร้างบัญชี Skillfolio':'Create your Skillfolio account','ลืมรหัสผ่าน':'Forgot password','ลืมรหัสผ่าน?':'Forgot password?','ตั้งรหัสผ่านใหม่':'Set a new password','บันทึกรหัสผ่านใหม่':'Save new password',
+'ส่งรหัสยืนยันไปที่อีเมล':'Email me a code','รหัสผ่านใหม่':'New password','รหัสผ่านปัจจุบัน':'Current password','ชื่อที่ใช้แสดง':'Display name','อีเมล':'Email','รหัสยืนยันจากอีเมล':'Code from email',
+'อย่างน้อย 8 ตัวอักษร':'At least 8 characters','แสดงรหัสผ่าน':'Show password','มีรหัสยืนยันแล้ว':'I already have a code','← กลับไปเข้าสู่ระบบ':'← Back to sign in','ปิด':'Close','กำลังดำเนินการ…':'Working…',
+'เราจะส่งรหัส 6 หลักไปที่อีเมลของคุณ รหัสใช้ได้ 15 นาที':'We’ll email you a 6-digit code, valid for 15 minutes.','กรอกรหัส 6 หลักจากอีเมล และรหัสผ่านใหม่ที่ต้องการ':'Enter the 6-digit code from your email and a new password.',
+'หากอีเมลนี้มีบัญชี เราได้ส่งรหัส 6 หลักไปแล้ว (ตรวจในกล่องสแปมด้วย)':'If this email has an account, we’ve sent a 6-digit code (check your spam folder too).',
+'กรุณากรอกอีเมลให้ถูกต้อง':'Enter a valid email address','กรุณากรอกรหัส 6 หลักจากอีเมล':'Enter the 6-digit code from your email','กรุณากรอกรหัสผ่านปัจจุบัน':'Enter your current password','กรุณากรอกรหัสผ่าน':'Enter your password',
+'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร':'Password must be at least 8 characters','เข้าสู่ระบบแล้ว':'Signed in','สมัครสมาชิกเรียบร้อยแล้ว':'Account created','ตั้งรหัสผ่านใหม่แล้ว':'Password updated','เปลี่ยนรหัสผ่านแล้ว':'Password changed','ออกจากระบบแล้ว':'Signed out',
+'สมัครสมาชิกหรือเข้าสู่ระบบก่อน เพื่อให้แก้ไขโปรไฟล์ได้จากทุกอุปกรณ์':'Create an account or sign in first, so you can edit your profile from any device.','เข้าสู่ระบบเพื่อเปิดโปรไฟล์ของคุณ':'Sign in to open your profile',
+'บัญชีนี้มีโปรไฟล์แล้ว เปิดโปรไฟล์ของคุณให้แทน':'This account already has a profile — opening it instead','เชื่อมกับบัญชีของฉัน':'Link to my account','เชื่อมโปรไฟล์กับบัญชีแล้ว':'Profile linked to your account',
+'เชื่อมโปรไฟล์เดิมในอุปกรณ์นี้กับบัญชีแล้ว':'Linked the profile saved on this device to your account','เข้าสู่ระบบหรือสมัครสมาชิก เพื่อเชื่อมโปรไฟล์นี้กับบัญชีของคุณ':'Sign in or create an account to link this profile',
+'เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง':'Your session expired. Please sign in again.','อีเมลหรือรหัสผ่านไม่ถูกต้อง':'Incorrect email or password','อีเมลนี้มีบัญชีแล้ว กรุณาเข้าสู่ระบบ':'This email already has an account. Please sign in.',
+'รูปแบบอีเมลไม่ถูกต้อง':'Invalid email address','ใส่รหัสผ่านผิดหลายครั้ง กรุณาลองใหม่ในอีก 10 นาที':'Too many attempts. Try again in 10 minutes.','รหัสหมดอายุหรือไม่ถูกต้อง กรุณาขอรหัสใหม่':'The code is invalid or expired. Request a new one.',
+'รหัสผ่านปัจจุบันไม่ถูกต้อง':'Current password is incorrect','กรุณาเข้าสู่ระบบหรือสมัครสมาชิกก่อนสร้างโปรไฟล์':'Sign in or create an account to create a profile','บัญชีนี้มีโปรไฟล์แล้ว แก้ไขโปรไฟล์เดิมได้จากเมนู “โปรไฟล์ของฉัน”':'This account already has a profile. Edit it from “My profile”.',
+'โปรไฟล์นี้เชื่อมกับบัญชีอื่นแล้ว':'This profile is linked to another account','ต้องใช้ลิงก์แก้ไขส่วนตัวของโปรไฟล์นี้':'You need this profile’s private edit link','บัญชีนี้มีโปรไฟล์แล้ว':'This account already has a profile','ภาพรวมทักษะทีม · Skillfolio':'Team skills · Skillfolio','ภาพรวมทีม':'Team overview','โปรไฟล์ส่วนตัว':'Private profile','⌂ หน้าผู้ใช้':'⌂ User site','Skillfolio · Admin':'Skillfolio · Admin'
+});
+const LEVELS=['','เริ่มต้น','พื้นฐาน','ทำได้เอง','ชำนาญ','ถ่ายทอดได้'];
+function T(text){
+  if(lang==='th')return text;
+  if(Object.prototype.hasOwnProperty.call(TRANSLATIONS,text))return TRANSLATIONS[text];
+  if(text.startsWith('＋ '))return '＋ '+T(text.slice(2));
+  if(text.startsWith('← '))return '← '+T(text.slice(2));
+  if(text.endsWith(' →')&&Object.prototype.hasOwnProperty.call(TRANSLATIONS,text.slice(0,-2)))return TRANSLATIONS[text.slice(0,-2)]+' →';
+  return text
+    .replace(/(^|\D)1 ทักษะ/g,'$11 skill').replace(/(^|\D)1 คน/g,'$11 person').replace(/(\d+) คน/g,'$1 people').replace(/(\d+) โปรไฟล์/g,'$1 profiles').replace(/(\d+) ทักษะ/g,'$1 skills')
+    .replace(/(\d+) หมวดย่อย/g,'$1 subcategories').replace(/(\d+) อยากพัฒนา/g,'$1 to develop').replace(/อยากพัฒนา/g,'to develop')
+    .replace(/ประเมินทักษะด้วยตนเอง/g,'Self-assessed skills').replace(/อัปเดต /g,'Updated ').replace(/ระดับ 1–5/g,'Levels 1–5')
+    .replace(/เลือกแล้ว (\d+)/g,'$1 selected').replace(/^ระดับ (\d) จาก 5$/,'Level $1 of 5')
+    .replace(/^(\d+) · (เริ่มต้น|พื้นฐาน|ทำได้เอง|ชำนาญ|ถ่ายทอดได้)$/,(m,n,l)=>n+' · '+TRANSLATIONS[l])
+    .replace(/(นักวิเคราะห์|นักการทูต|ผู้พิทักษ์|นักสำรวจ)/g,m=>TRANSLATIONS[m]).replace(/— สีโปรไฟล์ของคุณ/g,'— your profile color')
+    .replace(/^ใช้ได้เฉพาะอีเมล (.+) เท่านั้น$/,'Only $1 email addresses are allowed').replace(/^เฉลี่ย /,'avg ').replace(/(\d+) รายการ/g,'$1 entries').replace(/(\d+) อุปกรณ์ที่เข้าสู่ระบบอยู่/,'$1 signed-in devices');
+}
+const sourceText=new WeakMap(),sourceAttrs=new WeakMap();
+function translatePage(root=document.body){
+  if(!root)return;
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
+  while((node=walker.nextNode())){
+    if(node.parentElement?.closest('script,style,[data-user],[data-i18n-skip],.prose'))continue;
+    const original=sourceText.get(node)||node.nodeValue;sourceText.set(node,original);
+    const trimmed=original.trim();if(trimmed)node.nodeValue=original.replace(trimmed,T(trimmed));
+  }
+  const els=[...(root.matches?.('[placeholder],[aria-label],[title]')?[root]:[]),...root.querySelectorAll('[placeholder],[aria-label],[title]')];
+  els.forEach(el=>{
+    if(el.closest('[data-user],[data-i18n-skip]'))return;
+    let original=sourceAttrs.get(el);
+    if(!original){original={};['placeholder','aria-label','title'].forEach(a=>{if(el.hasAttribute(a))original[a]=el.getAttribute(a)});sourceAttrs.set(el,original)}
+    Object.entries(original).forEach(([a,v])=>el.setAttribute(a,T(v)));
+  });
+  document.documentElement.lang=lang;
+}
+function switchLanguage(){
+  lang=lang==='th'?'en':'th';storageSet('skillfolio-language',lang);
+  $('languageButton').textContent=lang==='th'?'EN':'ไทย';
+  summaryCache.clear();
+  if(current&&!$('profile').hidden)renderProfile();
+  if(!$('directory').hidden&&directoryReady)renderDirectory();
+  if(ADMIN&&profiles.length)updateTeamFilter();
+  if(!$('editor').hidden){previewMbti();renderGroupOptions();renderSkills()}
+  translatePage();
+}
+function initLanguage(){
+  $('languageButton').textContent=lang==='th'?'EN':'ไทย';translatePage();
+  new MutationObserver(records=>{const roots=new Set();records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1)roots.add(n);else if(n.nodeType===3&&n.parentElement)roots.add(n.parentElement)}));roots.forEach(r=>translatePage(r))}).observe(document.body,{childList:true,subtree:true});
+}
+
+/* ===================== server calls ===================== */
+let adminSession='';
+let userSession=ADMIN?'':storageGet('skillfolio-session'),me=null,pendingAfterAuth=null;
+function auth(extra){return Object.assign({token,admin:adminSession,user:userSession},extra||{})}
+function rpc(fn,...args){
+  const session=adminSession;
+  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn,args})})
+    .catch(()=>{throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่')})
+    .then(r=>r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')}))
+    .then(res=>{
+      if(!res||!res.ok){
+        const msg=String(res&&res.error||'เกิดข้อผิดพลาดที่เซิร์ฟเวอร์');
+        if(ADMIN&&msg.includes('ADMIN_SESSION_EXPIRED'))lockAdmin();
+        if(msg.includes('USER_SESSION_EXPIRED')){clearUserSession();throw new Error('เซสชันหมดอายุ กรุณาเข้าสู่ระบบอีกครั้ง')}
+        throw new Error(msg);
+      }
+      if(ADMIN&&session!==adminSession&&fn!=='loginAdmin')throw new Error('เซสชันเปลี่ยนแล้ว กรุณาเข้าสู่ระบบอีกครั้ง');
+      return res.result;
+    });
+}
+
+/* ===================== data ===================== */
+const CAT={soft:'Soft skills',core:'Core skills',technical:'Technical skills'};
+const SUGGEST={soft:['การสื่อสาร','การฟังอย่างตั้งใจ','การทำงานเป็นทีม','ภาวะผู้นำ','ความเข้าอกเข้าใจ','การเจรจาต่อรอง','การนำเสนอ','การให้และรับ Feedback','การแก้ไขความขัดแย้ง','การปรับตัว','ความคิดสร้างสรรค์','การคิดเชิงวิพากษ์','การจัดการอารมณ์','ความยืดหยุ่นทางใจ','การทำงานข้ามวัฒนธรรม','การสร้างเครือข่าย','การสอนและโค้ช','การบริหารเวลา'],core:['การแก้ปัญหา','การวางแผนกลยุทธ์','การบริหารโครงการ','การตัดสินใจ','การวิจัย','การวิเคราะห์ข้อมูล','การคิดเชิงระบบ','การจัดการความรู้','การบริหารความเสี่ยง','การจัดการงบประมาณ','การบริการลูกค้า','การขาย','การตลาด','การบริหารบุคลากร','การปรับปรุงกระบวนการ','การเป็นผู้ประกอบการ','จริยธรรมในการทำงาน','ความยั่งยืน','การจัดซื้อ','การควบคุมคุณภาพ'],technical:['Excel / Google Sheets','SQL','Python','JavaScript','Google Apps Script','Power BI','Tableau','AI / Prompt Engineering','Machine Learning','การพัฒนาเว็บไซต์','UX/UI Design','Figma','Graphic Design','การตัดต่อวิดีโอ','การถ่ายภาพ','CAD / 3D Modeling','วิศวกรรมเครื่องกล','งานไฟฟ้า','IoT','Cybersecurity','Cloud Computing','บัญชีและภาษี','การวิเคราะห์การเงิน','การเขียนเชิงวิชาการ','ภาษาอังกฤษ','ภาษาจีน','การแปลภาษา','การสอนและออกแบบหลักสูตร','การดูแลผู้ป่วย','เทคนิคห้องปฏิบัติการ','การเกษตร','การประกอบอาหาร','การจัดการโลจิสติกส์','GIS','การผลิตและซ่อมบำรุง']};
+// Groups remain editable; legacy skills receive a best-effort group at display time.
+const GROUPS={
+soft:{'การทำงานร่วมกับผู้อื่น':['การสื่อสาร','การฟังอย่างตั้งใจ','การทำงานเป็นทีม','ความเข้าอกเข้าใจ','การเจรจาต่อรอง','การนำเสนอ','การให้และรับ Feedback','การแก้ไขความขัดแย้ง','การทำงานข้ามวัฒนธรรม','การสร้างเครือข่าย'], 'การคิดและการปรับตัว':['ความคิดสร้างสรรค์','การคิดเชิงวิพากษ์','การปรับตัว','การแก้ปัญหา (Problem solving)'], 'ภาวะผู้นำ':['ภาวะผู้นำ','การสอนและโค้ช'], 'การจัดการตนเอง':['การจัดการอารมณ์','ความยืดหยุ่นทางใจ','การบริหารเวลา'], 'ทักษะด้านบุคคลอื่น ๆ':[]},
+core:{'กลยุทธ์และการจัดการ':['การแก้ปัญหา','การวางแผนกลยุทธ์','การบริหารโครงการ','การตัดสินใจ','การคิดเชิงระบบ','การจัดการความรู้','การบริหารความเสี่ยง','การจัดการงบประมาณ','การบริหารบุคลากร','การเป็นผู้ประกอบการ'], 'การวิจัย':['การวิจัย','Research design','การวิเคราะห์ข้อมูล','การเขียนเชิงวิชาการ'], 'ธุรกิจและลูกค้า':['การบริการลูกค้า','การขาย','การตลาด','การจัดซื้อ'], 'กระบวนการและคุณภาพ':['การปรับปรุงกระบวนการ','การควบคุมคุณภาพ','จริยธรรมในการทำงาน','ความยั่งยืน'], 'สุขภาพและสาธารณสุข':['Epidemiology','Health promotion'], 'ความเชี่ยวชาญหลักอื่น ๆ':[]},
+technical:{'การเขียนโปรแกรม':['R','Python','SQL','JavaScript','Bash / Shell','Google Apps Script','การพัฒนาเว็บไซต์'], 'ข้อมูลและฐานข้อมูล':['Data cleaning','Oracle / Hive SQL','DuckDB','Excel / Google Sheets','Power BI','Tableau'], 'AI และ Machine Learning':['Claude','Prompt engineering','AI / Prompt Engineering','Machine Learning'], 'ชีวสารสนเทศ':['NGS analysis','Oxford Nanopore','HLA typing'], 'ออกแบบและสื่อ':['UX/UI Design','Figma','Graphic Design','การตัดต่อวิดีโอ','การถ่ายภาพ','CAD / 3D Modeling'], 'ระบบและวิศวกรรม':['วิศวกรรมเครื่องกล','งานไฟฟ้า','IoT','Cybersecurity','Cloud Computing','GIS','การผลิตและซ่อมบำรุง'], 'การเงินและปฏิบัติการ':['บัญชีและภาษี','การวิเคราะห์การเงิน','การจัดการโลจิสติกส์'], 'ภาษาและการศึกษา':['ภาษาอังกฤษ','ภาษาจีน','การแปลภาษา','การสอนและออกแบบหลักสูตร','การเขียนเชิงวิชาการ'], 'สุขภาพและงานวิชาชีพ':['การดูแลผู้ป่วย','เทคนิคห้องปฏิบัติการ','การเกษตร','การประกอบอาหาร'], 'ทักษะเฉพาะทางอื่น ๆ':[]}}
+const CAT_ORDER=['soft','core','technical'];
+const CAT_SUB={soft:'ทักษะการทำงานร่วมกับคน',core:'ทักษะหลักในการทำงาน',technical:'ทักษะเฉพาะทาง'};
+const CAT_COLOR={soft:'var(--cat-soft)',core:'var(--cat-core)',technical:'var(--cat-technical)'};
+const MBTI_TYPES=['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+const FIELDS=['mbti','name','role','department','location','bio','education','experience','interests','goals'];
+
+let profiles=[],draft={skills:[]},current=null,step=0,token='',saving=false,editorBaseline='';
+let skillCat='soft',filterCat='';
+let directoryReady=false,directoryAt=0,directoryRequest=null,loadGeneration=0,navigationId=0,visibleCount=18,searchTimer;
+const profileCache=new Map(),profileRequests=new Map(),summaryCache=new Map();
+
+function mbtiTheme(type){if(!MBTI_TYPES.includes(type))return {key:'neutral',label:'ยังไม่ระบุ MBTI'};if(type[1]==='N')return type[2]==='T'?{key:'purple',label:'นักวิเคราะห์'}:{key:'green',label:'นักการทูต'};return type[3]==='J'?{key:'blue',label:'ผู้พิทักษ์'}:{key:'gold',label:'นักสำรวจ'}}
+function mbtiBadge(p){return p.mbti?'<span class="mbti-badge">'+esc(p.mbti)+' · '+mbtiTheme(p.mbti).label+'</span>':''}
+function groupOf(s){if(s.group)return s.group;const groups=GROUPS[s.category]||{};return Object.keys(groups).find(g=>groups[g].some(n=>n.toLowerCase()===s.name.toLowerCase()))||Object.keys(groups).slice(-1)[0]||'อื่น ๆ'}
+function grouped(p,category){
+  const map=new Map();
+  p.skills.filter(s=>!category||s.category===category).forEach(s=>{const name=groupOf(s),key=s.category+':'+name;if(!map.has(key))map.set(key,{key,name,category:s.category,skills:[]});map.get(key).skills.push(s)});
+  const order=g=>{const keys=Object.keys(GROUPS[g.category]||{});const i=keys.indexOf(g.name);return CAT_ORDER.indexOf(g.category)*100+(i<0?keys.length-0.5:i)};
+  return [...map.values()].map(g=>({...g,value:g.skills.reduce((a,s)=>a+s.level,0)/g.skills.length})).sort((a,b)=>order(a)-order(b));
+}
+function segments(level){return '<span class="segments" role="img" aria-label="'+esc(T('ระดับ '+level+' จาก 5'))+'">'+[1,2,3,4,5].map(n=>'<i class="'+(n<=level?'filled':'')+'"></i>').join('')+'</span>'}
+
+/* ===================== radar (one combined chart) ===================== */
+let measureCtx=null;
+function textWidth(t,size){try{if(!measureCtx){measureCtx=document.createElement('canvas').getContext('2d')}measureCtx.font='500 '+size+'px Manrope, "Noto Sans Thai", sans-serif';return measureCtx.measureText(t).width}catch(e){return Array.from(t).length*size*.55}}
+function wrapLabel(text,maxWidth,size){
+  if(textWidth(text,size)<=maxWidth)return [text];
+  let parts;
+  try{parts=typeof Intl.Segmenter==='function'?[...new Intl.Segmenter(lang,{granularity:'word'}).segment(text)].map(x=>x.segment):text.split(/(\s+)/)}catch(e){parts=text.split(/(\s+)/)}
+  const lines=[''];
+  parts.forEach(part=>{const i=lines.length-1;if(lines[i]&&textWidth(lines[i]+part,size)>maxWidth&&lines.length<2)lines.push(part.trimStart());else lines[lines.length-1]+=part});
+  return lines.map((l,i)=>{l=l.trim();if(textWidth(l,size)<=maxWidth)return l;const chars=Array.from(l);while(chars.length&&textWidth(chars.join('')+'…',size)>maxWidth)chars.pop();return chars.join('').trimEnd()+'…'}).filter(Boolean);
+}
+function radarGeometry(axes,R,cx,cy){
+  const N=axes.length,stepA=2*Math.PI/N;
+  const ang=i=>-Math.PI/2+i*stepA;
+  const pt=(a,r)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];
+  return {N,stepA,ang,pt};
+}
+function radarSectors(axes,g,R,cx,cy,withArcs){
+  const runs=[];axes.forEach((a,i)=>{const last=runs[runs.length-1];if(last&&last.category===a.category)last.end=i;else runs.push({category:a.category,start:i,end:i})});
+  let svg='';
+  if(runs.length===1){svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="'+CAT_COLOR[runs[0].category]+'" fill-opacity=".06"/>';if(withArcs)svg+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R+9)+'" fill="none" stroke="'+CAT_COLOR[runs[0].category]+'" stroke-width="4" stroke-opacity=".7"/>';return svg}
+  runs.forEach(run=>{
+    const a0=g.ang(run.start)-g.stepA/2,a1=g.ang(run.end)+g.stepA/2,large=(a1-a0)>Math.PI?1:0;
+    const [x0,y0]=g.pt(a0,R),[x1,y1]=g.pt(a1,R);
+    svg+='<path d="M'+cx+' '+cy+'L'+x0.toFixed(1)+' '+y0.toFixed(1)+'A'+R+' '+R+' 0 '+large+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+'Z" fill="'+CAT_COLOR[run.category]+'" fill-opacity=".07"/>';
+    if(withArcs){const gap=Math.min(.05,g.stepA*.15),r=R+9,b0=a0+gap,b1=a1-gap,[p0x,p0y]=g.pt(b0,r),[p1x,p1y]=g.pt(b1,r);svg+='<path d="M'+p0x.toFixed(1)+' '+p0y.toFixed(1)+'A'+r+' '+r+' 0 '+((b1-b0)>Math.PI?1:0)+' 1 '+p1x.toFixed(1)+' '+p1y.toFixed(1)+'" fill="none" stroke="'+CAT_COLOR[run.category]+'" stroke-width="4" stroke-linecap="round" stroke-opacity=".75"/>'}
+  });
+  return svg;
+}
+function radarCore(axes,g,R,cx,cy,{rings=true,ringNumbers=true,dot=5}={}){
+  let svg='';
+  if(rings)for(let n=1;n<=5;n++)svg+='<polygon points="'+axes.map((a,i)=>g.pt(g.ang(i),n*R/5).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="none" stroke="'+(n===5?'#cfc8ba':'#e3ded4')+'" stroke-width="1"/>';
+  axes.forEach((a,i)=>{const [x,y]=g.pt(g.ang(i),R);svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="#e3ded4"/>'});
+  svg+='<polygon points="'+axes.map((a,i)=>g.pt(g.ang(i),a.value*R/5).map(v=>v.toFixed(1)).join(',')).join(' ')+'" fill="var(--profile-accent)" fill-opacity=".16" stroke="var(--profile-accent)" stroke-width="2.5" stroke-linejoin="round"/>';
+  if(ringNumbers)for(let n=1;n<=5;n++)svg+='<text x="'+(cx+6)+'" y="'+(cy-n*R/5+5)+'" font-size="14" fill="#9a9488">'+n+'</text>';
+  if(dot)axes.forEach((a,i)=>{const [x,y]=g.pt(g.ang(i),a.value*R/5);svg+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+dot+'" fill="'+CAT_COLOR[a.category]+'" stroke="#fff" stroke-width="2"><title>'+esc(T(a.name))+' '+a.value.toFixed(1)+'/5</title></circle>'});
+  return svg;
+}
+function radarAria(axes){return esc(axes.map(a=>T(a.name)+' '+a.value.toFixed(1)+'/5').join(', '))}
+/* Wide: full text labels (≤10 axes). */
+function radarWide(axes){
+  const W=720,H=560,cx=W/2,cy=H/2,R=172,g=radarGeometry(axes,R,cx,cy),size=20,lh=24;
+  let svg='<svg class="radar radar-wide" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+radarAria(axes)+'">'+radarSectors(axes,g,R,cx,cy,true)+radarCore(axes,g,R,cx,cy);
+  axes.forEach((a,i)=>{
+    const ang=g.ang(i),cos=Math.cos(ang),sin=Math.sin(ang),[tx,ty]=g.pt(ang,R+26);
+    const anchor=Math.abs(cos)<.2?'middle':cos>0?'start':'end';
+    const avail=anchor==='middle'?260:Math.min(165,anchor==='start'?W-tx-4:tx-4);
+    const lines=wrapLabel(T(a.name),avail,size);
+    const block=lines.length*lh,top=sin<-.6?ty-block+lh*.5:sin>.6?ty+lh*.5:ty-block/2+lh*.5;
+    svg+='<text data-i18n-skip="true" text-anchor="'+anchor+'" font-size="'+size+'" font-weight="500" fill="#3d3a33"><title>'+esc(T(a.name))+' · '+a.value.toFixed(1)+'/5</title>'+lines.map((l,k)=>'<tspan x="'+tx.toFixed(1)+'" y="'+(top+k*lh).toFixed(1)+'">'+esc(l)+'</tspan>').join('')+'</text>';
+  });
+  return svg+'</svg>';
+}
+/* Narrow / many axes: numbered markers keyed to the legend. */
+function radarNumbered(axes,hidden){
+  const W=460,H=460,cx=W/2,cy=H/2,R=176,g=radarGeometry(axes,R,cx,cy);
+  let svg='<svg class="radar radar-narrow" viewBox="0 0 '+W+' '+H+'" role="img" '+(hidden?'aria-hidden="true"':'aria-label="'+radarAria(axes)+'"')+'>'+radarSectors(axes,g,R,cx,cy,false)+radarCore(axes,g,R,cx,cy,{dot:4.5});
+  axes.forEach((a,i)=>{const [x,y]=g.pt(g.ang(i),R+26);svg+='<g data-i18n-skip="true"><circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="16" fill="'+CAT_COLOR[a.category]+'"/><text x="'+x.toFixed(1)+'" y="'+(y+6).toFixed(1)+'" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">'+(i+1)+'<title>'+esc(T(a.name))+' · '+a.value.toFixed(1)+'/5</title></text></g>'});
+  return svg+'</svg>';
+}
+function radarCompact(axes){
+  if(axes.length<3)return '';
+  const W=200,cx=100,cy=100,R=90,g=radarGeometry(axes,R,cx,cy);
+  return '<svg class="compact-radar" viewBox="0 0 '+W+' '+W+'" role="img" aria-label="'+radarAria(axes)+'">'+radarSectors(axes,g,R,cx,cy,false)+radarCore(axes,g,R,cx,cy,{ringNumbers:false,dot:0})+'</svg>';
+}
+function radarLegend(axes,textMode){
+  let n=0;
+  return '<div class="radar-legend'+(textMode?' text-mode':'')+'">'+CAT_ORDER.filter(c=>axes.some(a=>a.category===c)).map(c=>{
+    const list=axes.filter(a=>a.category===c),skills=list.flatMap(a=>a.skills),avg=skills.reduce((s,x)=>s+x.level,0)/skills.length;
+    return '<div class="legend-cat"><h4><span class="dot '+c+'"></span>'+CAT[c]+'<small>'+T('เฉลี่ย')+' '+avg.toFixed(1)+'</small></h4><ol>'+list.map(a=>{n++;return '<li><span class="lg-num" style="background:'+CAT_COLOR[c]+'">'+n+'</span><span class="name">'+esc(T(a.name))+'<small>'+a.skills.length+' ทักษะ</small></span><span class="mini-bar" aria-hidden="true"><i style="width:'+(a.value*20).toFixed(0)+'%;background:'+CAT_COLOR[c]+'"></i></span><strong>'+a.value.toFixed(1)+'</strong></li>'}).join('')+'</ol></div>';
+  }).join('')+'</div>';
+}
+function radar(p){
+  const axes=grouped(p);
+  if(!axes.length)return '<div class="radar-empty">'+T('ยังไม่ได้ระบุทักษะ')+'</div>';
+  if(axes.length<3)return '<div class="radar-layout"><div class="radar-figure"><div class="radar-empty">'+T('เพิ่มทักษะอย่างน้อย 3 หมวดย่อยเพื่อแสดงกราฟเรดาร์')+'</div></div>'+radarLegend(axes,true)+'</div>';
+  const textMode=axes.length<=10;
+  const keys='<div class="radar-keys">'+CAT_ORDER.filter(c=>axes.some(a=>a.category===c)).map(c=>'<span><i class="dot '+c+'"></i>'+CAT[c]+'</span>').join('')+'</div>';
+  const figure=textMode?'<div class="radar-figure has-wide">'+radarWide(axes)+radarNumbered(axes,true)+keys+'</div>':'<div class="radar-figure">'+radarNumbered(axes,false)+keys+'</div>';
+  return '<div class="radar-layout">'+figure+radarLegend(axes,textMode)+'</div>';
+}
+
+/* ===================== directory ===================== */
+function clearViewCache(){directoryReady=false;directoryAt=0;directoryRequest=null;loadGeneration++;navigationId++;profiles=[];profileCache.clear();profileRequests.clear();summaryCache.clear()}
+function rememberProfile(result){
+  profileCache.set(result.profile.id,{result:JSON.parse(JSON.stringify(result)),token,user:userSession,at:Date.now()});
+  directoryAt=Date.now();loadGeneration++;directoryRequest=null;$('refreshButton').disabled=false;$('syncState').textContent='';summaryCache.clear();
+  const p=result.profile,i=profiles.findIndex(x=>x.id===p.id);
+  if(ADMIN||p.isPublic){if(i>=0)profiles[i]=p;else profiles.push(p)}else if(i>=0)profiles.splice(i,1);
+  if(ADMIN)updateTeamFilter();
+}
+function queueDirectory(){clearTimeout(searchTimer);searchTimer=setTimeout(()=>{visibleCount=18;renderDirectory()},120)}
+function showMore(){visibleCount+=18;renderDirectory()}
+function setFilter(cat){filterCat=cat;visibleCount=18;document.querySelectorAll('#filterChips .chip').forEach(b=>{const on=b.dataset.cat===cat;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});renderDirectory()}
+function clearFilters(){$('search').value='';setFilter('')}
+function setNav(id){
+  const mine=storageGet('skillfolio-mine');
+  document.querySelectorAll('[data-nav]').forEach(b=>{
+    const on=b.dataset.nav===id||(id==='profile'&&b.dataset.nav==='mine'&&current?.profile?.id===mine);
+    b.classList.toggle('active',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');
+  });
+}
+const VIEWS=['directory','editor','profile','users','logs'];
+function view(id){navigationId++;VIEWS.forEach(x=>{if($(x))$(x).hidden=x!==id});setNav(id);window.scrollTo(0,0)}
+async function load(force=false){
+  if(force){profileCache.clear();summaryCache.clear()}
+  if(!force&&directoryReady&&Date.now()-directoryAt<60000)return;
+  if(directoryRequest)return directoryRequest;
+  const generation=loadGeneration;$('refreshButton').disabled=true;$('syncState').textContent=T('กำลังอัปเดต…');
+  directoryRequest=(async()=>{
+    try{
+      const items=await rpc('listProfiles',ADMIN,auth());if(generation!==loadGeneration)return;
+      profiles=items;directoryReady=true;directoryAt=Date.now();$('loadError').hidden=true;summaryCache.clear();renderDirectory();if(ADMIN)updateTeamFilter();
+    }catch(e){
+      if(generation!==loadGeneration)return;
+      $('loadError').textContent=T(String(e.message||e));$('loadError').hidden=false;
+      if(!directoryReady)$('cards').innerHTML='<div class="empty"><h3>ไม่สามารถโหลดข้อมูลได้</h3><button type="button" onclick="load(true)">ลองอีกครั้ง</button></div>';
+    }finally{if(generation===loadGeneration){directoryRequest=null;$('refreshButton').disabled=false;$('syncState').textContent=''}}
+  })();
+  return directoryRequest;
+}
+function showDirectory(){if(!canLeaveEditor())return;view('directory');if(directoryReady)renderDirectory();load()}
+function cardSummaryCached(p){const key=p.id+':'+p.updatedAt+':'+lang;if(!summaryCache.has(key))summaryCache.set(key,cardSummary(p));return summaryCache.get(key)}
+function cardSummary(p){
+  const top=[...p.skills].sort((a,b)=>b.level-a.level).slice(0,4),axes=grouped(p),chart=radarCompact(axes);
+  if(!p.skills.length)return '<p class="muted">ยังไม่ได้ระบุทักษะ</p>';
+  return '<div class="card-skill-summary'+(chart?'':' no-radar')+'">'+(chart?'<div>'+chart+'</div>':'')+'<div>'+top.map(s=>'<div class="mini-skill"><span data-user title="'+esc(s.name)+'">'+esc(s.name)+'</span>'+segments(s.level)+'</div>').join('')+'</div></div>';
+}
+function renderDirectory(){
+  const q=$('search').value.toLowerCase().trim(),team=ADMIN?$('teamFilter').value:'';
+  const filtered=profiles.filter(p=>(!team||p.department===team)&&(!filterCat||p.skills.some(s=>s.category===filterCat))&&[p.name,p.role,p.department,p.interests,p.mbti,...p.skills.map(s=>s.name+' '+T(s.name))].join(' ').toLowerCase().includes(q))
+    .sort((a,b)=>String(b.updatedAt).localeCompare(String(a.updatedAt)));
+  const uniq=new Set(profiles.flatMap(p=>p.skills.map(s=>s.name.toLowerCase())));
+  $('stats').innerHTML=[[profiles.length,ADMIN?'โปรไฟล์ทั้งหมด':'โปรไฟล์ที่เปิดเผย'],[uniq.size,'ทักษะที่หลากหลาย'],[profiles.filter(p=>p.skills.length).length,'คนที่เพิ่มทักษะแล้ว'],[profiles.reduce((n,p)=>n+p.skills.filter(s=>s.growing).length,0),'ทักษะที่อยากพัฒนา']].map(([n,l])=>'<div class="stat"><strong>'+n+'</strong><span>'+l+'</span></div>').join('');
+  $('count').textContent=T(filtered.length+' โปรไฟล์');
+  $('cards').innerHTML=filtered.slice(0,visibleCount).map(p=>{
+    const growing=p.skills.filter(s=>s.growing).length;
+    return '<article class="card theme-'+mbtiTheme(p.mbti).key+'"><div class="person"><div class="avatar" aria-hidden="true">'+esc(firstGrapheme(p.name))+'</div><div><h3 data-user>'+esc(p.name)+'</h3><small data-user>'+esc(p.role||'')+'</small>'+(p.role?'':'<small>ยังไม่ระบุบทบาท</small>')+'</div></div>'
+      +'<div class="badges">'+mbtiBadge(p)+(ADMIN?'<span class="status-badge'+(p.isPublic?' public':'')+'">'+(p.isPublic?'เปิดเผย':'ส่วนตัว')+'</span>':'')+'</div>'
+      +(p.department?'<div class="dept" data-user>'+esc(p.department)+'</div>':'')
+      +cardSummaryCached(p)
+      +'<div class="card-foot"><span>'+p.skills.length+' ทักษะ'+(growing?' · <span class="growing">↗ '+growing+' อยากพัฒนา</span>':'')+'</span><button type="button" class="card-open" onclick="openProfile(\''+esc(p.id)+'\')">ดูโปรไฟล์ →</button></div></article>';
+  }).join('')||'<div class="empty"><h3>ยังไม่พบโปรไฟล์</h3><p class="muted">ลองเปลี่ยนคำค้น หรือเริ่มสร้างโปรไฟล์ของคุณ</p>'+(q||filterCat?'<button type="button" onclick="clearFilters()">ล้างตัวกรอง</button>':'<button type="button" class="primary" onclick="newProfile()">สร้างโปรไฟล์ของคุณ</button>')+'</div>';
+  $('moreButton').hidden=filtered.length<=visibleCount;
+}
+
+/* ===================== profile view ===================== */
+async function openProfile(id,provided){
+  if(!canLeaveEditor())return;
+  token=provided||storageGet('skillfolio-token-'+id);
+  const requestedToken=token,cached=profileCache.get(id);
+  if(cached&&cached.token===requestedToken&&cached.user===userSession&&Date.now()-cached.at<30000){current=JSON.parse(JSON.stringify(cached.result));renderProfile();return}
+  current=null;view('profile');const navigation=navigationId;
+  $('profile').className='theme-neutral';
+  $('profile').innerHTML='<div class="panel loading-panel" role="status"><span class="spinner"></span>'+T('กำลังเปิดโปรไฟล์…')+'</div>';
+  try{
+    const key=id+':'+requestedToken+':'+userSession;let request=profileRequests.get(key);
+    if(!request){request=rpc('getProfile',id,auth({token:requestedToken}));profileRequests.set(key,request);request.finally(()=>profileRequests.delete(key)).catch(()=>{})}
+    const result=await request;if(navigation!==navigationId)return;
+    current=result;profileCache.set(id,{result:JSON.parse(JSON.stringify(result)),token:requestedToken,user:userSession,at:Date.now()});renderProfile();
+  }catch(e){
+    if(navigation!==navigationId)return;
+    $('profile').innerHTML='<div class="empty"><h3>'+esc(T(String(e.message||e).replace(/^(Exception|Error):\s*/,'')))+'</h3><button type="button" onclick="showDirectory()">← หน้าสำรวจ</button></div>';
+  }
+}
+function visibilitySwitch(p){return '<label class="visibility-control"><input id="visibilitySwitch" type="checkbox" role="switch" '+(p.isPublic?'checked':'')+' onchange="toggleVisibility(this)"><span class="switch-track" aria-hidden="true"></span><span>โปรไฟล์สาธารณะ</span><span class="status-badge'+(p.isPublic?' public':'')+'">'+(p.isPublic?'เปิด':'ปิด')+'</span></label>'}
+async function toggleVisibility(control){
+  if(!current?.editable)return;const previous=current.profile.isPublic;control.disabled=true;
+  try{const p=await rpc('setProfileVisibility',current.profile.id,control.checked,auth());current.profile=p;rememberProfile(current);renderProfile();toast(p.isPublic?'เปิดโปรไฟล์สาธารณะแล้ว':'ปิดโปรไฟล์สาธารณะแล้ว')}
+  catch(e){control.checked=previous;error(e)}finally{control.disabled=false}
+}
+function skillGroupsHtml(p){
+  return CAT_ORDER.map(cat=>{
+    const groups=grouped(p,cat);if(!groups.length)return '';
+    return '<div class="skill-category"><h3><span class="dot '+cat+'"></span>'+CAT[cat]+'</h3><div class="skill-groups">'+groups.map(g=>'<section class="skill-box"><h4><span>'+esc(T(g.name))+'</span><small>'+T('เฉลี่ย')+' '+g.value.toFixed(1)+'</small></h4>'+g.skills.slice().sort((a,b)=>b.level-a.level).map(s=>'<div class="skill-detail"><span><span data-user>'+esc(s.name)+'</span>'+(s.growing?' <span class="growing" title="อยากพัฒนา">↗</span>':'')+'</span>'+segments(s.level)+'<small>'+LEVELS[s.level]+'</small></div>').join('')+'</section>').join('')+'</div></div>';
+  }).join('')||'<p class="muted" style="margin-top:12px">ยังไม่ได้ระบุทักษะ</p>';
+}
+function proseBlock(text){return text?'<div class="prose" data-user>'+esc(text)+'</div>':'<p class="prose empty-text">'+T('ยังไม่ได้ระบุ')+'</p>'}
+function renderProfile(){
+  const p=current.profile,axes=grouped(p),growing=p.skills.filter(s=>s.growing).length;
+  view('profile');$('profile').className='theme-'+mbtiTheme(p.mbti).key;
+  const actions='<div class="profile-actions no-print"><button type="button" class="ghost" onclick="showDirectory()">← หน้าสำรวจ</button><span class="spacer"></span>'
+    +(current.editable?'<button type="button" onclick="editCurrent()">แก้ไขข้อมูล</button>'+(token?'<button type="button" onclick="showPrivateLink()">ลิงก์แก้ไขส่วนตัว</button>':''):'')
+    +(!ADMIN&&current.editable&&token&&!current.owned&&!current.hasOwner&&!(me&&me.profileId)?'<button type="button" onclick="claimCurrent()">เชื่อมกับบัญชีของฉัน</button>':'')
+    +(p.isPublic?'<button type="button" onclick="shareProfile()">ลิงก์โปรไฟล์</button>':'')
+    +'<button type="button" class="primary" onclick="printProfile()">↓ บันทึกเป็น PDF</button>'
+    +(current.editable?'<button type="button" class="danger" onclick="removeCurrent()">ลบโปรไฟล์</button>':'')+'</div>';
+  const privacy=current.editable?'<div class="privacy-panel no-print">'+visibilitySwitch(p)+'<p>เปิด: ทุกคนที่เข้าถึงเว็บแอปเห็นข้อมูลทั้งหมด · ปิด: เฉพาะผู้มีลิงก์แก้ไขและแอดมิน</p></div>':'';
+  const head='<header class="profilehead"><div class="avatar" aria-hidden="true">'+esc(firstGrapheme(p.name))+'</div><div><p class="eyebrow">'+(p.isPublic?'โปรไฟล์สาธารณะ':'โปรไฟล์ส่วนตัว')+'</p><h1 data-user>'+esc(p.name)+'</h1><div class="badges">'+mbtiBadge(p)+'</div>'
+    +([p.role,p.department,p.location].some(Boolean)?'<p class="meta" data-user>'+esc([p.role,p.department,p.location].filter(Boolean).join(' · '))+'</p>':'')
+    +(p.bio?'<div class="prose" data-user>'+esc(p.bio)+'</div>':'<p class="prose empty-text">'+T('ยังไม่ได้เพิ่มคำแนะนำตัว')+'</p>')+'</div></header>';
+  const radarPanel='<section class="panel radar-panel"><div class="panel-head"><h2>แผนที่ทักษะ</h2><small>'+axes.length+' หมวดย่อย · '+p.skills.length+' ทักษะ</small></div>'+radar(p)+'<p class="hint radar-note">แต่ละแกนคือค่าเฉลี่ยของทักษะในหมวดย่อยนั้น (1–5) จัดเรียงตามหมวดหลักและแยกสีตามหมวด · ใช้สำรวจตนเอง ไม่ใช้จัดอันดับบุคคล</p></section>';
+  const about='<div class="about-grid">'+[['education','ประวัติการศึกษา'],['interests','สิ่งที่สนใจ'],['goals','ก้าวต่อไปของฉัน']].map(([k,t])=>'<section class="panel"><h2>'+t+'</h2><div style="margin-top:10px">'+proseBlock(p[k])+'</div></section>').join('')+'</div>';
+  const skills='<section class="panel" style="margin-top:20px"><div class="panel-head" style="margin-bottom:0"><h2>ทักษะทั้งหมด</h2><small>'+p.skills.length+' ทักษะ · '+growing+' อยากพัฒนา · ระดับ 1–5</small></div>'+skillGroupsHtml(p)+'</section>';
+  const exp='<section class="panel"><h2>ประสบการณ์</h2><div style="margin-top:10px">'+proseBlock(p.experience)+'</div></section>';
+  $('profile').innerHTML=actions+privacy+head+radarPanel+about+skills+exp+'<p class="profile-meta">อัปเดต '+esc(new Date(p.updatedAt).toLocaleDateString(lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'long',year:'numeric'}))+' · ประเมินทักษะด้วยตนเอง</p>';
+}
+function printProfile(){document.body.classList.add('printing');window.print();setTimeout(()=>document.body.classList.remove('printing'),500)}
+async function copyText(s){try{await navigator.clipboard.writeText(s);toast('คัดลอกลิงก์แล้ว')}catch(e){window.prompt(T('คัดลอกลิงก์นี้'),s)}}
+function shareProfile(){copyText(APP_URL+'?id='+encodeURIComponent(current.profile.id))}
+function showPrivateLink(){$('privateLink').value=APP_URL+'?id='+encodeURIComponent(current.profile.id)+'#token='+encodeURIComponent(token);$('linkDialog').showModal()}
+async function removeCurrent(){
+  if(!confirm(T('ลบโปรไฟล์นี้ถาวร? ไม่สามารถกู้คืนผ่านแอปได้')))return;
+  try{
+    await rpc('deleteProfile',current.profile.id,auth());
+    if(me&&me.profileId===current.profile.id)me.profileId='';
+    if(storageGet('skillfolio-mine')===current.profile.id)storageSet('skillfolio-mine','');
+    profiles=profiles.filter(p=>p.id!==current.profile.id);profileCache.delete(current.profile.id);summaryCache.clear();directoryAt=Date.now();
+    if(ADMIN)updateTeamFilter();current=null;showDirectory();toast('ลบโปรไฟล์แล้ว');
+  }catch(e){error(e)}
+}
+function openMine(){
+  if(me){if(me.profileId)openProfile(me.profileId);else newProfile();return}
+  const id=storageGet('skillfolio-mine');
+  if(id)openProfile(id);else openAuth('login','เข้าสู่ระบบเพื่อเปิดโปรไฟล์ของคุณ',openMine);
+}
+
+/* ===================== editor ===================== */
+function previewMbti(){const v=$('f-mbti').value,t=mbtiTheme(v);$('mbtiPreview').className='mbti-preview theme-'+t.key;$('mbtiPreview').textContent=v?v+' · '+t.label+' — สีโปรไฟล์ของคุณ':'ไม่ระบุได้ · ใช้สีพื้นฐานของแพลตฟอร์ม';$('editor').className='theme-'+t.key}
+function initMbti(){$('f-mbti').innerHTML='<option value="">ยังไม่ทราบ / ไม่ระบุ</option>'+MBTI_TYPES.map(t=>'<option value="'+t+'">'+t+'</option>').join('');previewMbti()}
+function collectDraft(){const d=JSON.parse(JSON.stringify(draft));FIELDS.forEach(k=>d[k]=$('f-'+k).value);d.isPublic=$('f-isPublic').checked;return d}
+function isDirty(){return !$('editor').hidden&&JSON.stringify(collectDraft())!==editorBaseline}
+function canLeaveEditor(){return !isDirty()||confirm(T('ออกจากหน้านี้โดยไม่บันทึก? การแก้ไขที่ยังไม่บันทึกจะหายไป'))}
+function cancelEdit(){if(!canLeaveEditor())return;editorBaseline=JSON.stringify(collectDraft());if(current&&draft.id&&current.profile.id===draft.id)renderProfile();else showDirectory()}
+function newProfile(){
+  if(!canLeaveEditor())return;
+  if(!ADMIN&&!me){openAuth('register','สมัครสมาชิกหรือเข้าสู่ระบบก่อน เพื่อให้แก้ไขโปรไฟล์ได้จากทุกอุปกรณ์',newProfile);return}
+  if(!ADMIN&&me.profileId){toast('บัญชีนี้มีโปรไฟล์แล้ว เปิดโปรไฟล์ของคุณให้แทน');openProfile(me.profileId);return}
+  draft={skills:[],name:ADMIN?'':(me?.name||'')};token='';fillEditor();
+}
+function editCurrent(){draft=JSON.parse(JSON.stringify(current.profile));fillEditor()}
+function fillEditor(){
+  FIELDS.forEach(k=>$('f-'+k).value=draft[k]||'');$('f-isPublic').checked=!!draft.isPublic;
+  $('editorTitle').textContent=draft.id?'เติมเต็มเรื่องราวของคุณ':'เริ่มต้นจากเรื่องราวของคุณ';
+  view('editor');previewMbti();step=0;stepTo(0);setSkillCat(skillCat);renderSkills();
+  editorBaseline=JSON.stringify(collectDraft());
+}
+function stepTo(n){
+  if(n>step&&!$('f-name').value.trim()){step=0;stepTo(0);$('f-name').focus();toast('กรุณากรอกชื่อก่อนดำเนินการต่อ');return}
+  const moved=n!==step;step=Math.max(0,Math.min(2,n));
+  document.querySelectorAll('.step').forEach(el=>el.hidden=Number(el.dataset.step)!==step);
+  document.querySelectorAll('.stepper button').forEach((el,i)=>{el.classList.toggle('active',i===step);el.classList.toggle('done',i<step);if(i===step)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current')});
+  $('prev').hidden=step===0;$('next').hidden=step===2;$('saveBtn').hidden=step!==2;
+  if(moved)$('editor').scrollIntoView({block:'start'});
+}
+function setSkillCat(cat){
+  skillCat=cat;
+  document.querySelectorAll('#catTabs .cat-tab').forEach(b=>{const on=b.dataset.cat===cat;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on))});
+  renderGroupOptions();
+}
+function renderGroupOptions(){
+  const previous=$('skillGroup').value;
+  $('skillGroup').innerHTML='<option value="">ทุกหมวดย่อย</option>'+Object.keys(GROUPS[skillCat]).map(g=>'<option value="'+esc(g)+'">'+esc(g)+'</option>').join('');
+  if(Object.keys(GROUPS[skillCat]).includes(previous))$('skillGroup').value=previous;
+  renderSuggestions();
+}
+function hasSkill(name,cat){return draft.skills.findIndex(s=>s.name.toLowerCase()===name.toLowerCase()&&s.category===cat)}
+function renderSuggestions(){
+  const cat=skillCat,q=$('skillSearch').value.toLowerCase().trim(),group=$('skillGroup').value;
+  const list=[...new Set([...SUGGEST[cat],...Object.values(GROUPS[cat]).flat()])].filter(n=>(n.toLowerCase().includes(q)||T(n).toLowerCase().includes(q))&&(!group||groupOf({name:n,category:cat})===group));
+  $('suggestions').innerHTML=list.map(n=>{const picked=hasSkill(n,cat)>=0;return '<button type="button" class="'+(picked?'picked':'')+'" aria-pressed="'+picked+'" data-skill="'+esc(n)+'"><span aria-hidden="true">'+(picked?'✓':'＋')+'</span> '+esc(n)+'</button>'}).join('')||'<small>เพิ่มทักษะที่ต้องการในช่องด้านล่างได้เลย</small>';
+}
+function toggleSuggestion(name){const i=hasSkill(name,skillCat);if(i>=0){draft.skills.splice(i,1);renderSkills()}else addSkill(name,skillCat)}
+function addSkill(name,category){
+  name=name.trim();if(!name)return false;
+  if(draft.skills.length>=90){toast('เพิ่มได้สูงสุด 90 ทักษะ');return false}
+  if(hasSkill(name,category)>=0){toast('มีทักษะนี้แล้ว');return false}
+  draft.skills.push({name,category,level:3,group:$('skillGroup').value||groupOf({name,category}),growing:false});renderSkills();return true;
+}
+function addCustom(){if(addSkill($('customSkill').value,skillCat))$('customSkill').value='';$('customSkill').focus()}
+function skillGroupSelect(s,i){const opts=[...new Set([...Object.keys(GROUPS[s.category]),groupOf(s)])];return '<select class="group-select" aria-label="หมวดย่อย" onchange="draft.skills['+i+'].group=this.value">'+opts.map(g=>'<option value="'+esc(g)+'" '+(groupOf(s)===g?'selected':'')+'>'+esc(g)+'</option>').join('')+'</select>'}
+function levelPicker(s,i){return '<div class="level-picker" role="radiogroup" aria-label="ระดับทักษะ">'+[1,2,3,4,5].map(n=>'<button type="button" role="radio" aria-checked="'+(n===s.level)+'" class="'+(n<=s.level?'on':'')+'" title="'+n+' · '+LEVELS[n]+'" onclick="setLevel('+i+','+n+',this)">'+n+'</button>').join('')+'<span class="level-name">'+LEVELS[s.level]+'</span></div>'}
+function setLevel(i,n,btn){draft.skills[i].level=n;const box=btn.parentElement;box.querySelectorAll('button').forEach((b,k)=>{b.classList.toggle('on',k<n);b.setAttribute('aria-checked',String(k+1===n))});box.querySelector('.level-name').textContent=LEVELS[n]}
+function removeSkill(i){draft.skills.splice(i,1);renderSkills()}
+function renderSkills(){
+  const total=draft.skills.length;
+  $('skillCount').textContent=T('เลือกแล้ว '+total)+' / 90';
+  $('selectedSkills').innerHTML=total?CAT_ORDER.map(cat=>{
+    const items=draft.skills.map((s,i)=>({s,i})).filter(x=>x.s.category===cat);if(!items.length)return '';
+    return '<div class="skill-cat-label"><span class="dot '+cat+'"></span>'+CAT[cat]+' · '+items.length+'</div>'+items.map(({s,i})=>'<div class="skill-item"><div class="name"><strong data-user>'+esc(s.name)+'</strong></div>'+skillGroupSelect(s,i)+levelPicker(s,i)+'<label class="growth-check"><input type="checkbox" '+(s.growing?'checked':'')+' onchange="draft.skills['+i+'].growing=this.checked">อยากพัฒนา</label><button type="button" class="icon-btn" title="ลบทักษะ" aria-label="ลบทักษะ" onclick="removeSkill('+i+')">×</button></div>').join('');
+  }).join(''):'<div class="callout">เลือกทักษะจากตัวอย่างด้านบน แล้วปรับระดับให้ตรงกับตัวคุณ</div>';
+  renderSuggestions();
+}
+async function save(){
+  if(saving)return;if(!$('f-name').value.trim()){stepTo(0);$('f-name').focus();return}
+  draft=collectDraft();saving=true;$('saveBtn').disabled=true;$('saveBtn').textContent=T('กำลังบันทึก…');
+  try{
+    const result=await rpc('saveProfile',draft,auth());
+    draft=result.profile;token=result.token;
+    if(token){storageSet('skillfolio-token-'+draft.id,token);storageSet('skillfolio-mine',draft.id)}
+    editorBaseline=JSON.stringify(collectDraft());
+    current={profile:draft,editable:true,owned:!!result.owned,hasOwner:!!result.owned||!!current?.hasOwner};rememberProfile(current);renderProfile();toast('บันทึกโปรไฟล์เรียบร้อยแล้ว');
+    if(result.owned&&me){me.profileId=draft.id;current.owned=true;renderAccount()}
+    else if(result.token&&!ADMIN&&!storageGet('skillfolio-linkshown-'+draft.id)){storageSet('skillfolio-linkshown-'+draft.id,'1');showPrivateLink()}
+  }catch(e){error(e)}
+  finally{saving=false;$('saveBtn').disabled=false;$('saveBtn').textContent=T('บันทึกโปรไฟล์')}
+}
+
+/* ===================== user accounts ===================== */
+function saveUserSession(s){userSession=s||'';storageSet('skillfolio-session',userSession)}
+function clearUserSession(){saveUserSession('');me=null;profileCache.clear();renderAccount()}
+function renderAccount(){
+  const box=$('account');if(!box)return;
+  if(!me){box.innerHTML='<button type="button" class="btn-sm primary" onclick="openAuth(\'login\')">เข้าสู่ระบบ</button>';return}
+  box.innerHTML='<details class="account-menu"><summary aria-label="บัญชีของฉัน"><span class="avatar sm" aria-hidden="true">'+esc(firstGrapheme(me.name))+'</span><span class="acc-name" data-user>'+esc(me.name)+'</span></summary><div class="menu" role="menu"><div class="menu-head"><strong data-user>'+esc(me.name)+'</strong><small data-user>'+esc(me.email)+'</small></div><button type="button" role="menuitem" onclick="closeMenu();openMine()">'+(me.profileId?'โปรไฟล์ของฉัน':'สร้างโปรไฟล์')+'</button><button type="button" role="menuitem" onclick="closeMenu();openAuth(\'change\')">เปลี่ยนรหัสผ่าน</button><button type="button" role="menuitem" class="danger-text" onclick="closeMenu();signOutUser()">ออกจากระบบ</button></div></details>';
+}
+function closeMenu(){document.querySelectorAll('.account-menu[open]').forEach(d=>d.open=false)}
+document.addEventListener('click',e=>{if(!e.target.closest('.account-menu'))closeMenu()});
+const AUTH_MODES={
+  login:{title:'ยินดีต้อนรับกลับ',submit:'เข้าสู่ระบบ',pw:'รหัสผ่าน',ac:'current-password'},
+  register:{title:'สร้างบัญชี Skillfolio',submit:'สมัครสมาชิก',pw:'รหัสผ่าน',ac:'new-password'},
+  forgot:{title:'ลืมรหัสผ่าน',submit:'ส่งรหัสยืนยันไปที่อีเมล',note:'เราจะส่งรหัส 6 หลักไปที่อีเมลของคุณ รหัสใช้ได้ 15 นาที'},
+  reset:{title:'ตั้งรหัสผ่านใหม่',submit:'ตั้งรหัสผ่านใหม่',pw:'รหัสผ่านใหม่',ac:'new-password',note:'กรอกรหัส 6 หลักจากอีเมล และรหัสผ่านใหม่ที่ต้องการ'},
+  change:{title:'เปลี่ยนรหัสผ่าน',submit:'บันทึกรหัสผ่านใหม่',pw:'รหัสผ่านใหม่',ac:'new-password'}
+};
+let authMode='login';
+function setAuthMode(mode,note){
+  authMode=mode;const m=AUTH_MODES[mode];
+  $('authTitle').textContent=m.title;$('authSubmit').textContent=m.submit;
+  $('authNote').textContent=note||m.note||'';$('authNote').hidden=!(note||m.note);
+  $('authError').textContent='';
+  document.querySelectorAll('#authDialog [data-for]').forEach(el=>el.hidden=!el.dataset.for.split(' ').includes(mode));
+  document.querySelectorAll('#authTabs button').forEach(b=>{const on=b.dataset.mode===mode;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on))});
+  $('authTabs').hidden=!['login','register'].includes(mode);
+  if(m.pw){$('pwLabel').textContent=m.pw;$('a-password').autocomplete=m.ac}
+  $('a-password').value='';$('a-current').value='';
+  const first=[...document.querySelectorAll('#authForm input:not([type=checkbox])')].find(i=>!i.closest('[hidden]')&&!i.value);
+  if(!$('authDialog').contains(document.activeElement)||document.activeElement.tagName!=='INPUT')(first||$('authSubmit')).focus();
+}
+function openAuth(mode='login',note,after){
+  if(ADMIN)return;
+  pendingAfterAuth=after||null;
+  $('authForm').reset();$('a-email').value=storageGet('skillfolio-email');
+  if(!$('authDialog').open)$('authDialog').showModal();
+  setAuthMode(mode,note);
+}
+function closeAuth(){pendingAfterAuth=null;$('authDialog').close()}
+function togglePw(show){['a-password','a-current'].forEach(id=>$(id).type=show?'text':'password')}
+async function submitAuth(){
+  const email=$('a-email').value.trim(),pw=$('a-password').value,name=$('a-name').value.trim(),code=$('a-code').value.trim(),currentPw=$('a-current').value;
+  const need=(cond,msg)=>{if(cond){$('authError').textContent=T(msg);throw 0}};
+  try{
+    if(['login','register','forgot','reset'].includes(authMode))need(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email),'กรุณากรอกอีเมลให้ถูกต้อง');
+    if(authMode==='register')need(!domainAllowed(email),DOMAIN_MSG);
+    if(authMode==='register')need(!name,'กรุณากรอกชื่อ');
+    if(authMode==='reset')need(!/^\d{6}$/.test(code),'กรุณากรอกรหัส 6 หลักจากอีเมล');
+    if(authMode==='change')need(!currentPw,'กรุณากรอกรหัสผ่านปัจจุบัน');
+    if(authMode==='login')need(!pw,'กรุณากรอกรหัสผ่าน');
+    if(['register','reset','change'].includes(authMode))need(pw.length<8,'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+  }catch(e){if(e===0)return;throw e}
+  const btn=$('authSubmit'),label=btn.textContent;btn.disabled=true;btn.textContent=T('กำลังดำเนินการ…');$('authError').textContent='';
+  try{
+    if(authMode==='login')await afterAuth(await rpc('loginUser',email,pw),'เข้าสู่ระบบแล้ว');
+    else if(authMode==='register')await afterAuth(await rpc('registerUser',email,pw,name),'สมัครสมาชิกเรียบร้อยแล้ว');
+    else if(authMode==='forgot'){await rpc('requestPasswordReset',email);setAuthMode('reset','หากอีเมลนี้มีบัญชี เราได้ส่งรหัส 6 หลักไปแล้ว (ตรวจในกล่องสแปมด้วย)')}
+    else if(authMode==='reset')await afterAuth(await rpc('resetPassword',email,code,pw),'ตั้งรหัสผ่านใหม่แล้ว');
+    else if(authMode==='change'){await rpc('changePassword',userSession,currentPw,pw);$('authDialog').close();toast('เปลี่ยนรหัสผ่านแล้ว')}
+  }catch(e){$('authError').textContent=T(String(e.message||e).replace(/^(Exception|Error):\s*/,''))}
+  finally{btn.disabled=false;if(btn.textContent===T('กำลังดำเนินการ…'))btn.textContent=label}
+}
+async function afterAuth(result,message){
+  saveUserSession(result.session);me=result.user;storageSet('skillfolio-email',me.email);
+  profileCache.clear();summaryCache.clear();renderAccount();
+  const next=pendingAfterAuth;pendingAfterAuth=null;$('authDialog').close();
+  toast(message);
+  await claimLocalProfile();
+  if(next)next();
+  else if(current&&!$('profile').hidden)openProfile(current.profile.id);
+}
+/** Links a profile created earlier on this device (anonymous edit link) to the new account. */
+async function claimLocalProfile(){
+  const id=storageGet('skillfolio-mine'),t=id&&storageGet('skillfolio-token-'+id);
+  if(!me||me.profileId||!id||!t)return;
+  try{await rpc('claimProfile',id,auth({token:t}));me.profileId=id;renderAccount();toast('เชื่อมโปรไฟล์เดิมในอุปกรณ์นี้กับบัญชีแล้ว')}catch(e){}
+}
+async function claimCurrent(){
+  if(!me){openAuth('login','เข้าสู่ระบบหรือสมัครสมาชิก เพื่อเชื่อมโปรไฟล์นี้กับบัญชีของคุณ',claimCurrent);return}
+  try{await rpc('claimProfile',current.profile.id,auth());me.profileId=current.profile.id;current.owned=true;current.hasOwner=true;renderAccount();renderProfile();toast('เชื่อมโปรไฟล์กับบัญชีแล้ว')}catch(e){error(e)}
+}
+async function signOutUser(){
+  if(!canLeaveEditor())return;editorBaseline=JSON.stringify(collectDraft());
+  const previous=userSession;clearUserSession();token='';
+  if(!$('profile').hidden||!$('editor').hidden)showDirectory();
+  toast('ออกจากระบบแล้ว');
+  try{await rpc('logoutUser',previous)}catch(e){}
+}
+async function restoreUser(){
+  if(ADMIN||!userSession){renderAccount();return}
+  try{me=await rpc('getMe',userSession)}catch(e){me=null;saveUserSession('')}
+  renderAccount();await claimLocalProfile();
+}
+
+/* ===================== admin ===================== */
+function teamMetrics(people){
+  const skills=new Map(),levels=[0,0,0,0,0],categories={};CAT_ORDER.forEach(c=>categories[c]={people:0,total:0});
+  people.forEach(p=>{
+    const seen=new Set();
+    CAT_ORDER.forEach(c=>{const ss=p.skills.filter(s=>s.category===c);if(ss.length){categories[c].people++;categories[c].total+=ss.reduce((n,s)=>n+s.level,0)/ss.length}});
+    p.skills.forEach(s=>{levels[s.level-1]++;const key=s.category+':'+s.name.trim().toLowerCase();if(seen.has(key))return;seen.add(key);let row=skills.get(key);if(!row){row={name:s.name,category:s.category,people:0,total:0,experts:0,growing:0};skills.set(key,row)}row.people++;row.total+=s.level;if(s.level>=4)row.experts++;if(s.growing)row.growing++});
+  });
+  const rows=[...skills.values()].map(s=>({...s,average:s.total/s.people,coverage:people.length?s.people/people.length*100:0}));
+  return {rows,levels,categories,assessed:people.filter(p=>p.skills.length).length,publicCount:people.filter(p=>p.isPublic).length,skillCount:people.reduce((n,p)=>n+p.skills.length,0)};
+}
+function dashboardRows(rows,kind){if(!rows.length)return '<p class="muted">'+T('ยังไม่มีข้อมูล')+'</p>';return rows.slice(0,6).map(s=>'<div class="insight-row"><div><span data-user>'+esc(s.name)+'</span><small>'+CAT[s.category]+'</small></div><strong>'+(kind==='growth'?s.growing:s.experts)+' '+T('คน')+'</strong></div>').join('')}
+function renderTeamDashboard(){
+  if(!ADMIN)return;
+  const department=$('teamFilter').value,people=profiles.filter(p=>!department||p.department===department),m=teamMetrics(people),n=people.length;
+  const strength=m.rows.filter(s=>s.experts>0).sort((a,b)=>b.experts-a.experts||b.average-a.average);
+  const growth=m.rows.filter(s=>s.growing>0).sort((a,b)=>b.growing-a.growing);
+  const scarce=m.rows.filter(s=>s.experts>=1&&s.experts<=2).sort((a,b)=>a.experts-b.experts||b.people-a.people);
+  const table=[...m.rows].sort((a,b)=>b.people-a.people||b.average-a.average),total=m.levels.reduce((a,b)=>a+b,0),maxLevel=Math.max(1,...m.levels);
+  $('adminInsights').hidden=false;
+  $('adminInsights').innerHTML='<div class="dashboard-heading"><h2>ภาพรวมศักยภาพของทีม</h2><small>'+n+' '+T('คนในกลุ่มที่เลือก')+'</small></div>'
+    +'<div class="stats dashboard-stats">'+[[n,'สมาชิก'],[n?Math.round(m.assessed/n*100)+'%':'—','มีข้อมูลทักษะ'],[n?(m.skillCount/n).toFixed(1):'—','ทักษะเฉลี่ยต่อคน'],[m.publicCount+' / '+(n-m.publicCount),'สาธารณะ / ส่วนตัว']].map(([v,l])=>'<div class="stat"><strong>'+v+'</strong><span>'+l+'</span></div>').join('')+'</div>'
+    +'<div class="dashboard-grid">'
+    +'<section class="dashboard-box"><h3>ระดับทักษะตามหมวดหลัก</h3><p class="hint">ค่าเฉลี่ยรายคน เฉพาะผู้ที่ระบุทักษะในหมวดนั้น</p>'+CAT_ORDER.map(c=>{const cat=m.categories[c],v=cat.people?cat.total/cat.people:0;return '<div class="metric-row"><span><span class="dot '+c+'" style="margin-right:8px"></span>'+CAT[c]+'</span><strong>'+(cat.people?v.toFixed(1)+' / 5':'—')+'</strong><span class="mini-bar"><i style="width:'+v*20+'%;background:'+CAT_COLOR[c]+'"></i></span><small>'+cat.people+' '+T('คนที่ให้ข้อมูล')+'</small></div>'}).join('')+'</section>'
+    +'<section class="dashboard-box"><h3>การกระจายระดับทักษะ</h3><p class="hint">นับรายการทักษะที่ประเมิน ไม่ใช่จำนวนคน</p>'+m.levels.map((v,i)=>'<div class="metric-row"><span>'+(i+1)+' · '+LEVELS[i+1]+'</span><strong>'+v+(total?' <small style="display:inline">('+Math.round(v/total*100)+'%)</small>':'')+'</strong><span class="mini-bar"><i style="width:'+(v/maxLevel*100)+'%"></i></span></div>').join('')+'</section>'
+    +'<section class="dashboard-box"><h3>จุดแข็งร่วมของทีม</h3><p class="hint">จำนวนผู้ประเมินระดับ 4–5</p>'+dashboardRows(strength,'strength')+'</section>'
+    +'<section class="dashboard-box"><h3>ความต้องการพัฒนา</h3><p class="hint">จำนวนผู้เลือกอยากพัฒนาในแต่ละทักษะ</p>'+dashboardRows(growth,'growth')+'</section>'
+    +'<section class="dashboard-box dashboard-wide"><h3>ทักษะที่มีผู้ชำนาญเพียง 1–2 คน</h3><p class="hint">ใช้วางแผนถ่ายทอดความรู้ ไม่ใช่ข้อสรุปว่าทีมขาดทักษะ</p>'+dashboardRows(scarce,'scarce')+'</section></div>'
+    +'<h3 style="margin-top:28px">ความครอบคลุมทักษะของทีม</h3><p class="hint">แสดงทุกทักษะในกลุ่มที่เลือก ไม่มีคะแนนหมายถึงยังไม่มีข้อมูล</p>'
+    +'<div class="table-scroll"><table class="team-table"><thead><tr>'+['ทักษะ','คนที่ระบุ','สัดส่วนทีม','ระดับเฉลี่ย','ชำนาญ 4–5','อยากพัฒนา'].map(t=>'<th scope="col">'+t+'</th>').join('')+'</tr></thead><tbody>'+(table.map(s=>'<tr><td><span data-user>'+esc(s.name)+'</span><small>'+CAT[s.category]+'</small></td><td>'+s.people+'</td><td>'+Math.round(s.coverage)+'%</td><td>'+s.average.toFixed(1)+'</td><td>'+s.experts+'</td><td>'+s.growing+'</td></tr>').join('')||'<tr><td colspan="6">ยังไม่มีข้อมูล</td></tr>')+'</tbody></table></div>'
+    +'<p class="hint" style="margin-top:12px">ข้อมูลประเมินตนเอง ใช้สนทนาเรื่องการพัฒนาและการแบ่งปันความรู้ ไม่ใช้จัดอันดับบุคคล</p>';
+}
+function updateTeamFilter(){
+  if(!ADMIN)return;const value=$('teamFilter').value,departments=[...new Set(profiles.map(p=>p.department).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'th'));
+  $('teamFilter').innerHTML='<option value="">ทุกหน่วยงาน</option>'+departments.map(d=>'<option data-user value="'+esc(d)+'">'+esc(d)+'</option>').join('');
+  $('teamFilter').value=departments.includes(value)?value:'';renderTeamDashboard();
+}
+function lockAdmin(){
+  if(!ADMIN)return;
+  clearViewCache();adminSession='';current=null;draft={skills:[]};token='';editorBaseline='';
+  VIEWS.forEach(id=>{if($(id))$(id).hidden=true});if($('userDialog')?.open)$('userDialog').close();users=[];usersReady=false;logState={items:[],total:0,userId:'',loading:false};
+  ['cards','profile','adminInsights','selectedSkills','userRows','userStats','logRows','userBody'].forEach(id=>{if($(id))$(id).innerHTML=''});
+  $('profileForm').reset();$('privateLink').value='';if($('linkDialog').open)$('linkDialog').close();
+  $('adminLogin').hidden=false;$('mainNav').hidden=true;$('loadError').hidden=true;$('adminPassword').value='';$('adminPassword').focus();
+}
+async function signInAdmin(){
+  $('loginButton').disabled=true;$('loginError').textContent='';
+  try{adminSession=await rpc('loginAdmin',$('adminPassword').value);$('adminPassword').value='';$('adminLogin').hidden=true;$('mainNav').hidden=false;view('directory');await boot()}
+  catch(e){$('loginError').textContent=T(String(e.message||'เข้าสู่ระบบไม่สำเร็จ').replace(/^(Exception|Error):\s*/,''))}
+  finally{$('loginButton').disabled=false}
+}
+async function signOutAdmin(){if(!canLeaveEditor())return;editorBaseline=JSON.stringify(collectDraft());const previous=adminSession;lockAdmin();try{await rpc('logoutAdmin',previous)}catch(e){toast('ออกจากหน้านี้แล้ว แต่ไม่สามารถยกเลิกเซสชันบนเซิร์ฟเวอร์ได้')}}
+function goAdmin(){if(canLeaveEditor())window.open(APP_URL+'admin.html','_top')}
+function goHome(){if(canLeaveEditor())window.open(APP_URL,'_top')}
+
+
+/* ===================== admin: users & access log ===================== */
+const EVENTS={
+  register:['สมัครสมาชิกใหม่','ok'],login:['เข้าสู่ระบบ','ok'],visit:['เปิดใช้งานแอป','info'],logout:['ออกจากระบบ','info'],
+  login_fail:['เข้าสู่ระบบไม่สำเร็จ','bad'],login_blocked:['บัญชีถูกล็อก พยายามเข้าสู่ระบบ','bad'],
+  reset_request:['ขอรหัสตั้งรหัสผ่านใหม่','info'],reset:['ตั้งรหัสผ่านใหม่ทางอีเมล','info'],password_change:['เปลี่ยนรหัสผ่าน','info'],
+  profile_create:['สร้างโปรไฟล์ใหม่','ok'],profile_delete:['ลบโปรไฟล์','warn'],
+  admin_login:['ผู้ดูแลเข้าสู่ระบบ','admin'],admin_login_fail:['ผู้ดูแลใส่รหัสผิด','bad'],admin_edit:['ผู้ดูแลแก้ไขข้อมูลบัญชี','admin'],
+  admin_lock:['ผู้ดูแลล็อกบัญชี','warn'],admin_unlock:['ผู้ดูแลปลดล็อกบัญชี','admin'],admin_password:['ผู้ดูแลตั้งรหัสผ่านใหม่','admin'],
+  admin_revoke:['ผู้ดูแลบังคับออกจากระบบ','admin'],admin_delete:['ผู้ดูแลลบบัญชี','warn']
+};
+let users=[],usersReady=false,userFilter='',openUserId='',logState={items:[],total:0,userId:'',loading:false};
+function fmtTime(iso){if(!iso)return '—';const d=new Date(iso);if(isNaN(d))return '—';return d.toLocaleString(lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function relTime(iso){
+  if(!iso)return 'ยังไม่เคย';const s=(Date.now()-new Date(iso).getTime())/1000;if(isNaN(s))return '—';
+  if(s<60)return T('เมื่อสักครู่');const m=s/60,h=m/60,d=h/24;
+  if(lang==='en')return m<60?Math.floor(m)+' min ago':h<24?Math.floor(h)+' h ago':d<30?Math.floor(d)+' d ago':fmtTime(iso);
+  return m<60?Math.floor(m)+' นาทีที่แล้ว':h<24?Math.floor(h)+' ชั่วโมงที่แล้ว':d<30?Math.floor(d)+' วันที่แล้ว':fmtTime(iso);
+}
+function timeCell(iso){return '<span title="'+esc(fmtTime(iso))+'" data-i18n-skip>'+esc(relTime(iso))+'</span>'}
+function statusBadge(u){return (u.domainAllowed===false?'<span class="status-badge warn">อีเมลนอกโดเมน</span> ':'')+(u.status==='locked'?'<span class="status-badge locked">ถูกล็อก</span>':u.failedAttempts>=5?'<span class="status-badge warn">ล็อกชั่วคราว (รหัสผิด)</span>':'<span class="status-badge public">ใช้งานได้</span>')}
+function eventBadge(e){const [label,kind]=EVENTS[e]||[e,'info'];return '<span class="event-badge '+kind+'">'+label+'</span>'}
+function showUsers(){if(!canLeaveEditor())return;view('users');loadUsers()}
+function showLogs(userId){if(!canLeaveEditor())return;if(typeof userId==='string')logState.userId=userId;view('logs');loadLogs(true)}
+async function loadUsers(force){
+  if(usersReady&&!force){renderUsers();return}
+  $('userRows').innerHTML='<tr><td colspan="6"><div class="loading-panel" style="min-height:80px"><span class="spinner"></span>'+T('กำลังโหลดข้อมูล…')+'</div></td></tr>';
+  try{users=await rpc('adminListUsers',auth());usersReady=true;renderUsers();if(openUserId&&$('userDialog').open)renderUserDialog()}
+  catch(e){$('userRows').innerHTML='<tr><td colspan="6">'+esc(T(String(e.message||e)))+'</td></tr>'}
+}
+function setUserFilter(f){userFilter=f;document.querySelectorAll('#userChips .chip').forEach(b=>{const on=b.dataset.f===f;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});renderUsers()}
+function renderUsers(){
+  const q=$('userSearch').value.trim().toLowerCase(),week=Date.now()-7*86400000;
+  const locked=users.filter(u=>u.status==='locked'||u.failedAttempts>=5).length;
+  $('userStats').innerHTML=[[users.length,'ผู้ใช้ทั้งหมด'],[users.filter(u=>new Date(u.lastSeenAt).getTime()>week).length,'ใช้งานใน 7 วัน'],[locked,'ถูกล็อก'],[users.filter(u=>!u.profile).length,'ยังไม่มีโปรไฟล์']].map(([n,l])=>'<div class="stat"><strong>'+n+'</strong><span>'+l+'</span></div>').join('');
+  const list=users.filter(u=>(!q||(u.name+' '+u.email+' '+(u.profile?u.profile.name:'')).toLowerCase().includes(q))&&(userFilter===''||(userFilter==='locked'?u.status==='locked'||u.failedAttempts>=5:userFilter==='active'?u.status!=='locked':userFilter==='noprofile'?!u.profile:true)))
+    .sort((a,b)=>String(b.lastSeenAt).localeCompare(String(a.lastSeenAt)));
+  $('userCount').textContent=T(list.length+' คน');
+  $('userRows').innerHTML=list.map(u=>'<tr class="clickable" tabindex="0" onclick="openUser(\''+esc(u.id)+'\')" onkeydown="if(event.key===\'Enter\')openUser(\''+esc(u.id)+'\')"><td><div class="person"><div class="avatar sm" aria-hidden="true">'+esc(firstGrapheme(u.name))+'</div><div><strong data-user>'+esc(u.name)+'</strong><small data-user>'+esc(u.email)+'</small></div></div></td><td>'+statusBadge(u)+'</td><td>'+(u.profile?'<span data-user>'+esc(u.profile.name)+'</span><small>'+(u.profile.isPublic?'เปิดเผย':'ส่วนตัว')+' · '+u.profile.skills+' ทักษะ</small>':'<span class="muted">—</span>')+'</td><td>'+timeCell(u.lastSeenAt)+'</td><td>'+timeCell(u.createdAt)+'</td><td>'+u.sessions+'</td></tr>').join('')
+    ||'<tr><td colspan="6" class="muted" style="text-align:center;padding:32px">'+(users.length?'ไม่พบผู้ใช้ที่ตรงกับตัวกรอง':'ยังไม่มีผู้ใช้สมัครสมาชิก')+'</td></tr>';
+}
+function openUser(id){openUserId=id;renderUserDialog();if(!$('userDialog').open)$('userDialog').showModal();loadUserLog(id)}
+function renderUserDialog(){
+  const u=users.find(x=>x.id===openUserId);if(!u){$('userDialog').close();return}
+  const locked=u.status==='locked';
+  $('userBody').innerHTML='<header class="ud-head"><div class="avatar" aria-hidden="true">'+esc(firstGrapheme(u.name))+'</div><div><h2 data-user>'+esc(u.name)+'</h2><p data-user class="muted">'+esc(u.email)+'</p><div class="badges">'+statusBadge(u)+'</div></div></header>'
+   +'<dl class="ud-meta"><div><dt>สมัครเมื่อ</dt><dd data-i18n-skip>'+esc(fmtTime(u.createdAt))+'</dd></div><div><dt>เข้าสู่ระบบล่าสุด</dt><dd data-i18n-skip>'+esc(fmtTime(u.lastLoginAt))+'</dd></div><div><dt>ใช้งานล่าสุด</dt><dd>'+timeCell(u.lastSeenAt)+'</dd></div><div><dt>อุปกรณ์ที่เข้าสู่ระบบอยู่</dt><dd>'+u.sessions+'</dd></div><div><dt>ใส่รหัสผิดติดกัน</dt><dd>'+u.failedAttempts+'</dd></div></dl>'
+   +'<section class="ud-section"><h3>ข้อมูลบัญชี</h3><form class="ud-form" onsubmit="event.preventDefault();saveUserInfo()"><label>ชื่อที่ใช้แสดง<input id="u-name" maxlength="100" value="'+esc(u.name)+'"></label><label>อีเมล<input id="u-email" type="email" maxlength="200" value="'+esc(u.email)+'"></label><button type="submit">บันทึกข้อมูลบัญชี</button></form></section>'
+   +'<section class="ud-section"><h3>โปรไฟล์</h3>'+(u.profile?'<div class="ud-row"><div><strong data-user>'+esc(u.profile.name)+'</strong><small>'+(u.profile.isPublic?'เปิดเผย':'ส่วนตัว')+' · '+u.profile.skills+' ทักษะ</small></div><div class="ud-actions"><button type="button" onclick="adminOpenProfile(\''+esc(u.profile.id)+'\',false)">ดูโปรไฟล์</button><button type="button" onclick="adminOpenProfile(\''+esc(u.profile.id)+'\',true)">แก้ไขโปรไฟล์</button></div></div>':'<p class="muted">ยังไม่มีโปรไฟล์</p>')+'</section>'
+   +'<section class="ud-section"><h3>ความปลอดภัย</h3>'
+     +'<div class="ud-row"><div><strong>'+(locked?'ปลดล็อกบัญชี':'ล็อกบัญชี')+'</strong><small>'+(locked?'ผู้ใช้จะกลับมาเข้าสู่ระบบได้ตามปกติ':'ผู้ใช้จะเข้าสู่ระบบไม่ได้ และถูกออกจากระบบทุกอุปกรณ์ทันที โปรไฟล์ยังอยู่')+'</small></div><button type="button" class="'+(locked?'primary':'danger')+'" onclick="toggleUserLock()">'+(locked?'ปลดล็อก':'ล็อกบัญชี')+'</button></div>'
+     +(!locked&&u.failedAttempts>=5?'<div class="ud-row"><div><strong>ล้างการล็อกชั่วคราว</strong><small>ใส่รหัสผิด 5 ครั้ง ระบบล็อกไว้ 10 นาที</small></div><button type="button" onclick="clearUserLockout()">ล้างการล็อก</button></div>':'')
+     +'<div class="ud-row"><div><strong>บังคับออกจากระบบทุกอุปกรณ์</strong><small>'+u.sessions+' อุปกรณ์ที่เข้าสู่ระบบอยู่</small></div><button type="button" onclick="revokeUserSessions()" '+(u.sessions?'':'disabled')+'>ออกจากระบบทั้งหมด</button></div>'
+     +'<form class="ud-row" onsubmit="event.preventDefault();setUserPassword()"><div class="grow"><strong>ตั้งรหัสผ่านใหม่ให้ผู้ใช้</strong><small>แจ้งรหัสใหม่ให้ผู้ใช้เอง ระบบไม่ส่งอีเมล · ผู้ใช้จะถูกออกจากระบบทุกอุปกรณ์</small><input id="u-password" type="text" autocomplete="off" minlength="8" maxlength="200" placeholder="อย่างน้อย 8 ตัวอักษร"></div><button type="submit">ตั้งรหัสผ่าน</button></form>'
+   +'</section>'
+   +'<section class="ud-section"><div class="panel-head" style="margin-bottom:8px"><h3>กิจกรรมล่าสุด</h3><button type="button" class="link" onclick="$(\'userDialog\').close();showLogs(\''+esc(u.id)+'\')">ดูทั้งหมด →</button></div><div id="userLog"><div class="loading-panel" style="min-height:60px"><span class="spinner"></span></div></div></section>'
+   +'<section class="ud-section danger-zone"><h3>ลบบัญชี</h3><p class="hint">ลบบัญชีถาวร ผู้ใช้จะเข้าสู่ระบบไม่ได้อีก</p>'+(u.profile?'<label class="check"><input type="checkbox" id="u-delete-profile"> ลบโปรไฟล์ของผู้ใช้นี้ด้วย <span class="opt">(ถ้าไม่เลือก โปรไฟล์จะยังอยู่ แต่ไม่ผูกกับบัญชีใด)</span></label>':'')+'<button type="button" class="danger" onclick="deleteUserAccount()">ลบบัญชีนี้</button></section>';
+}
+async function loadUserLog(id){
+  try{const r=await rpc('adminListLogs',auth(),{userId:id,limit:8});if(openUserId!==id||!$('userLog'))return;$('userLog').innerHTML=r.items.length?'<ul class="mini-log">'+r.items.map(x=>'<li>'+eventBadge(x.event)+'<span class="detail" data-user>'+esc(x.detail)+'</span>'+timeCell(x.time)+'</li>').join('')+'</ul>':'<p class="muted">ยังไม่มีกิจกรรม</p>'}
+  catch(e){if($('userLog'))$('userLog').innerHTML='<p class="muted">'+esc(T(String(e.message||e)))+'</p>'}
+}
+async function userAction(fn,args,message,button){
+  const btns=[...$('userBody').querySelectorAll('button')];btns.forEach(b=>b.disabled=true);
+  try{const r=await rpc(fn,auth(),openUserId,...args);toast(message);await loadUsers(true);loadUserLog(openUserId);return r}
+  catch(e){error(e)}finally{btns.forEach(b=>b.disabled=false)}
+}
+function saveUserInfo(){const name=$('u-name').value.trim(),email=$('u-email').value.trim();if(!name){toast('กรุณากรอกชื่อ');return}userAction('adminUpdateUser',[{name,email}],'บันทึกข้อมูลบัญชีแล้ว')}
+function toggleUserLock(){const u=users.find(x=>x.id===openUserId),lock=u.status!=='locked';if(lock&&!confirm(T('ล็อกบัญชีนี้? ผู้ใช้จะถูกออกจากระบบทุกอุปกรณ์ทันที')+'\n'+u.email))return;userAction('adminSetUserLocked',[lock],lock?'ล็อกบัญชีแล้ว':'ปลดล็อกบัญชีแล้ว')}
+function clearUserLockout(){userAction('adminSetUserLocked',[false],'ล้างการล็อกชั่วคราวแล้ว')}
+function revokeUserSessions(){userAction('adminRevokeSessions',[],'บังคับออกจากระบบแล้ว')}
+function setUserPassword(){const pw=$('u-password').value;if(pw.length<8){toast('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');return}if(!confirm(T('ตั้งรหัสผ่านใหม่ให้ผู้ใช้นี้?')))return;userAction('adminSetPassword',[pw],'ตั้งรหัสผ่านใหม่แล้ว แจ้งรหัสให้ผู้ใช้ทราบ')}
+async function deleteUserAccount(){
+  const u=users.find(x=>x.id===openUserId),withProfile=!!($('u-delete-profile')&&$('u-delete-profile').checked);
+  if(!confirm(T('ลบบัญชีนี้ถาวร? ไม่สามารถกู้คืนได้')+'\n'+u.name+' · '+u.email+(withProfile?'\n'+T('โปรไฟล์จะถูกลบด้วย'):'')))return;
+  try{await rpc('adminDeleteUser',auth(),u.id,withProfile);$('userDialog').close();toast('ลบบัญชีแล้ว');profiles=profiles.filter(p=>!(withProfile&&u.profile&&p.id===u.profile.id));directoryReady=false;await loadUsers(true)}catch(e){error(e)}
+}
+function adminOpenProfile(id,edit){$('userDialog').close();openProfile(id).then(()=>{if(edit&&current)editCurrent()})}
+/* access log */
+async function loadLogs(reset){
+  if(logState.loading)return;logState.loading=true;
+  if(reset){logState.items=[];$('logRows').innerHTML='<tr><td colspan="4"><div class="loading-panel" style="min-height:80px"><span class="spinner"></span></div></td></tr>'}
+  const who=users.find(u=>u.id===logState.userId);
+  $('logUserFilter').hidden=!logState.userId;$('logUserName').textContent=who?who.name+' · '+who.email:logState.userId;
+  try{
+    const r=await rpc('adminListLogs',auth(),{userId:logState.userId,event:$('logEvent').value,q:$('logSearch').value,offset:logState.items.length,limit:100});
+    logState.items=logState.items.concat(r.items);logState.total=r.total;renderLogs();
+  }catch(e){$('logRows').innerHTML='<tr><td colspan="4">'+esc(T(String(e.message||e)))+'</td></tr>'}
+  finally{logState.loading=false}
+  if(!usersReady)loadUsers().then(()=>{const w=users.find(u=>u.id===logState.userId);if(w)$('logUserName').textContent=w.name+' · '+w.email}).catch(()=>{});
+}
+let logTimer;function queueLogs(){clearTimeout(logTimer);logTimer=setTimeout(()=>loadLogs(true),300)}
+function clearLogUser(){logState.userId='';loadLogs(true)}
+function renderLogs(){
+  $('logCount').textContent=T(logState.total+' รายการ');
+  $('logRows').innerHTML=logState.items.map(x=>'<tr><td>'+timeCell(x.time)+'<small data-i18n-skip>'+esc(fmtTime(x.time))+'</small></td><td>'+eventBadge(x.event)+'</td><td>'+(x.userId&&users.some(u=>u.id===x.userId)?'<button type="button" class="link" onclick="openUser(\''+esc(x.userId)+'\')"><span data-user>'+esc(x.name||x.email)+'</span></button><small data-user>'+esc(x.name?x.email:'')+'</small>':'<span data-user>'+esc(x.name||x.email||'—')+'</span>')+'</td><td class="detail" data-user>'+esc(x.detail)+'</td></tr>').join('')
+    ||'<tr><td colspan="4" class="muted" style="text-align:center;padding:32px">ยังไม่มีบันทึกที่ตรงกับตัวกรอง</td></tr>';
+  $('moreLogs').hidden=logState.items.length>=logState.total;
+}
+if(ADMIN&&$('userChips')){
+  document.querySelectorAll('#userChips .chip').forEach(b=>b.addEventListener('click',()=>setUserFilter(b.dataset.f)));
+  $('userDialog').addEventListener('click',e=>{if(e.target===$('userDialog'))$('userDialog').close()});
+  $('userDialog').addEventListener('close',()=>{openUserId=''});
+}
+
+/* ===================== boot ===================== */
+async function boot(){
+  if(ADMIN&&!adminSession)return;
+  if(ADMIN)$('pageTitle').innerHTML='ภาพรวมผู้คน<br>และศักยภาพของทีม';
+  await Promise.all([load(),ADMIN?null:restoreUser()]);
+  let initToken='';
+  try{initToken=new URLSearchParams(location.hash.slice(1)).get('token')||''}catch(e){}
+  if(INITIAL_ID){if(initToken){storageSet('skillfolio-token-'+INITIAL_ID,initToken);storageSet('skillfolio-mine',INITIAL_ID)}await openProfile(INITIAL_ID,initToken)}
+}
+document.querySelectorAll('#filterChips .chip').forEach(b=>b.addEventListener('click',()=>setFilter(b.dataset.cat)));
+document.querySelectorAll('#catTabs .cat-tab').forEach(b=>b.addEventListener('click',()=>setSkillCat(b.dataset.cat)));
+$('suggestions').addEventListener('click',e=>{const b=e.target.closest('button[data-skill]');if(b)toggleSuggestion(b.dataset.skill)});
+$('linkDialog').addEventListener('click',e=>{if(e.target===$('linkDialog'))$('linkDialog').close()});
+function applyConfig(c){
+  EMAIL_DOMAINS=Array.isArray(c&&c.emailDomains)?c.emailDomains:[];
+  DOMAIN_MSG=EMAIL_DOMAINS.length?'ใช้ได้เฉพาะอีเมล '+EMAIL_DOMAINS.map(d=>'@'+d).join(', ')+' เท่านั้น':'';
+  if($('domainHelp')){$('domainHelp').textContent=DOMAIN_MSG;$('domainHelp').dataset.for=DOMAIN_MSG?'register':'none'}
+}
+applyConfig({});
+rpc('getConfig').then(applyConfig).catch(e=>console.warn('getConfig failed: '+e.message));
+if($('authDialog')){$('authDialog').addEventListener('click',e=>{if(e.target===$('authDialog'))closeAuth()});document.querySelectorAll('#authTabs button').forEach(b=>b.addEventListener('click',()=>setAuthMode(b.dataset.mode)))}
+window.addEventListener('beforeunload',e=>{if(isDirty()){e.preventDefault();e.returnValue=''}});
+initMbti();
+initLanguage();
+setNav('directory');renderAccount();
+if(ADMIN)$('adminPassword').focus();else boot();
+
+</script></body></html>
