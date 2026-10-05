@@ -857,16 +857,22 @@ function auth(extra){return Object.assign({token,admin:adminSession,user:userSes
 // even though the call ran. Resending with the same id is safe: the server returns the reply it
 // stored for that id instead of running the call again.
 function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
+const RPC_TRIES=5,RPC_TIMEOUT=40000; // up to 5 sends, 1s/2s/4s/8s apart; give up on a send after 40s
 function rpc(fn,...args){
   const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
-  const send=attempt=>fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body})
-    .then(r=>r,e=>({network:true}))
-    .then(r=>{
-      const lost=r.network||r.status===404;
-      if(lost&&attempt<2)return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
-      if(r.network)throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
-      return r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')});
-    });
+  const send=attempt=>{
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),RPC_TIMEOUT);
+    return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body,signal:ctl.signal})
+      .then(r=>r.text().then(text=>({status:r.status,text})),()=>({network:true}))
+      .finally(()=>clearTimeout(timer))
+      .then(r=>{
+        let res=null;
+        if(!r.network){try{res=JSON.parse(r.text)}catch(e){}}
+        if(!res&&attempt<RPC_TRIES-1)return new Promise(ok=>setTimeout(ok,1000*2**attempt)).then(()=>send(attempt+1));
+        if(!res)throw new Error(r.network?'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาลองใหม่อีกครั้ง':'เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')');
+        return res;
+      });
+  };
   return send(0)
     .then(res=>{
       if(!res||!res.ok){
@@ -1349,10 +1355,10 @@ function lockAdmin(){
   $('adminLogin').hidden=false;$('mainNav').hidden=true;$('loadError').hidden=true;$('adminPassword').value='';$('adminPassword').focus();
 }
 async function signInAdmin(){
-  $('loginButton').disabled=true;$('loginError').textContent='';
+  $('loginButton').disabled=true;$('loginError').textContent='';$('loginButton').textContent=T('กำลังเข้าสู่ระบบ…');
   try{adminSession=await rpc('loginAdmin',$('adminPassword').value);$('adminPassword').value='';$('adminLogin').hidden=true;$('mainNav').hidden=false;view('directory');await boot()}
   catch(e){$('loginError').textContent=T(String(e.message||'เข้าสู่ระบบไม่สำเร็จ').replace(/^(Exception|Error):\s*/,''))}
-  finally{$('loginButton').disabled=false}
+  finally{$('loginButton').disabled=false;$('loginButton').textContent=T('เข้าสู่ระบบ')}
 }
 async function signOutAdmin(){if(!canLeaveEditor())return;editorBaseline=JSON.stringify(collectDraft());const previous=adminSession;lockAdmin();try{await rpc('logoutAdmin',previous)}catch(e){toast('ออกจากหน้านี้แล้ว แต่ไม่สามารถยกเลิกเซสชันบนเซิร์ฟเวอร์ได้')}}
 function goAdmin(){if(canLeaveEditor())window.open(APP_URL+'admin.html','_top')}
