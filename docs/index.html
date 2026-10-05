@@ -756,11 +756,21 @@ function initLanguage(){
 let adminSession='';
 let userSession=ADMIN?'':storageGet('skillfolio-session'),me=null,pendingAfterAuth=null;
 function auth(extra){return Object.assign({token,admin:adminSession,user:userSession},extra||{})}
+// Google sometimes loses an Apps Script reply (HTTP 404 on the googleusercontent redirect)
+// even though the call ran. These calls are safe to send again.
+const RPC_RETRY_SAFE=new Set(['getConfig','listProfiles','getProfile','getMe','adminListUsers','adminListLogs','loginAdmin','logoutAdmin','logoutUser']);
+function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
 function rpc(fn,...args){
-  const session=adminSession;
-  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn,args})})
-    .catch(()=>{throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่')})
-    .then(r=>r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')}))
+  const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
+  const send=attempt=>fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body})
+    .then(r=>r,e=>({network:true}))
+    .then(r=>{
+      const lost=r.network||r.status===404;
+      if(lost&&attempt<2&&RPC_RETRY_SAFE.has(fn))return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
+      if(r.network)throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
+      return r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')});
+    });
+  return send(0)
     .then(res=>{
       if(!res||!res.ok){
         const msg=String(res&&res.error||'เกิดข้อผิดพลาดที่เซิร์ฟเวอร์');
