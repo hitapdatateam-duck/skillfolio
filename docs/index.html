@@ -5,7 +5,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzirJ5gSFwHWI0WO-gWppAv
 const APP_URL = 'https://hitapdatateam-duck.github.io/skillfolio/'; // GitHub Pages (ลงท้ายด้วย /)
 </script><meta name="viewport" content="width=device-width,initial-scale=1"><title>Skillfolio | รู้จักทักษะ รู้จักตัวเอง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
 <style>
 /* ===== Skillfolio — one stylesheet, one type scale ===== */
 :root{
@@ -502,6 +502,80 @@ footer .powered{font-weight:600;color:var(--accent-ink);letter-spacing:.01em}
   .radar-panel .radar-figure{position:static}
   .profilehead,.segments,.mini-bar,.mbti-badge,.lg-num,.dot,.stepper,.radar{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
+</style>
+<style id="theme-gold">
+/* ===== ธีมทอง (แนว fora.so): ซ้อนทับสไตล์เดิม ===== */
+:root{
+  --font:"Inter","Noto Sans Thai",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --mono:"Fragment Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gold:#c9a45c;--yellow:#f3e2ac;
+  --shadow:0 1px 2px rgba(42,41,37,.04),0 12px 32px rgba(42,41,37,.07);
+}
+.brand{font-family:"Manrope","Noto Sans Thai",sans-serif}
+h1{font-weight:400;letter-spacing:-.02em}
+h2{font-weight:500;letter-spacing:-.015em}
+main{border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.topbar{background:rgba(251,250,247,.82);border-bottom-color:rgba(230,226,217,.7)}
+
+/* ปุ่มและช่องกรอกทรงแคปซูล */
+button{border-radius:999px}
+.mainnav button{border-radius:999px;font-size:14px}
+button:not(.primary):not(.ghost):not(.chip):not(.link):hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,164,92,.14)}
+.search input{border-radius:999px;background:var(--surface)}
+input,select,textarea{border-radius:12px}
+.account-menu .menu,dialog{border-radius:20px}
+.account-menu .menu button,.account-menu .menu button:hover{border-radius:10px;box-shadow:none}
+
+/* ป้ายเล็ก ตัวเลข และแผงต่างๆ */
+.eyebrow{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.stats{box-shadow:var(--shadow)}
+.stat strong{font-weight:400;font-size:34px;letter-spacing:-.03em}
+.panel{box-shadow:0 1px 2px rgba(42,41,37,.03)}
+
+/* การ์ดโปรไฟล์: แสงสีประจำโปรไฟล์ที่มุม แทนเส้นขอบด้านบน */
+.card{border-top:1px solid var(--line);isolation:isolate;overflow:hidden;transition:border-color .2s,box-shadow .2s,transform .2s}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:130px;z-index:-1;pointer-events:none;
+  background:radial-gradient(80% 100% at 0% 0%,var(--profile-accent),transparent 70%);opacity:.14}
+.card:hover{border-color:var(--line-2);border-top-color:var(--line-2);transform:translateY(-2px)}
+
+/* ===== หน้าแรก (เฉพาะหน้าผู้ใช้): Hero จัดกลาง + พื้นหลังเคลื่อนไหว ===== */
+body[data-admin="false"] .hero{position:relative;flex-direction:column;justify-content:center;text-align:center;padding:64px 0 88px;margin:-44px 0 8px}
+body[data-admin="false"] .hero-art,body[data-admin="false"] .hero .eyebrow{display:none}
+body[data-admin="false"] .hero > div:not(.hero-bg){position:relative;z-index:1}
+body[data-admin="false"] .hero h1{font-size:clamp(34px,6vw,56px);line-height:1.22;margin:0 auto 16px;max-width:680px}
+body[data-admin="false"] .hero .lead{margin:0 auto;max-width:460px}
+body[data-admin="false"] .hero-actions{justify-content:center}
+.hero-bg{position:absolute;top:0;bottom:0;left:-24px;right:-24px;z-index:0;overflow:hidden;pointer-events:none;
+  background:radial-gradient(70% 55% at 50% 8%,#fff8e2 0%,rgba(255,248,226,0) 70%),linear-gradient(#fbf6e9 0%,#f6efdd 45%,var(--paper) 100%)}
+.hero-bg .sun{position:absolute;left:50%;top:-200px;width:720px;height:720px;margin-left:-360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,238,184,.7) 0%,rgba(255,238,184,.22) 40%,rgba(255,238,184,0) 68%);animation:sf-sun 14s ease-in-out infinite alternate}
+@keyframes sf-sun{from{transform:translateX(-30px) scale(.96);opacity:.8}to{transform:translateX(30px) scale(1.04);opacity:1}}
+.hero-bg .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;opacity:.75;-webkit-mask-image:linear-gradient(#000 35%,transparent 100%);mask-image:linear-gradient(#000 35%,transparent 100%)}
+.hero-bg .drift{animation:sf-drift linear infinite}
+.hero-bg .d1{animation-duration:160s}.hero-bg .d2{animation-duration:110s}.hero-bg .d3{animation-duration:75s}
+@keyframes sf-drift{from{transform:translateX(0)}to{transform:translateX(-1180px)}}
+.hero-bg .silk{position:absolute;left:0;top:14%;width:100%;height:68%;opacity:.9}
+.hero-bg canvas{position:absolute;inset:0;width:100%;height:100%}
+body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease both}
+@keyframes sf-fade{from{opacity:0}to{opacity:1}}
+
+@media (max-width:640px){
+  main{border:0}
+  body[data-admin="false"] .hero{margin-top:-28px;padding:48px 0 64px}
+  .hero-bg{left:-16px;right:-16px}
+  .hero-bg .sun{width:480px;height:480px;margin-left:-240px;top:-160px}
+  .stat strong{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bg *,body[data-admin="false"] .hero > div{animation:none!important}
+  .hero-bg canvas{display:none}
+  .card:hover{transform:none}
+}
+@media print{
+  .hero-bg{display:none}
+  .card::before{display:none}
+  main{border:0}
+}
 </style></head>
 <body data-admin="false">
 <a class="skip" href="#main">ข้ามไปยังเนื้อหา</a>
@@ -516,6 +590,31 @@ footer .powered{font-weight:600;color:var(--accent-ink);letter-spacing:.01em}
 
 <section id="directory">
 <div class="hero">
+<div class="hero-bg" aria-hidden="true">
+<div class="sun"></div>
+<canvas id="glints"></canvas>
+<svg class="silk" viewBox="0 0 1200 400" preserveAspectRatio="none">
+<defs><linearGradient id="silkGold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c9a45c" stop-opacity="0"/><stop offset=".35" stop-color="#c9a45c" stop-opacity=".55"/><stop offset=".65" stop-color="#e3c27a" stop-opacity=".55"/><stop offset="1" stop-color="#c9a45c" stop-opacity="0"/></linearGradient></defs>
+<g fill="none" stroke="url(#silkGold)" stroke-linecap="round">
+<path stroke-width="1.2"><animate attributeName="d" dur="22s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" values="M-20 230 C 220 150 420 300 640 210 S 1000 140 1220 220;M-20 210 C 240 270 460 160 660 230 S 1020 260 1220 200;M-20 230 C 220 150 420 300 640 210 S 1000 140 1220 220"/></path>
+<path stroke-width=".9" opacity=".8"><animate attributeName="d" dur="27s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" values="M-20 255 C 260 190 460 320 680 240 S 1020 180 1220 250;M-20 240 C 230 300 480 190 700 260 S 1040 290 1220 230;M-20 255 C 260 190 460 320 680 240 S 1020 180 1220 250"/></path>
+<path stroke-width=".7" opacity=".6"><animate attributeName="d" dur="33s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" values="M-20 280 C 280 230 500 330 720 270 S 1040 220 1220 280;M-20 270 C 250 320 520 230 740 285 S 1060 310 1220 262;M-20 280 C 280 230 500 330 720 270 S 1040 220 1220 280"/></path>
+<path stroke-width=".6" opacity=".45"><animate attributeName="d" dur="39s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" values="M-20 180 C 200 120 400 240 620 170 S 980 110 1220 170;M-20 165 C 230 215 440 130 640 185 S 1000 210 1220 155;M-20 180 C 200 120 400 240 620 170 S 980 110 1220 170"/></path>
+</g></svg>
+<svg class="hills" viewBox="0 0 1180 400" preserveAspectRatio="none">
+<defs>
+<linearGradient id="hill1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe1bd"/><stop offset="1" stop-color="#f6efdd"/></linearGradient>
+<linearGradient id="hill2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2cc93"/><stop offset="1" stop-color="#f3ead3"/></linearGradient>
+<linearGradient id="hill3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5b671"/><stop offset="1" stop-color="#f7f6f2"/></linearGradient>
+<path id="hillPath1" d="M0 200 C 150 130 290 140 430 190 C 570 240 700 130 860 160 C 1000 186 1090 210 1180 200 V400 H0Z"/>
+<path id="hillPath2" d="M0 262 C 140 215 300 222 450 262 C 610 304 770 220 950 246 C 1060 262 1120 270 1180 262 V400 H0Z"/>
+<path id="hillPath3" d="M0 330 C 200 298 400 316 590 336 C 800 358 1000 304 1180 330 V400 H0Z"/>
+</defs>
+<g class="drift d1" opacity=".75" fill="url(#hill1)"><use href="#hillPath1"/><use href="#hillPath1" x="1180"/></g>
+<g class="drift d2" fill="url(#hill2)"><use href="#hillPath2"/><use href="#hillPath2" x="1180"/></g>
+<g class="drift d3" opacity=".9" fill="url(#hill3)"><use href="#hillPath3"/><use href="#hillPath3" x="1180"/></g>
+</svg>
+</div>
 <div>
 <p class="eyebrow">Skillfolio</p>
 <h1 id="pageTitle">ทุกคนมีทักษะที่โดดเด่น<br>ค้นพบความเป็นคุณ</h1>
@@ -757,8 +856,8 @@ let adminSession='';
 let userSession=ADMIN?'':storageGet('skillfolio-session'),me=null,pendingAfterAuth=null;
 function auth(extra){return Object.assign({token,admin:adminSession,user:userSession},extra||{})}
 // Google sometimes loses an Apps Script reply (HTTP 404 on the googleusercontent redirect)
-// even though the call ran. These calls are safe to send again.
-const RPC_RETRY_SAFE=new Set(['getConfig','listProfiles','getProfile','getMe','adminListUsers','adminListLogs','loginAdmin','logoutAdmin','logoutUser']);
+// even though the call ran. Resending with the same id is safe: the server returns the reply it
+// stored for that id instead of running the call again.
 function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
 function rpc(fn,...args){
   const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
@@ -766,7 +865,7 @@ function rpc(fn,...args){
     .then(r=>r,e=>({network:true}))
     .then(r=>{
       const lost=r.network||r.status===404;
-      if(lost&&attempt<2&&RPC_RETRY_SAFE.has(fn))return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
+      if(lost&&attempt<2)return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
       if(r.network)throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
       return r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')});
     });
@@ -1396,5 +1495,35 @@ initMbti();
 initLanguage();
 setNav('directory');renderAccount();
 if(ADMIN)$('adminPassword').focus();else boot();
+
+/* ===================== hero motion (gold theme) ===================== */
+(()=>{
+  const hero=document.querySelector('.hero-bg'),cv=document.getElementById('glints');
+  if(!hero||!cv)return;
+  const silk=hero.querySelector('.silk'),ctx=cv.getContext('2d');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){silk.pauseAnimations();return}
+  let W=0,H=0,glints=[],raf=0,visible=true;
+  const make=()=>({x:Math.random()*W,y:H*(.08+Math.random()*.55),r:.6+Math.random()*1.3,ph:Math.random()*6.283,sp:.00035+Math.random()*.0005,dx:(Math.random()-.5)*.04});
+  function size(){const d=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;if(!W||!H)return;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);glints=Array.from({length:Math.max(10,Math.round(W/70))},make)}
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    for(const g of glints){
+      g.x+=g.dx;if(g.x<-5)g.x=W+5;if(g.x>W+5)g.x=-5;
+      const a=Math.pow(Math.max(0,Math.sin(t*g.sp+g.ph)),3);
+      if(a<.02)continue;
+      const grd=ctx.createRadialGradient(g.x,g.y,0,g.x,g.y,g.r*6);
+      grd.addColorStop(0,'rgba(214,180,104,'+(.55*a).toFixed(3)+')');grd.addColorStop(1,'rgba(214,180,104,0)');
+      ctx.fillStyle=grd;ctx.beginPath();ctx.arc(g.x,g.y,g.r*6,0,6.283);ctx.fill();
+      ctx.fillStyle='rgba(255,246,220,'+(.9*a).toFixed(3)+')';ctx.beginPath();ctx.arc(g.x,g.y,g.r*.7,0,6.283);ctx.fill();
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  const play=()=>{if(!raf&&visible&&!document.hidden){if(!glints.length)size();raf=requestAnimationFrame(frame)}};
+  const stop=()=>{cancelAnimationFrame(raf);raf=0};
+  size();addEventListener('resize',size);
+  new IntersectionObserver(e=>{visible=e[0].isIntersecting;if(visible){play();silk.unpauseAnimations()}else{stop();silk.pauseAnimations()}}).observe(hero);
+  document.addEventListener('visibilitychange',()=>document.hidden?stop():play());
+  play();
+})();
 
 </script></body></html>

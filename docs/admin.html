@@ -5,13 +5,87 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzirJ5gSFwHWI0WO-gWppAv
 const APP_URL = 'https://hitapdatateam-duck.github.io/skillfolio/'; // GitHub Pages (ลงท้ายด้วย /)
 </script>
 <style id="antiClickjack">body{display:none!important}</style>
+<style id="theme-gold">
+/* ===== ธีมทอง (แนว fora.so): ซ้อนทับสไตล์เดิม ===== */
+:root{
+  --font:"Inter","Noto Sans Thai",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --mono:"Fragment Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gold:#c9a45c;--yellow:#f3e2ac;
+  --shadow:0 1px 2px rgba(42,41,37,.04),0 12px 32px rgba(42,41,37,.07);
+}
+.brand{font-family:"Manrope","Noto Sans Thai",sans-serif}
+h1{font-weight:400;letter-spacing:-.02em}
+h2{font-weight:500;letter-spacing:-.015em}
+main{border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.topbar{background:rgba(251,250,247,.82);border-bottom-color:rgba(230,226,217,.7)}
+
+/* ปุ่มและช่องกรอกทรงแคปซูล */
+button{border-radius:999px}
+.mainnav button{border-radius:999px;font-size:14px}
+button:not(.primary):not(.ghost):not(.chip):not(.link):hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,164,92,.14)}
+.search input{border-radius:999px;background:var(--surface)}
+input,select,textarea{border-radius:12px}
+.account-menu .menu,dialog{border-radius:20px}
+.account-menu .menu button,.account-menu .menu button:hover{border-radius:10px;box-shadow:none}
+
+/* ป้ายเล็ก ตัวเลข และแผงต่างๆ */
+.eyebrow{font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.stats{box-shadow:var(--shadow)}
+.stat strong{font-weight:400;font-size:34px;letter-spacing:-.03em}
+.panel{box-shadow:0 1px 2px rgba(42,41,37,.03)}
+
+/* การ์ดโปรไฟล์: แสงสีประจำโปรไฟล์ที่มุม แทนเส้นขอบด้านบน */
+.card{border-top:1px solid var(--line);isolation:isolate;overflow:hidden;transition:border-color .2s,box-shadow .2s,transform .2s}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:130px;z-index:-1;pointer-events:none;
+  background:radial-gradient(80% 100% at 0% 0%,var(--profile-accent),transparent 70%);opacity:.14}
+.card:hover{border-color:var(--line-2);border-top-color:var(--line-2);transform:translateY(-2px)}
+
+/* ===== หน้าแรก (เฉพาะหน้าผู้ใช้): Hero จัดกลาง + พื้นหลังเคลื่อนไหว ===== */
+body[data-admin="false"] .hero{position:relative;flex-direction:column;justify-content:center;text-align:center;padding:64px 0 88px;margin:-44px 0 8px}
+body[data-admin="false"] .hero-art,body[data-admin="false"] .hero .eyebrow{display:none}
+body[data-admin="false"] .hero > div:not(.hero-bg){position:relative;z-index:1}
+body[data-admin="false"] .hero h1{font-size:clamp(34px,6vw,56px);line-height:1.22;margin:0 auto 16px;max-width:680px}
+body[data-admin="false"] .hero .lead{margin:0 auto;max-width:460px}
+body[data-admin="false"] .hero-actions{justify-content:center}
+.hero-bg{position:absolute;top:0;bottom:0;left:-24px;right:-24px;z-index:0;overflow:hidden;pointer-events:none;
+  background:radial-gradient(70% 55% at 50% 8%,#fff8e2 0%,rgba(255,248,226,0) 70%),linear-gradient(#fbf6e9 0%,#f6efdd 45%,var(--paper) 100%)}
+.hero-bg .sun{position:absolute;left:50%;top:-200px;width:720px;height:720px;margin-left:-360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,238,184,.7) 0%,rgba(255,238,184,.22) 40%,rgba(255,238,184,0) 68%);animation:sf-sun 14s ease-in-out infinite alternate}
+@keyframes sf-sun{from{transform:translateX(-30px) scale(.96);opacity:.8}to{transform:translateX(30px) scale(1.04);opacity:1}}
+.hero-bg .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;opacity:.75;-webkit-mask-image:linear-gradient(#000 35%,transparent 100%);mask-image:linear-gradient(#000 35%,transparent 100%)}
+.hero-bg .drift{animation:sf-drift linear infinite}
+.hero-bg .d1{animation-duration:160s}.hero-bg .d2{animation-duration:110s}.hero-bg .d3{animation-duration:75s}
+@keyframes sf-drift{from{transform:translateX(0)}to{transform:translateX(-1180px)}}
+.hero-bg .silk{position:absolute;left:0;top:14%;width:100%;height:68%;opacity:.9}
+.hero-bg canvas{position:absolute;inset:0;width:100%;height:100%}
+body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease both}
+@keyframes sf-fade{from{opacity:0}to{opacity:1}}
+
+@media (max-width:640px){
+  main{border:0}
+  body[data-admin="false"] .hero{margin-top:-28px;padding:48px 0 64px}
+  .hero-bg{left:-16px;right:-16px}
+  .hero-bg .sun{width:480px;height:480px;margin-left:-240px;top:-160px}
+  .stat strong{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bg *,body[data-admin="false"] .hero > div{animation:none!important}
+  .hero-bg canvas{display:none}
+  .card:hover{transform:none}
+}
+@media print{
+  .hero-bg{display:none}
+  .card::before{display:none}
+  main{border:0}
+}
+</style>
 <script>
 // กันการถูกฝังในเว็บอื่น (clickjacking): ถ้าอยู่ใน iframe ให้ซ่อนเนื้อหาและแสดงลิงก์เปิดในแท็บใหม่
 if(window.top===window.self){document.getElementById('antiClickjack').remove()}
 else{document.addEventListener('DOMContentLoaded',function(){document.body.innerHTML='';var p=document.createElement('p');p.style.cssText='font:16px sans-serif;padding:24px';var a=document.createElement('a');a.href=location.href;a.target='_blank';a.rel='noopener';a.textContent='เปิดหน้าแอดมิน Skillfolio ในแท็บใหม่';p.appendChild(a);document.body.appendChild(p);document.getElementById('antiClickjack').remove()})}
 </script><meta name="viewport" content="width=device-width,initial-scale=1"><title>Skillfolio | ภาพรวมทักษะทีม</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@600&family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
 <style>
 /* ===== Skillfolio — one stylesheet, one type scale ===== */
 :root{
@@ -764,8 +838,8 @@ let adminSession='';
 let userSession=ADMIN?'':storageGet('skillfolio-session'),me=null,pendingAfterAuth=null;
 function auth(extra){return Object.assign({token,admin:adminSession,user:userSession},extra||{})}
 // Google sometimes loses an Apps Script reply (HTTP 404 on the googleusercontent redirect)
-// even though the call ran. These calls are safe to send again.
-const RPC_RETRY_SAFE=new Set(['getConfig','listProfiles','getProfile','getMe','adminListUsers','adminListLogs','loginAdmin','logoutAdmin','logoutUser']);
+// even though the call ran. Resending with the same id is safe: the server returns the reply it
+// stored for that id instead of running the call again.
 function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
 function rpc(fn,...args){
   const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
@@ -773,7 +847,7 @@ function rpc(fn,...args){
     .then(r=>r,e=>({network:true}))
     .then(r=>{
       const lost=r.network||r.status===404;
-      if(lost&&attempt<2&&RPC_RETRY_SAFE.has(fn))return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
+      if(lost&&attempt<2)return new Promise(ok=>setTimeout(ok,500*(attempt+1))).then(()=>send(attempt+1));
       if(r.network)throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
       return r.json().catch(()=>{throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')')});
     });
