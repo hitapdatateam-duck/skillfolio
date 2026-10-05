@@ -514,7 +514,8 @@ footer .powered{font-weight:600;color:var(--accent-ink);letter-spacing:.01em}
 .brand{font-family:"Manrope","Noto Sans Thai",sans-serif}
 h1{font-weight:400;letter-spacing:-.02em}
 h2{font-weight:500;letter-spacing:-.015em}
-main{border-left:1px solid var(--line);border-right:1px solid var(--line)}
+/* พื้นหลัง Hero เต็มความกว้างจอ: ตัดส่วนที่ล้นด้านข้างโดยไม่ทำให้แถบบนหยุดติดด้านบน */
+html,body{overflow-x:clip}
 .topbar{background:rgba(251,250,247,.82);border-bottom-color:rgba(230,226,217,.7)}
 
 /* ปุ่มและช่องกรอกทรงแคปซูล */
@@ -545,7 +546,7 @@ body[data-admin="false"] .hero > div:not(.hero-bg){position:relative;z-index:1}
 body[data-admin="false"] .hero h1{font-size:clamp(34px,6vw,56px);line-height:1.22;margin:0 auto 16px;max-width:680px}
 body[data-admin="false"] .hero .lead{margin:0 auto;max-width:460px}
 body[data-admin="false"] .hero-actions{justify-content:center}
-.hero-bg{position:absolute;top:0;bottom:0;left:-24px;right:-24px;z-index:0;overflow:hidden;pointer-events:none;
+.hero-bg{position:absolute;top:0;bottom:0;left:50%;width:100vw;margin-left:-50vw;z-index:0;overflow:hidden;pointer-events:none;
   background:radial-gradient(70% 55% at 50% 8%,#fff8e2 0%,rgba(255,248,226,0) 70%),linear-gradient(#fbf6e9 0%,#f6efdd 45%,var(--paper) 100%)}
 .hero-bg .sun{position:absolute;left:50%;top:-200px;width:720px;height:720px;margin-left:-360px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,238,184,.7) 0%,rgba(255,238,184,.22) 40%,rgba(255,238,184,0) 68%);animation:sf-sun 14s ease-in-out infinite alternate}
@@ -560,9 +561,7 @@ body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease b
 @keyframes sf-fade{from{opacity:0}to{opacity:1}}
 
 @media (max-width:640px){
-  main{border:0}
   body[data-admin="false"] .hero{margin-top:-28px;padding:48px 0 64px}
-  .hero-bg{left:-16px;right:-16px}
   .hero-bg .sun{width:480px;height:480px;margin-left:-240px;top:-160px}
   .stat strong{font-size:28px}
 }
@@ -574,7 +573,6 @@ body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease b
 @media print{
   .hero-bg{display:none}
   .card::before{display:none}
-  main{border:0}
 }
 </style></head>
 <body data-admin="false">
