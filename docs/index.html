@@ -912,14 +912,15 @@ async function load(force=false){
   if(!force&&directoryReady&&Date.now()-directoryAt<60000)return;
   if(directoryRequest)return directoryRequest;
   const generation=loadGeneration;$('refreshButton').disabled=true;$('syncState').textContent=T('กำลังอัปเดต…');
+  if(!ADMIN&&!directoryReady&&!profiles.length){try{const saved=JSON.parse(storageGet('skillfolio-directory')||'null');if(Array.isArray(saved)&&saved.length){profiles=saved;renderDirectory()}}catch(e){}}
   directoryRequest=(async()=>{
     try{
       const items=await rpc('listProfiles',ADMIN,auth());if(generation!==loadGeneration)return;
-      profiles=items;directoryReady=true;directoryAt=Date.now();$('loadError').hidden=true;summaryCache.clear();renderDirectory();if(ADMIN)updateTeamFilter();
+      profiles=items;directoryReady=true;directoryAt=Date.now();if(!ADMIN)storageSet('skillfolio-directory',JSON.stringify(items));$('loadError').hidden=true;summaryCache.clear();renderDirectory();if(ADMIN)updateTeamFilter();
     }catch(e){
       if(generation!==loadGeneration)return;
       $('loadError').textContent=T(String(e.message||e));$('loadError').hidden=false;
-      if(!directoryReady)$('cards').innerHTML='<div class="empty"><h3>ไม่สามารถโหลดข้อมูลได้</h3><button type="button" onclick="load(true)">ลองอีกครั้ง</button></div>';
+      if(!directoryReady&&!profiles.length)$('cards').innerHTML='<div class="empty"><h3>ไม่สามารถโหลดข้อมูลได้</h3><button type="button" onclick="load(true)">ลองอีกครั้ง</button></div>';
     }finally{if(generation===loadGeneration){directoryRequest=null;$('refreshButton').disabled=false;$('syncState').textContent=''}}
   })();
   return directoryRequest;
@@ -1359,10 +1360,14 @@ if(ADMIN&&$('userChips')){
 async function boot(){
   if(ADMIN&&!adminSession)return;
   if(ADMIN)$('pageTitle').innerHTML='ภาพรวมผู้คน<br>และศักยภาพของทีม';
-  await Promise.all([load(),ADMIN?null:restoreUser()]);
   let initToken='';
   try{initToken=new URLSearchParams(location.hash.slice(1)).get('token')||''}catch(e){}
-  if(INITIAL_ID){if(initToken){storageSet('skillfolio-token-'+INITIAL_ID,initToken);storageSet('skillfolio-mine',INITIAL_ID)}await openProfile(INITIAL_ID,initToken)}
+  // Open the linked profile at the same time as the directory instead of after it.
+  const sessionAtStart=userSession;
+  await Promise.all([load(),ADMIN?null:restoreUser(),INITIAL_ID?openProfile(INITIAL_ID,initToken):null]);
+  if(INITIAL_ID&&initToken){storageSet('skillfolio-token-'+INITIAL_ID,initToken);storageSet('skillfolio-mine',INITIAL_ID)}
+  // A stale sign-in can make that first request fail; retry once now that it has been cleared.
+  if(INITIAL_ID&&!current&&userSession!==sessionAtStart)await openProfile(INITIAL_ID,initToken);
 }
 document.querySelectorAll('#filterChips .chip').forEach(b=>b.addEventListener('click',()=>setFilter(b.dataset.cat)));
 document.querySelectorAll('#catTabs .cat-tab').forEach(b=>b.addEventListener('click',()=>setSkillCat(b.dataset.cat)));
