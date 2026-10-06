@@ -880,21 +880,37 @@ function auth(extra){return Object.assign({token,admin:adminSession,user:userSes
 // even though the call ran. Resending with the same id is safe: the server returns the reply it
 // stored for that id instead of running the call again.
 function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
-const RPC_TRIES=5,RPC_TIMEOUT=20000; // up to 5 sends, 1s/2s/4s/8s apart; give up on a send after 20s (server work takes <3s; longer means Google stalled it)
+// Server work takes under ~3s; a longer wait means Google stalled the request on the way.
+const RPC_TRIES=5,RPC_TIMEOUT=20000,RPC_HEDGE_MS=4000; // up to 5 sends, 1s/2s/4s/8s apart; give up on a send after 20s
+// Read-only calls also get a second, parallel copy of a send that is still waiting after 4s; the first answer wins.
+const RPC_READS=new Set(['getConfig','listProfiles','getProfile','getMe','adminListUsers','adminListLogs']);
+function rpcPost(body,signal){
+  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body,signal})
+    .then(r=>r.text().then(text=>({status:r.status,text})),()=>({network:true}));
+}
 function rpc(fn,...args){
-  const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
+  const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id}),hedged=RPC_READS.has(fn);
   const send=attempt=>{
-    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),RPC_TIMEOUT);
-    return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body,signal:ctl.signal})
-      .then(r=>r.text().then(text=>({status:r.status,text})),()=>({network:true}))
-      .finally(()=>clearTimeout(timer))
-      .then(r=>{
+    const ctls=[new AbortController()],timer=setTimeout(()=>ctls.forEach(c=>c.abort()),RPC_TIMEOUT);
+    let hedgeTimer=0;
+    const outcome=new Promise(resolve=>{
+      let pending=1,done=false;
+      const take=r=>{
+        if(done)return;
         let res=null;
         if(!r.network){try{res=JSON.parse(r.text)}catch(e){}}
-        if(!res&&attempt<RPC_TRIES-1)return new Promise(ok=>setTimeout(ok,1000*2**attempt)).then(()=>send(attempt+1));
-        if(!res)throw new Error(r.network?'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาลองใหม่อีกครั้ง':'เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+r.status+')');
-        return res;
-      });
+        if(res){done=true;resolve({res})}
+        else if(--pending===0){done=true;resolve({fail:r})}
+      };
+      rpcPost(body,ctls[0].signal).then(take);
+      if(hedged)hedgeTimer=setTimeout(()=>{if(done)return;const c=new AbortController();ctls.push(c);pending++;rpcPost(body,c.signal).then(take)},RPC_HEDGE_MS);
+    });
+    return outcome.then(o=>{
+      clearTimeout(timer);clearTimeout(hedgeTimer);ctls.forEach(c=>c.abort());
+      if(o.res)return o.res;
+      if(attempt<RPC_TRIES-1)return new Promise(ok=>setTimeout(ok,1000*2**attempt)).then(()=>send(attempt+1));
+      throw new Error(o.fail.network?'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาลองใหม่อีกครั้ง':'เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง (HTTP '+o.fail.status+')');
+    });
   };
   return send(0)
     .then(res=>{
