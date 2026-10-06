@@ -503,6 +503,47 @@ footer .powered{font-weight:600;color:var(--accent-ink);letter-spacing:.01em}
   .profilehead,.segments,.mini-bar,.mbti-badge,.lg-num,.dot,.stepper,.radar{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 </style>
+<style id="features">
+/* ===== รูปโปรไฟล์ / ประวัติการศึกษา / ผลงานตีพิมพ์ ===== */
+.avatar{position:relative;overflow:hidden}
+.avatar.has-photo{background:var(--sunk)}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.avatar-edit{position:relative;display:inline-block;cursor:pointer;font-size:var(--fs-xs);font-weight:600;color:var(--accent-ink);padding:3px 10px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);white-space:nowrap}
+.avatar-edit:hover{border-color:var(--accent)}
+.avatar-edit input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;opacity:0;cursor:pointer}
+.avatar-remove{font-size:var(--fs-xs);color:var(--muted)}
+.repeat-block{display:flex;flex-direction:column;gap:12px;padding-top:6px}
+.repeat-block+.repeat-block{margin-top:6px;padding-top:22px;border-top:1px solid var(--line)}
+.repeat-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.repeat-head h3{font-size:var(--fs-base);font-weight:600}
+.repeat-rows{display:flex;flex-direction:column;gap:10px}
+.repeat-row{position:relative;display:grid;gap:10px 14px;padding:16px 48px 16px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.repeat-edu{grid-template-columns:1.1fr 1.4fr 1.4fr .7fr}
+.repeat-pub{grid-template-columns:1fr 120px}
+.repeat-pub .wide{grid-column:1/-1}
+.repeat-row label{font-size:var(--fs-sm);font-weight:500;color:var(--ink-2)}
+.repeat-row input,.repeat-row select{min-height:42px;padding:9px 12px;font-size:15px}
+.repeat-remove{position:absolute;top:8px;right:8px}
+.repeat-note{font-size:var(--fs-sm);font-weight:500}
+.edu-list,.pub-list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.edu-list li{display:flex;flex-direction:column;padding-left:14px;border-left:2px solid var(--accent-soft)}
+.edu-list strong{font-weight:600;color:var(--ink)}
+.edu-list span{font-size:var(--fs-sm);color:var(--muted)}
+.pub-list{counter-reset:pub;gap:16px;margin-top:16px}
+.pub-list li{counter-increment:pub;position:relative;padding:0 0 16px 36px;border-bottom:1px solid var(--line)}
+.pub-list li:last-child{border-bottom:0;padding-bottom:0}
+.pub-list li::before{content:counter(pub);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent-ink)}
+.pub-title{margin:0;font-weight:600;color:var(--ink);line-height:1.5}
+.pub-authors,.pub-meta{margin:2px 0 0;font-size:var(--fs-sm);color:var(--ink-2)}
+.pub-meta{color:var(--muted);font-style:italic}
+.pub-link{display:inline-block;margin-top:4px;font-size:var(--fs-sm);color:var(--accent-ink);overflow-wrap:anywhere}
+@media (max-width:640px){
+  .repeat-edu,.repeat-pub{grid-template-columns:1fr}
+  .repeat-row{padding:14px 44px 14px 14px}
+}
+@media print{.avatar-edit,.avatar-remove{display:none!important}.pub-link{color:inherit}}
+</style>
 <style id="theme-gold">
 /* ===== ธีมทอง (แนว fora.so): ซ้อนทับสไตล์เดิม ===== */
 :root{
@@ -679,7 +720,7 @@ body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease b
 <div class="panel step" data-step="2" hidden>
 <div class="panel-head"><h2>เส้นทางที่ทำให้คุณเป็นคุณ</h2></div>
 <div class="formgrid">
-<label class="full">ประวัติการศึกษา<textarea id="f-education" maxlength="4000" placeholder="วุฒิ / สาขา · สถาบัน · ปีที่จบ&#10;เพิ่มได้หลายรายการ แยกแต่ละรายการด้วยบรรทัดใหม่"></textarea></label>
+<div class="full repeat-block"><div class="repeat-head"><h3>ประวัติการศึกษา</h3><button type="button" class="btn-sm" onclick="addRepeat('edu')">＋ เพิ่มวุฒิการศึกษา</button></div><div id="eduRows" class="repeat-rows"></div><label class="repeat-note">รายละเอียดเพิ่มเติม <span class="opt">(ไม่บังคับ)</span><textarea id="f-education" maxlength="4000" placeholder="เช่น ทุนการศึกษา หัวข้อวิทยานิพนธ์ หรือหลักสูตรระยะสั้น"></textarea></label></div><div class="full repeat-block"><div class="repeat-head"><h3>ผลงานตีพิมพ์ทางวิชาการ <span class="opt">(Publication)</span></h3><button type="button" class="btn-sm" onclick="addRepeat('pub')">＋ เพิ่มผลงาน</button></div><div id="pubRows" class="repeat-rows"></div></div>
 <label class="full">ประสบการณ์ / โครงการ / งานอาสา / ประกาศนียบัตร<textarea id="f-experience" maxlength="4000" placeholder="บทบาท · องค์กร · ช่วงเวลา&#10;สิ่งที่ทำ ผลลัพธ์ และทักษะที่ได้ใช้"></textarea></label>
 <label>ความสนใจ<textarea id="f-interests" maxlength="4000" placeholder="เช่น สิ่งแวดล้อม ดนตรี AI การศึกษา"></textarea></label>
 <label>เป้าหมายการพัฒนา<textarea id="f-goals" maxlength="4000" placeholder="ทักษะที่อยากพัฒนา และสิ่งที่อยากลองทำ"></textarea></label>
@@ -700,7 +741,7 @@ body[data-admin="false"] .hero > div:not(.hero-bg){animation:sf-fade 1.4s ease b
 <section id="profile" hidden></section>
 
 </main>
-<footer>Skillfolio · พื้นที่สำหรับทุกทักษะและทุกความเป็นไปได้<br><span class="powered">Powered by HITAP Data Team</span><br>ระดับทักษะเป็นการประเมินตนเอง ไม่ใช่ผลการรับรองความสามารถ</footer>
+<footer>Skillfolio · พื้นที่สำหรับทุกทักษะและทุกความเป็นไปได้<br><span class="powered">Powered by HITAP Data Team</span></footer>
 <div id="notice" role="status" aria-live="polite" hidden></div>
 <dialog id="authDialog" class="auth-dialog" aria-labelledby="authTitle">
 <button type="button" class="icon-btn dialog-close" onclick="closeAuth()" aria-label="ปิด">×</button>
@@ -857,7 +898,7 @@ function auth(extra){return Object.assign({token,admin:adminSession,user:userSes
 // even though the call ran. Resending with the same id is safe: the server returns the reply it
 // stored for that id instead of running the call again.
 function rpcId(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2)}}
-const RPC_TRIES=5,RPC_TIMEOUT=40000; // up to 5 sends, 1s/2s/4s/8s apart; give up on a send after 40s
+const RPC_TRIES=5,RPC_TIMEOUT=20000; // up to 5 sends, 1s/2s/4s/8s apart; give up on a send after 20s (server work takes <3s; longer means Google stalled it)
 function rpc(fn,...args){
   const session=adminSession,id=rpcId(),body=JSON.stringify({fn,args,id});
   const send=attempt=>{
@@ -1054,7 +1095,7 @@ function renderDirectory(){
   $('count').textContent=T(filtered.length+' โปรไฟล์');
   $('cards').innerHTML=filtered.slice(0,visibleCount).map(p=>{
     const growing=p.skills.filter(s=>s.growing).length;
-    return '<article class="card theme-'+mbtiTheme(p.mbti).key+'"><div class="person"><div class="avatar" aria-hidden="true">'+esc(firstGrapheme(p.name))+'</div><div><h3 data-user>'+esc(p.name)+'</h3><small data-user>'+esc(p.role||'')+'</small>'+(p.role?'':'<small>ยังไม่ระบุบทบาท</small>')+'</div></div>'
+    return '<article class="card theme-'+mbtiTheme(p.mbti).key+'"><div class="person">'+avatarHtml(p)+'<div><h3 data-user>'+esc(p.name)+'</h3><small data-user>'+esc(p.role||'')+'</small>'+(p.role?'':'<small>ยังไม่ระบุบทบาท</small>')+'</div></div>'
       +'<div class="badges">'+mbtiBadge(p)+(ADMIN?'<span class="status-badge'+(p.isPublic?' public':'')+'">'+(p.isPublic?'เปิดเผย':'ส่วนตัว')+'</span>':'')+'</div>'
       +(p.department?'<div class="dept" data-user>'+esc(p.department)+'</div>':'')
       +cardSummaryCached(p)
@@ -1105,14 +1146,14 @@ function renderProfile(){
     +'<button type="button" class="primary" onclick="printProfile()">↓ บันทึกเป็น PDF</button>'
     +(current.editable?'<button type="button" class="danger" onclick="removeCurrent()">ลบโปรไฟล์</button>':'')+'</div>';
   const privacy=current.editable?'<div class="privacy-panel no-print">'+visibilitySwitch(p)+'<p>เปิด: ทุกคนที่เข้าถึงเว็บแอปเห็นข้อมูลทั้งหมด · ปิด: เฉพาะผู้มีลิงก์แก้ไขและแอดมิน</p></div>':'';
-  const head='<header class="profilehead"><div class="avatar" aria-hidden="true">'+esc(firstGrapheme(p.name))+'</div><div><p class="eyebrow">'+(p.isPublic?'โปรไฟล์สาธารณะ':'โปรไฟล์ส่วนตัว')+'</p><h1 data-user>'+esc(p.name)+'</h1><div class="badges">'+mbtiBadge(p)+'</div>'
+  const head='<header class="profilehead">'+profileAvatarHtml(p)+'<div><p class="eyebrow">'+(p.isPublic?'โปรไฟล์สาธารณะ':'โปรไฟล์ส่วนตัว')+'</p><h1 data-user>'+esc(p.name)+'</h1><div class="badges">'+mbtiBadge(p)+'</div>'
     +([p.role,p.department,p.location].some(Boolean)?'<p class="meta" data-user>'+esc([p.role,p.department,p.location].filter(Boolean).join(' · '))+'</p>':'')
     +(p.bio?'<div class="prose" data-user>'+esc(p.bio)+'</div>':'<p class="prose empty-text">'+T('ยังไม่ได้เพิ่มคำแนะนำตัว')+'</p>')+'</div></header>';
   const radarPanel='<section class="panel radar-panel"><div class="panel-head"><h2>แผนที่ทักษะ</h2><small>'+axes.length+' หมวดย่อย · '+p.skills.length+' ทักษะ</small></div>'+radar(p)+'<p class="hint radar-note">แต่ละแกนคือค่าเฉลี่ยของทักษะในหมวดย่อยนั้น (1–5) จัดเรียงตามหมวดหลักและแยกสีตามหมวด · ใช้สำรวจตนเอง ไม่ใช้จัดอันดับบุคคล</p></section>';
-  const about='<div class="about-grid">'+[['education','ประวัติการศึกษา'],['interests','สิ่งที่สนใจ'],['goals','ก้าวต่อไปของฉัน']].map(([k,t])=>'<section class="panel"><h2>'+t+'</h2><div style="margin-top:10px">'+proseBlock(p[k])+'</div></section>').join('')+'</div>';
+  const about='<div class="about-grid">'+[['education','ประวัติการศึกษา'],['interests','สิ่งที่สนใจ'],['goals','ก้าวต่อไปของฉัน']].map(([k,t])=>'<section class="panel"><h2>'+t+'</h2><div style="margin-top:10px">'+(k==='education'?educationHtml(p):proseBlock(p[k]))+'</div></section>').join('')+'</div>';
   const skills='<section class="panel" style="margin-top:20px"><div class="panel-head" style="margin-bottom:0"><h2>ทักษะทั้งหมด</h2><small>'+p.skills.length+' ทักษะ · '+growing+' อยากพัฒนา · ระดับ 1–5</small></div>'+skillGroupsHtml(p)+'</section>';
   const exp='<section class="panel"><h2>ประสบการณ์</h2><div style="margin-top:10px">'+proseBlock(p.experience)+'</div></section>';
-  $('profile').innerHTML=actions+privacy+head+radarPanel+about+skills+exp+'<p class="profile-meta">อัปเดต '+esc(new Date(p.updatedAt).toLocaleDateString(lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'long',year:'numeric'}))+' · ประเมินทักษะด้วยตนเอง</p>';
+  $('profile').innerHTML=actions+privacy+head+radarPanel+about+skills+exp+publicationsHtml(p)+'<p class="profile-meta">อัปเดต '+esc(new Date(p.updatedAt).toLocaleDateString(lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'long',year:'numeric'}))+' · ประเมินทักษะด้วยตนเอง</p>';
 }
 function printProfile(){document.body.classList.add('printing');window.print();setTimeout(()=>document.body.classList.remove('printing'),500)}
 async function copyText(s){try{await navigator.clipboard.writeText(s);toast('คัดลอกลิงก์แล้ว')}catch(e){window.prompt(T('คัดลอกลิงก์นี้'),s)}}
@@ -1137,7 +1178,7 @@ function openMine(){
 /* ===================== editor ===================== */
 function previewMbti(){const v=$('f-mbti').value,t=mbtiTheme(v);$('mbtiPreview').className='mbti-preview theme-'+t.key;$('mbtiPreview').textContent=v?v+' · '+t.label+' — สีโปรไฟล์ของคุณ':'ไม่ระบุได้ · ใช้สีพื้นฐานของแพลตฟอร์ม';$('editor').className='theme-'+t.key}
 function initMbti(){$('f-mbti').innerHTML='<option value="">ยังไม่ทราบ / ไม่ระบุ</option>'+MBTI_TYPES.map(t=>'<option value="'+t+'">'+t+'</option>').join('');previewMbti()}
-function collectDraft(){const d=JSON.parse(JSON.stringify(draft));FIELDS.forEach(k=>d[k]=$('f-'+k).value);d.isPublic=$('f-isPublic').checked;return d}
+function collectDraft(){const d=JSON.parse(JSON.stringify(draft));FIELDS.forEach(k=>d[k]=$('f-'+k).value);d.isPublic=$('f-isPublic').checked;d.educationList=readRepeat('edu');d.publications=readRepeat('pub');return d}
 function isDirty(){return !$('editor').hidden&&JSON.stringify(collectDraft())!==editorBaseline}
 function canLeaveEditor(){return !isDirty()||confirm(T('ออกจากหน้านี้โดยไม่บันทึก? การแก้ไขที่ยังไม่บันทึกจะหายไป'))}
 function cancelEdit(){if(!canLeaveEditor())return;editorBaseline=JSON.stringify(collectDraft());if(current&&draft.id&&current.profile.id===draft.id)renderProfile();else showDirectory()}
@@ -1149,7 +1190,7 @@ function newProfile(){
 }
 function editCurrent(){draft=JSON.parse(JSON.stringify(current.profile));fillEditor()}
 function fillEditor(){
-  FIELDS.forEach(k=>$('f-'+k).value=draft[k]||'');$('f-isPublic').checked=!!draft.isPublic;
+  FIELDS.forEach(k=>$('f-'+k).value=draft[k]||'');$('f-isPublic').checked=!!draft.isPublic;renderRepeat('edu',draft.educationList);renderRepeat('pub',draft.publications);
   $('editorTitle').textContent=draft.id?'เติมเต็มเรื่องราวของคุณ':'เริ่มต้นจากเรื่องราวของคุณ';
   view('editor');previewMbti();step=0;stepTo(0);setSkillCat(skillCat);renderSkills();
   editorBaseline=JSON.stringify(collectDraft());
@@ -1495,6 +1536,130 @@ applyConfig({});
 rpc('getConfig').then(applyConfig).catch(e=>console.warn('getConfig failed: '+e.message));
 if($('authDialog')){$('authDialog').addEventListener('click',e=>{if(e.target===$('authDialog'))closeAuth()});document.querySelectorAll('#authTabs button').forEach(b=>b.addEventListener('click',()=>setAuthMode(b.dataset.mode)))}
 window.addEventListener('beforeunload',e=>{if(isDirty()){e.preventDefault();e.returnValue=''}});
+/* ===================== profile photo, education list, publications ===================== */
+Object.assign(TRANSLATIONS,{
+  'ประวัติการศึกษา':'Education','＋ เพิ่มวุฒิการศึกษา':'＋ Add education','ผลงานตีพิมพ์ทางวิชาการ':'Publications','＋ เพิ่มผลงาน':'＋ Add publication',
+  'ระดับการศึกษา':'Level','สาขาวิชา':'Field of study','สถาบัน':'Institution','ปีที่จบ':'Year','ลบรายการนี้':'Remove this entry',
+  'ชื่อผลงาน':'Title','ผู้แต่ง':'Authors','ชื่อวารสาร / งานประชุม':'Journal / conference','ปีที่ตีพิมพ์':'Year','DOI หรือลิงก์':'DOI or link',
+  'รายละเอียดเพิ่มเติม':'More details','(ไม่บังคับ)':'(optional)','เลือกระดับ':'Choose level',
+  'ปริญญาเอก':'Doctorate','ปริญญาโท':'Master’s degree','ปริญญาตรี':'Bachelor’s degree','ประกาศนียบัตรบัณฑิต':'Graduate diploma','อนุปริญญา / ปวส.':'Associate degree / diploma','มัธยมศึกษา':'Secondary school','อื่นๆ':'Other',
+  'ยังไม่ได้เพิ่มผลงาน':'No publications yet','เปลี่ยนรูป':'Change photo','เพิ่มรูป':'Add photo','ลบรูป':'Remove photo',
+  'กำลังอัปโหลดรูป…':'Uploading photo…','อัปเดตรูปโปรไฟล์แล้ว':'Profile photo updated','ลบรูปโปรไฟล์แล้ว':'Profile photo removed',
+  'ลบรูปโปรไฟล์นี้?':'Remove this profile photo?','กรุณาเลือกไฟล์รูปภาพ':'Please choose an image file','เปิดรูปนี้ไม่ได้ ลองใช้ไฟล์ JPG หรือ PNG':'Could not open this image. Try a JPG or PNG file'
+});
+const EDU_LEVELS=['ปริญญาเอก','ปริญญาโท','ปริญญาตรี','ประกาศนียบัตรบัณฑิต','อนุปริญญา / ปวส.','มัธยมศึกษา','อื่นๆ'];
+const REPEAT={
+  edu:{max:20,fields:[
+    {k:'level',label:'ระดับการศึกษา',type:'level'},
+    {k:'field',label:'สาขาวิชา',max:200,ph:'เช่น สาธารณสุขศาสตร์'},
+    {k:'institution',label:'สถาบัน',max:200,ph:'เช่น มหาวิทยาลัยมหิดล'},
+    {k:'year',label:'ปีที่จบ',max:4,ph:'เช่น 2020',num:true}]},
+  pub:{max:50,fields:[
+    {k:'title',label:'ชื่อผลงาน',max:500,ph:'ชื่อบทความหรือผลงาน',wide:true},
+    {k:'authors',label:'ผู้แต่ง',max:500,ph:'เช่น Somchai J, Suda K',wide:true},
+    {k:'journal',label:'ชื่อวารสาร / งานประชุม',max:300,ph:'เช่น Value in Health'},
+    {k:'year',label:'ปีที่ตีพิมพ์',max:4,ph:'เช่น 2024',num:true},
+    {k:'link',label:'DOI หรือลิงก์',max:300,ph:'เช่น 10.1016/j.jval.2024.01.001',wide:true}]}
+};
+function repeatRow(kind,item){
+  item=item||{};
+  const cells=REPEAT[kind].fields.map(f=>{
+    const v=esc(item[f.k]||'');
+    const input=f.type==='level'
+      ?'<select data-k="level"><option value="">'+T('เลือกระดับ')+'</option>'+EDU_LEVELS.concat(item.level&&!EDU_LEVELS.includes(item.level)?[item.level]:[]).map(l=>'<option value="'+esc(l)+'"'+(l===item.level?' selected':'')+'>'+esc(T(l))+'</option>').join('')+'</select>'
+      :'<input data-k="'+f.k+'" maxlength="'+f.max+'" value="'+v+'" placeholder="'+esc(T(f.ph))+'"'+(f.num?' inputmode="numeric" pattern="[0-9]{4}"':'')+'>';
+    return '<label class="'+(f.wide?'wide':'')+'">'+T(f.label)+input+'</label>';
+  }).join('');
+  return '<div class="repeat-row repeat-'+kind+'">'+cells+'<button type="button" class="icon-btn repeat-remove" aria-label="'+T('ลบรายการนี้')+'" title="'+T('ลบรายการนี้')+'" onclick="removeRepeat(this)">×</button></div>';
+}
+function renderRepeat(kind,items){
+  const list=(items||[]).length?items:[{}];
+  $(kind+'Rows').innerHTML=list.map(it=>repeatRow(kind,it)).join('');
+}
+function addRepeat(kind){
+  const box=$(kind+'Rows');
+  if(box.children.length>=REPEAT[kind].max)return;
+  box.insertAdjacentHTML('beforeend',repeatRow(kind));
+  box.lastElementChild.querySelector('input,select').focus();
+}
+function removeRepeat(btn){
+  const row=btn.closest('.repeat-row'),box=row.parentNode;
+  row.remove();
+  if(!box.children.length)box.insertAdjacentHTML('beforeend',repeatRow(box.id.replace('Rows','')));
+}
+function readRepeat(kind){
+  return [...$(kind+'Rows').querySelectorAll('.repeat-row')].map(row=>{
+    const o={};row.querySelectorAll('[data-k]').forEach(el=>o[el.dataset.k]=el.value.trim());return o;
+  }).filter(o=>Object.values(o).some(Boolean));
+}
+
+/* ----- profile page sections ----- */
+function educationHtml(p){
+  const list=p.educationList||[];
+  if(!list.length)return proseBlock(p.education);
+  return '<ul class="edu-list">'+list.map(e=>'<li><strong data-user>'+esc([T(e.level||''),e.field].filter(Boolean).join(' · '))+'</strong>'
+    +((e.institution||e.year)?'<span data-user>'+esc([e.institution,e.year].filter(Boolean).join(' · '))+'</span>':'')+'</li>').join('')+'</ul>'
+    +(p.education?'<div class="prose" data-user>'+esc(p.education)+'</div>':'');
+}
+function pubLink(link){
+  if(!link)return '';
+  const href=/^10\.\d{4,}\//.test(link)?'https://doi.org/'+link:(/^https?:\/\//i.test(link)?link:'');
+  return href?'<a class="pub-link" href="'+esc(href)+'" target="_blank" rel="noopener noreferrer" data-user>'+esc(link)+'</a>':'';
+}
+function publicationsHtml(p){
+  const list=p.publications||[];
+  if(!list.length&&!current.editable)return '';
+  return '<section class="panel" style="margin-top:20px"><div class="panel-head" style="margin-bottom:0"><h2>'+T('ผลงานตีพิมพ์ทางวิชาการ')+'</h2><small>'+list.length+' '+T('รายการ')+'</small></div>'
+    +(list.length?'<ol class="pub-list">'+list.slice().sort((a,b)=>String(b.year).localeCompare(String(a.year))).map(x=>'<li><p class="pub-title" data-user>'+esc(x.title)+'</p>'
+      +(x.authors?'<p class="pub-authors" data-user>'+esc(x.authors)+'</p>':'')
+      +((x.journal||x.year)?'<p class="pub-meta" data-user>'+esc([x.journal,x.year].filter(Boolean).join(' · '))+'</p>':'')
+      +pubLink(x.link)+'</li>').join('')+'</ol>':'<p class="prose empty-text">'+T('ยังไม่ได้เพิ่มผลงาน')+'</p>')+'</section>';
+}
+
+/* ----- avatar with optional photo ----- */
+function photoUrl(id){return 'https://lh3.googleusercontent.com/d/'+encodeURIComponent(id)+'=s400'}
+function avatarHtml(p){
+  return '<div class="avatar'+(p.photo?' has-photo':'')+'" aria-hidden="true"><span>'+esc(firstGrapheme(p.name))+'</span>'
+    +(p.photo?'<img src="'+esc(photoUrl(p.photo))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.remove(\'has-photo\');this.remove()">':'')+'</div>';
+}
+function profileAvatarHtml(p){
+  if(!current||!current.editable)return avatarHtml(p);
+  return '<div class="avatar-wrap">'+avatarHtml(p)
+    +'<label class="avatar-edit no-print"><input type="file" accept="image/*" onchange="pickPhoto(this)">'+T(p.photo?'เปลี่ยนรูป':'เพิ่มรูป')+'</label>'
+    +(p.photo?'<button type="button" class="link avatar-remove no-print" onclick="removePhoto()">'+T('ลบรูป')+'</button>':'')+'</div>';
+}
+function loadImage(file){
+  return new Promise((ok,fail)=>{const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);ok(img)};img.onerror=()=>{URL.revokeObjectURL(url);fail(new Error('เปิดรูปนี้ไม่ได้ ลองใช้ไฟล์ JPG หรือ PNG'))};img.src=url});
+}
+/** Center-crops to a square and scales to at most 400px, as JPEG under ~300KB. */
+async function photoDataUrl(file){
+  const img=await loadImage(file),side=Math.min(img.naturalWidth,img.naturalHeight),size=Math.min(400,side);
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,size,size);
+  ctx.drawImage(img,(img.naturalWidth-side)/2,(img.naturalHeight-side)/2,side,side,0,0,size,size);
+  let q=.86,url=c.toDataURL('image/jpeg',q);
+  while(url.length>400000&&q>.4){q-=.12;url=c.toDataURL('image/jpeg',q)}
+  return url;
+}
+async function savePhoto(dataUrl,done){
+  const id=current.profile.id;
+  toast(dataUrl?'กำลังอัปโหลดรูป…':'กำลังบันทึก…');
+  try{
+    const p=await rpc('setProfilePhoto',id,dataUrl,auth());
+    if(!current||current.profile.id!==id)return;
+    current.profile=p;rememberProfile(current);
+    const row=profiles.find(x=>x.id===id);if(row){row.photo=p.photo||'';summaryCache.clear()}
+    renderProfile();toast(done);
+  }catch(e){error(e)}
+}
+async function pickPhoto(input){
+  const file=input.files&&input.files[0];input.value='';
+  if(!file)return;
+  if(!/^image\//.test(file.type)){toast('กรุณาเลือกไฟล์รูปภาพ');return}
+  try{await savePhoto(await photoDataUrl(file),'อัปเดตรูปโปรไฟล์แล้ว')}catch(e){error(e)}
+}
+function removePhoto(){if(confirm(T('ลบรูปโปรไฟล์นี้?')))savePhoto('','ลบรูปโปรไฟล์แล้ว')}
+
 initMbti();
 initLanguage();
 setNav('directory');renderAccount();
